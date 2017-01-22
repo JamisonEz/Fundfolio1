@@ -480,7 +480,7 @@
 				
 				  <!--Campaign Content 1-->
 				 <div class="col s3" style="margin-left: 0px; margin-top: 50px">
-                    <a href="#">
+                    <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
                         <div class="card" style="">
                             <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
 							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" style="width:100%">

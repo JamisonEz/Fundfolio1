@@ -517,7 +517,7 @@ class DBController {
             $campaign_result = array();
             array_walk($temp_campaign_array, function($v, $k) use (&$campaign_result){ $campaign_result[$v['campaignid']] = $v; });
             
-            $total_no_of_payments = 0;
+            $total_no_of_payments = 1;
             $no_of_payments_per_category = array();
             $no_of_payments_per_folio = array();
             foreach($payment_result as $pr)

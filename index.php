@@ -94,7 +94,7 @@
 			   $res = $db -> userRegister (  $_POST['lemail'] , $_POST['lpassword'] , $_POST['name'] ,$_POST['location'], $image_name );
 			   if( $res == 1){
 					//echo "Sucsess";
-					header("Location: http://localhost/yfcreative/Fundfolio/homescreen.php");
+					header("Location: homescreen.php");
 							die();
 			   }
 				else  if( $res == 2){
@@ -118,7 +118,7 @@
 			 
 			 if($res){
 				 
-				 header("Location: http://localhost/yfcreative/Fundfolio/homescreen.php");
+				 header("Location: homescreen.php");
 							die();
 				// echo "Login Successfully";
 			 }
@@ -139,7 +139,7 @@
 		
 		if($db -> CheckLogin()){
 						
-						header("Location: http://localhost/yfcreative/Fundfolio/homescreen.php");
+						header("Location:homescreen.php");
 							die();
 			
 		}
@@ -498,7 +498,7 @@
 				?>
 				 <!--Campaign Content -->
                 <div class="col s3" style="margin-left: 0px; margin-top: 50px">
-                    <a href="#">
+                    <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
                         <div class="card" style="">
                             <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
 							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" style="width:100%">

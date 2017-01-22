@@ -29,17 +29,34 @@
 <?php 
     require_once('functions.php');
     $db = new DBController();
+	
+	
+	if(! $db -> CheckLogin()){
+			 header("Location: index.php");
+							die();
+			
+		}
+		
+		$folio_id = 1;
+    if(isset($_REQUEST['folio_id'])){
+		
+		$folio_id = $_REQUEST['folio_id'];
+	}
+	
     
-    $folio_id = 1;
     $matrix_info = ($db->getMatrixforthefolio($folio_id));
     $user_info = ($db->getAllUserInfo());
     $donation_info = ($db->getDonationlist($folio_id));
     $folio_info = ($db->getCampaignById($folio_id));
+	
+	//print_r($folio_info);
     //echo "<pre>";
     //var_dump($getMatrix);
     //var_dump($db->getAllUserInfo());
     //exit;
 ?>
+
+
 <body>
     <header>
         <!--<div class="container-fluid">-->
@@ -91,12 +108,12 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#">
                             <div class="user-img wrap-auto">
-                                <img class="img-circle" src="images/background.png" alt="Profile Pic" width="50px">
+                                <img class="img-circle" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" alt="Profile Pic" width="50px">
                             </div>
                         </a></li>
                         <li><a href="#">
                             <div class="user-name text-center text-uppercase">
-                                <p>Welcome, <b>taylor</b></p>
+                                <p>Welcome, <b><?php echo $db -> UserName() ; ?></b></p>
                             </div>
                         </a></li>
                     </ul>
@@ -117,13 +134,19 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-7 wrap-full-sm">
-                <iframe width="100%" src="https://www.youtube.com/embed/ydRAb9cwHnA" frameborder="0" allowfullscreen></iframe>
+                <iframe width="100%" src="campaign_uploads/<?php
+				if( $folio_info['campaignvidio'] != ""){
+				echo $folio_info['campaignvidio'] ; 
+				}
+				else{
+					echo "http://www.youtube.com/v/XGSy3_Czz8k";
+				}?>" frameborder="0" allowfullscreen></iframe>
                 <div class="row">
                     <div class="col-xs-1 wrap-auto">
                         <img src="images/location-blue.png" width="20" height="30">
                     </div>
                     <div class="col-xs-1 wrap-auto no-l-padding text-center">
-                        <p style="margin: 5px 5px; font-size: large"><b>Together Hands</b> Indianapolis, United States</p>
+                        <p style="margin: 5px 5px; font-size: large"><b>Together Hands</b> <?php echo $folio_info['company_location'] ; ?></p>
                     </div>
                     <div style="float: right;">
                         <div class="col-xs-1 wrap-auto no-l-padding">
@@ -203,15 +226,10 @@
                 <p>OVERVIEW</p>
                 <div class="row margin-b">
                     <div class="col-xs-6">
-                        <img src="images/image-1.png" width="100%">
+                        <img src="campaign_uploads/<?php echo $folio_info['campaignimage'] ; ?>" width="100%">
                     </div>
                     <div class="col-xs-6 overview-detail">
-                        <p><b>Together Hands.</b> It might seem unnecessary to ask why it is important to deal with the
-                            crisis of homelessness. It takes the commitment of many to solve this issue, not just the
-                            government. All of us!<br><br> The most important reason to solve the crisis is that it is the
-                            right thing to do. People deserve a place to live and we have the resources to make that
-                            possible. We are caring and decent people, that have the means, and believe that everyone
-                            is entitled to a home.
+                        <p><b><?php echo $folio_info['campaignname'] ; ?>.</b> <?php echo $folio_info['tag_line'] ; ?>
                         </p>
                     </div>
                 </div>
@@ -225,11 +243,7 @@
                 <h1><b>Short Summary</b></h1>
                 <div>
                     <p style="color: rgb(67,67,67); font-size: large; text-align: justify">
-                        HT continues to help the areas affected by Hurricane Matthew. Even though the news stories of the hurricane have become quiet, the damage is very real and there is a long way to go in rebuilding. We continue to repair our headquarters in Port-au-Prince where our schools suffered flooding damage and the latrines at the high school were completely destroyed. We continue to provide critical care to the hardest hit areas of Jeremie and Les Cayes where roofs were ripped off buildings and people are in desperate need of shelter, food, and water.
-
-                        Fr. Tom, Doug and HT staff are working with the Missionary Sisters of Charity and local parishes to provide food, water, and building supplies to help those displaced by the storm.  Fr. Tom & Doug continue to make regular trips to Jeremie and Les Cayes to bring building supplies and food.
-
-                        HT will continue to bring aid to those in the rural villages that will likely escape the eye of the larger relief                             agencies. We are grateful for any help you can give so that we can assist those who have lost everything!
+                        <?php echo $folio_info['description'] ; ?>
                     </p>
                 </div>
             </div>
