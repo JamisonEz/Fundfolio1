@@ -50,7 +50,7 @@ class DBController {
 		//return true;
 		$valid_txnid = true;
 		//get result set
-		$sql = mysql_query("SELECT * FROM `payments` WHERE txnid = '$tnxid'", $conn);
+		$sql = mysql_query("SELECT * FROM `fundfolio_payments` WHERE txnid = '$tnxid'", $conn);
 		if ($row = mysql_fetch_array($sql)) {
 			$valid_txnid = false;
 		}
@@ -371,7 +371,7 @@ class DBController {
 	
 		
 		
-			$sql = mysqli_query( $this->conn, "SELECT sum( payment_amount ) as total_amount FROM `payments`") or die(mysqli_error($this->conn));
+			$sql = mysqli_query( $this->conn, "SELECT sum( payment_amount ) as total_amount FROM `fundfolio_payments`") or die(mysqli_error($this->conn));
 			
 			if (mysqli_num_rows($sql) > 0) 
 				return mysqli_fetch_assoc( $sql);
@@ -385,7 +385,7 @@ class DBController {
 	
 		
 		
-			$sql = mysqli_query( $this->conn ,"SELECT COUNT(id) as total_donate FROM `payments`");
+			$sql = mysqli_query( $this->conn ,"SELECT COUNT(id) as total_donate FROM `fundfolio_payments`");
 			return mysqli_fetch_array($sql);
 	
 	}
@@ -394,7 +394,7 @@ class DBController {
 		//global $link;
 		
 		if (is_array($data)) {
-			$sql = mysqli_query( $this->conn , "INSERT INTO `payments` (txnid, payment_amount, payment_status, itemid, userid, createdtime) VALUES (
+			$sql = mysqli_query( $this->conn , "INSERT INTO `fundfolio_payments` (txnid, payment_amount, payment_status, itemid, userid, createdtime) VALUES (
 					'".$data['txn_id']."' ,
 					'".$data['payment_amount']."' ,
 					'".$data['payment_status']."' ,
@@ -407,7 +407,7 @@ class DBController {
 	}
 	//Get Payment list
 	function getPaymentDetails(){
-            $sql = mysqli_query( $this->conn ,"SELECT * FROM `payments`");
+            $sql = mysqli_query( $this->conn ,"SELECT * FROM `fundfolio_payments`");
             $arr = array();
             while($row = mysqli_fetch_assoc($sql)) {
                  $arr[] = intval($row['payment_amount']);
@@ -455,7 +455,7 @@ class DBController {
             //for payment info
             $payment_result = array();
             $userid = (int) $_SESSION['user_id'];
-            $sql = mysqli_query($this->conn ,"SELECT * FROM `payments` WHERE userid = $userid AND payment_status = 'success'");
+            $sql = mysqli_query($this->conn ,"SELECT * FROM `fundfolio_payments` WHERE userid = $userid AND payment_status = 'success'");
             while($row = mysqli_fetch_assoc($sql)) {
                 $payment_result[] = $row;
             }
@@ -654,7 +654,7 @@ class DBController {
             {
                 if($user_id!="" && isset($all_users[$user_id]))
                 {
-                    $sql = mysqli_query( $this->conn ,"SELECT * FROM `payments` WHERE userid = $user_id AND payment_amount=$donated_amount AND payment_status='success'");
+                    $sql = mysqli_query( $this->conn ,"SELECT * FROM `fundfolio_payments` WHERE userid = $user_id AND payment_amount=$donated_amount AND payment_status='success'");
                     $result_payment = mysqli_fetch_assoc($sql);
                     
                     if($result_payment)
