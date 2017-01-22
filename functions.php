@@ -328,7 +328,12 @@ class DBController {
 				
 		
 		$sql = mysqli_query( $this->conn , $query );
-			return mysqli_insert_id( $this->conn);
+                $id = mysqli_insert_id( $this->conn);
+                if($sql)
+                {
+                    $this->addCampaignMatrix($id, $amount);
+                }
+                return $id;
 	}
 	
 
@@ -766,5 +771,12 @@ class DBController {
         {
             return "notfound";
         }
+    }
+    
+    function addCampaignMatrix($campaignid, $amount)
+    {
+        $matrix_string = $this->createMatrix($amount);
+        $query = "INSERT INTO `ahartwel_fundfolio`.`campaign_fund` (`id`, `campaignid`, `matrix`, `created_on`, `updated_on`) VALUES (NULL, '$campaignid', '$matrix_string', NOW(), NOW())";
+        mysqli_query( $this->conn , $query );
     }
 }
