@@ -1,6 +1,7 @@
 
 
 <?php
+error_reporting(E_ERROR);
 	
 		$cat_id = -1;
 		// Include Functions

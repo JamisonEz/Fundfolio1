@@ -20,16 +20,18 @@ if(!empty($_POST))
     if(strtolower($check_status)=='success')
     {
         //its good
-        echo '1';
+        echo json_encode(array('status'=>true, 'message'=>'success'));
+        exit;
     }
     else
     {
-        echo "Someone is already donating at this amount, please try after 2 minutes";
+        echo json_encode(array('status'=>false, 'message'=>'Someone is already donating at this amount, please try after 2 minutes'));
+        exit;
     }
 }
 else
 {
-    echo "Error";
+    echo json_encode(array('status'=>false, 'message'=>'Error'));
     exit;
 }
 ?>

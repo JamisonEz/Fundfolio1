@@ -28,6 +28,7 @@
 </head>
 <?php 
     require_once('functions.php');
+    error_reporting(E_ERROR);
     $db = new DBController();
 	
 	
@@ -187,9 +188,9 @@
                                         }
                                         foreach($chunk_val as $amount => $donator_id)
                                         {
-                                            $donated_flag = $donator_id!="" && strpos($donator_id, '_')===false ? true : false;
+                                            $donated_flag =  $donator_id!="" && strpos($donator_id, '_')===false ? true : false;
                                             ?>
-                                            <td style="<?php echo $donated_flag ? 'background-color:#e4a24c; color:white' : 'cursor:pointer;';?>" class="<?php echo !$donated_flag ? 'donate_to_folio' : '' ;?>" rel='<?php echo $amount;?>'>
+                                            <td style="<?php echo $donated_flag ? 'background-color:#e4a24c; color:white' : 'cursor:pointer;';?>" class="<?php echo !$donated_flag && $amount>0 ? 'donate_to_folio' : '' ;?>" rel='<?php echo $amount;?>'>
                                                 <?php
                                                     if($amount>0)
                                                     {
@@ -438,22 +439,24 @@
                     type: "POST",
                     data: {amount:amount, folio_id:folio_id, folio_name:folio_name, folio_description:folio_description},
                     url:"payment_start.php",
+                    dataType: 'json',
                     success:function(response_flag)
                     {
-                        if(response_flag==='1')
+                        if(response_flag.status===true)
                         {
                             var handler = StripeCheckout.configure({
                                 key: 'pk_test_hLl88jDU06gYZaT0V8or44gF',
                                 image: '/fundfolio/images/logo.png',
                                 token: function(token) {
-                                    console.log(token);
+                                    //console.log(token);
                                     $.ajax({
                                         type: "POST",
                                         data: {token:token, amount:amount, folio_id:folio_id, folio_name:folio_name, folio_description:folio_description},
                                         url:"stripe_payment_response.php",
                                         success:function(response)
                                         {
-                                            alert(response);
+                                            //alert(response);
+                                            location.reload();
                                         },
                                         failure:function(response)
                                         {
@@ -471,7 +474,7 @@
                             // Open Checkout with further options
                             handler.open({
                               name: 'Fundfolio',
-                              description: 'Donate ($'+amount+')',
+                              description: 'Donate ($'+(amount/100)+')',
                               amount: amount //as its in cents
                             });
 
@@ -482,7 +485,7 @@
                         }
                         else
                         {
-                            alert(response_flag)
+                            alert(response_flag.message)
                         }
                     },
                     failure:function(response_flag)

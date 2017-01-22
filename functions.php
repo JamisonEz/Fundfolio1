@@ -3,9 +3,6 @@
 
 class DBController {
 	
-	
-	
-	
 	private $host = "localhost"; //database location
 	private $user = "root"; //database username
 	
@@ -23,6 +20,8 @@ class DBController {
 			$this->selectDB( $this->conn);
 		}
 		$this->rand_key = '0iQx5oBk66oVZep';
+                
+                error_reporting(E_ERROR);
 	}
 	
 	function connectDB() {
@@ -558,7 +557,7 @@ class DBController {
             foreach($no_of_payments_per_category as $noppc_catname=>$noppc_count) {
                 $temp = array();
                 $temp[] = array('v' => (string) $noppc_catname); 
-
+                
                 $temp[] = array('v' => (($noppc_count/$total_no_of_payments)*100)); 
                 $temp_table_row[] = array('c' => $temp);
             }
@@ -761,7 +760,7 @@ class DBController {
                 return "InProcess";
             }
             $matrix_json = json_encode($matrix_array);
-            $sql = mysqli_query( $this->conn , "UPDATE `campaign_fund` SET `matrix` = '".$matrix_json."' WHERE `campaign_fund`.`id` = $folio_id;");
+            $sql = mysqli_query( $this->conn , "UPDATE `campaign_fund` SET `matrix` = '".$matrix_json."' WHERE `campaign_fund`.`campaignid` = $folio_id;");
             if($sql)
                 return "Success";
             else
