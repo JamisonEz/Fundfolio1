@@ -36,9 +36,19 @@
 /* 		if( isset( $_POST['facebook'])){
 			echo " facebook ";
 		
-		} else  */if( isset( $_POST['reg_sub'])){
+		} else  */
+		
+		
+		
+		if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+			
+			
+			
 
 			if( $_POST['btn_action'] == "register" ){
+				
+				
+				
 			$image_name = "";
 		
 			if( !empty( $_FILES["upload_img"]["name"] )){
@@ -315,7 +325,7 @@
 							<div id = "llocation" class="row" style="margin-left: 5%">
                                 <div class="input-field col s12">
                                     <!--<label for="password">Password</label>-->
-                                    <input placeholder="Ex. Indianapolis, United States" name="location" id="location" type="text" class="validate">
+                                    <input placeholder="Ex. Indianapolis, United States" name="location" id="location" type="text" onkeyup="onLocationChange();" class="validate">
                                     <label id="location_lbl" for="location" style="font-weight: bolder; color: black;">Location</label>
                                 </div>
                             </div>
@@ -329,9 +339,10 @@
                                     <a id="forget_pass" style="color: orange; font-weight: bold;">Forgot password?</a>
                                     <!--position: absolute; left: 35px-->
                                 </div>
-                                <div class="col s4 offset-s1" style="padding: 0; margin: 0 auto">
-                                    <!-- <a class="waves-effect waves-light btn-large orange">FINISHED</a> -->
-									<input type = "Submit" id ="reg_sub" name ="reg_sub" class="waves-effect waves-light btn-large orange" value ="FINISHED" />
+                                <div class="col s4 offset-s1" onClick="document.forms['register'].submit();"
+                                    style="padding: 0; margin: 0 auto">
+                                     <a class="waves-effect waves-light btn-large orange">FINISHED</a> 
+									<!--<input type = "submit" id ="reg_sub" name ="reg_sub" class="waves-effect waves-light btn-large orange" value ="FINISHED" />-->
 									
                                 </div>
                             </div>
@@ -731,11 +742,19 @@
 
             google.maps.event.addListener(autocomplete, 'place_changed', function() {
                 var place = autocomplete.getPlace();
+				//alert("its call");
+				 hideDive = true;
                 console.log(place.address_components);
             });
         </script>
 		
     <script type="text/javascript">
+	
+	
+		var hideDive = true;
+	
+	
+	
         var btn = document.getElementById("login_btn");
         var login = document.getElementById("login_screen");
         var llogin_btn = document.getElementById("llogin");
@@ -824,14 +843,27 @@
 			lname.style.visibility = "visible"
 			llocation.style.visibility = "visible"
         };
-    </script>
 
-    <script>
+		
+		
+		function onLocationChange()
+		{
+			
+			//alert ("hide3");
+			hideDive = false ;	
+		}
+	
+	
         $(function () {
 
             $('html').click(function () {
-                $('#login_screen').hide();
-                $('#login_btn').css('visibility', 'visible');
+				
+				
+				if( hideDive == true ){
+					$('#login_screen').hide();
+					$('#login_btn').css('visibility', 'visible');
+				}
+				hideDive = true;
             });
 
             $('#login_screen').click(function (event) {

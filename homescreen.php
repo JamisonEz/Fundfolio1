@@ -68,6 +68,13 @@ error_reporting(E_ERROR);
     <!--media="screen and (min-width: 1740px)"-->
     <link rel="stylesheet" href="homescreen-medium.css" media="screen and (max-width: 1360px)">
 </head>
+
+<style>
+    .row .col.s3 {
+        width: 24% !important;
+    }
+</style>
+
 <body>
     <div>
         <div id="view_history_popup" style='display:none;' title="History of Donations" style="position: absolute">

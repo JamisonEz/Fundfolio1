@@ -98,12 +98,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand wrap-auto" href="#"><img src="images/logo1.png" class="logo"></a>
+                    <a class="navbar-brand wrap-auto" href="homescreen.php"><img src="images/logo1.png" class="logo"></a>
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav middle">
                         <li><a href="#">Explore</a></li>
-                        <li><a href="#">Start a project</a></li>
+                        <li><a href="HTML/">Start a project</a></li>
                         <li><a href="#">About us</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -147,7 +147,7 @@
                         <img src="images/location-blue.png" width="20" height="30">
                     </div>
                     <div class="col-xs-1 wrap-auto no-l-padding text-center">
-                        <p style="margin: 5px 5px; font-size: large"><b>Together Hands</b> <?php echo $folio_info['company_location'] ; ?></p>
+                        <p style="margin: 5px 5px; font-size: large"><b><?php echo $folio_info['campaignname']; ?></b> <?php echo $folio_info['company_location'] ; ?></p>
                     </div>
                     <div style="float: right;">
                         <div class="col-xs-1 wrap-auto no-l-padding">
@@ -167,8 +167,8 @@
             </div>
             <div class="col-xs-4 common-margin font-bolder wrap-auto">
                 <div id="table-div">
-                    <h1>Together Hands</h1>
-                    <h4>Working together to end homelessness</h4>
+                    <h1><?php echo $folio_info['campaignname']; ?></h1>
+                    <h4><?php echo $folio_info['tag_line']; ?></h4>
                     <table>
                         <tbody>
                         <?php
@@ -218,6 +218,10 @@
                          aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $donation_info['progressbarinfo']['percentage_completed']; ?>%"></div>
                 </div>
                 <span style="font-size: xx-large"><b>$<?php echo $donation_info['progressbarinfo']['total_donations']; ?> </b></span><span style="font-size: x-large">USD raised by <b><?php echo $donation_info['progressbarinfo']['total_donators']; ?></b> of <b><?php echo $donation_info['progressbarinfo']['needed_backers']; ?></b> Backers</span>
+				<div >
+				
+				         <h1>Goal:$<?php echo $folio_info['amount']; ?></h1>
+				</div>
             </div>
         </div>
     </div>
@@ -231,7 +235,7 @@
                         <img src="campaign_uploads/<?php echo $folio_info['campaignimage'] ; ?>" width="100%">
                     </div>
                     <div class="col-xs-6 overview-detail">
-                        <p><b><?php echo $folio_info['campaignname'] ; ?>.</b> <?php echo $folio_info['tag_line'] ; ?>
+                        <p><b><?php echo $folio_info['campaignname'] ; ?>.</b> <?php echo $folio_info['quote_input'] ; ?>
                         </p>
                     </div>
                 </div>
