@@ -502,7 +502,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				<div id="mainpreviewcontainer" style="min-height: 550px; border-bottom: 30px solid #d8d8d8;background:#fff;float:left;width:86%;">  
 				
 				<div class="prevideo"   >
-				<div id="port_video_container"><embed id = "port_video" style="height:203px;width:100%;" src=""></div> <!--http://www.youtube.com/v/XGSy3_Czz8k -->
+				<div id="port_video_container">
+                                    <video id="port_video" controls></video><!--<embed id = "port_video" style="height:203px;width:100%;" src="">--></div> <!--http://www.youtube.com/v/XGSy3_Czz8k -->
 				<!--<iframe width="420" height="345" src="https://www.youtube.com/embed/XGSy3_Czz8k">
 </iframe>-->
 				<div id="prelocation"> 
