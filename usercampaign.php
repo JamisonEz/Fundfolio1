@@ -172,9 +172,10 @@
                     <table>
                         <tbody>
                         <?php
-                            $dimension = count($matrix_info);
-                            foreach($matrix_info as $chunk_id => $chunk_val)
+                            $dimension = isset($matrix_info[0]) && count($matrix_info[0]) > count($matrix_info) ? count($matrix_info[0]) : count($matrix_info);
+                            foreach(range(0, $dimension-1) as $chunk_id)
                             {
+                                $chunk_val = isset($matrix_info[$chunk_id]) ? $matrix_info[$chunk_id] : array();
                                 ?>
                                 <tr>
                                     <?php

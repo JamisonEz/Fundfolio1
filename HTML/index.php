@@ -22,7 +22,7 @@ $_POST['link'] */
 
 
 		if(! $db -> CheckLogin()){
-			 header("Location: http://localhost/yfcreative/Fundfolio/index.php");
+                         header("Location: /index.php");
 							die();
 			
 		}
@@ -157,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 							$db ->UserUserID()
 							 );
 					if( $res > 0){
-						header("Location: http://localhost/yfcreative/Fundfolio/homescreen.php?cat_id=".$_POST['cat_id']);
+						header("Location: ".$_SERVER['HOST_NAME']."/Fundfolio1-master/homescreen.php?cat_id=".$_POST['cat_id'], true);
 							die();
 						
 					}

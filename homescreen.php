@@ -12,7 +12,7 @@ error_reporting(E_ERROR);
                 $user_info = ($db->getAllUserInfo());
 		
 		if(! $db -> CheckLogin()){
-			 header("Location: http://localhost/yfcreative/Fundfolio/index.php");
+			 header("Location: /index.php");
 							die();
 			
 		}
@@ -22,7 +22,7 @@ error_reporting(E_ERROR);
 		 if( isset( $_REQUEST [ 'action_logout' ] )){
 
 				 $db -> LogOut();
-				  header("Location: http://localhost/yfcreative/Fundfolio/index.php");
+				  header("Location: /index.php");
 		} 
 		
 		
@@ -130,7 +130,7 @@ error_reporting(E_ERROR);
                         <!--<div style="font-size: 6vh; font-weight: bolder; color: white; position: absolute; top: 40%; left: 35%">-->
                             <!--Launch a Folio-->
                         <!--</div>-->
-                        <img src="images/card1.png" style="height: 100%; width: 100%" onClick="document.location.href='hTML/'" >
+                        <img src="images/card1.png" style="height: 100%; width: 100%" onClick="document.location.href='HTML/'" >
                     </div>
                 <!--</a>-->
 

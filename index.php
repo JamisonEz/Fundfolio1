@@ -28,12 +28,10 @@
 	
 	
 	<?php
-	
 	$cat_id = -1;
 		// Include Functions
 		include("functions.php");	
 		$db = new DBController();
-		
 		
 /* 		if( isset( $_POST['facebook'])){
 			echo " facebook ";
@@ -94,7 +92,7 @@
 			   $res = $db -> userRegister (  $_POST['lemail'] , $_POST['lpassword'] , $_POST['name'] ,$_POST['location'], $image_name );
 			   if( $res == 1){
 					//echo "Sucsess";
-					header("Location: homescreen.php");
+					header("Location: ".dirname('__DIR__')."/homescreen.php");
 							die();
 			   }
 				else  if( $res == 2){
@@ -118,7 +116,7 @@
 			 
 			 if($res){
 				 
-				 header("Location: homescreen.php");
+				 header("Location: ".dirname('__DIR__')."/homescreen.php");
 							die();
 				// echo "Login Successfully";
 			 }
@@ -136,10 +134,9 @@
 			
 		}
 		
-		
 		if($db -> CheckLogin()){
 						
-						header("Location:homescreen.php");
+						header("Location: ".dirname('__DIR__')."/homescreen.php");
 							die();
 			
 		}
@@ -161,7 +158,8 @@
 			$campaign_list = $db -> getCampaign(-1);
 		}
 		
-		//print_r(  $campaign_list );
+//		print_r(  $campaign_list );
+//                exit;
 		
 	?>
 

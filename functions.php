@@ -6,8 +6,11 @@ class DBController {
 	private $host = "localhost"; //database location
 	private $user = "root"; //database username
 	
+        
+        
 	private $password = "";
 	private $database = "ahartwel_fundfolio";
+        private $port = '';
 	
 	private  $conn;
 	
@@ -15,6 +18,14 @@ class DBController {
 	//global $link;
 	
 	function __construct() {
+                if($_SERVER['HTTP_HOST'] != 'localhost')
+                {
+                    $this->database = 'paypal_donate';
+                    $this->user = 'paypal_users';   
+                    $this->password = 'Launchafolio@2017';
+                    $this->port = ''; 
+                }
+            
 		 $this->conn = $this->connectDB();
 		if(!empty( $this->conn)) {
 			$this->selectDB( $this->conn);
@@ -353,6 +364,7 @@ class DBController {
 				
 				GROUP by c.campaignid
 				ORDER BY c.c_date DESC ";
+                        
 				
 			$sql = mysqli_query( $this->conn, $query ) or die(mysqli_error($this->conn));
 
@@ -524,6 +536,7 @@ class DBController {
             $total_no_of_payments = 1;
             $no_of_payments_per_category = array();
             $no_of_payments_per_folio = array();
+            
             foreach($payment_result as $pr)
             {
                 if(isset($campaign_result[$pr['itemid']]) && isset($no_of_payments_per_category[$campaign_result[$pr['itemid']]['categorytype']]))
@@ -775,7 +788,7 @@ class DBController {
     function addCampaignMatrix($campaignid, $amount)
     {
         $matrix_string = $this->createMatrix($amount);
-        $query = "INSERT INTO `ahartwel_fundfolio`.`campaign_fund` (`id`, `campaignid`, `matrix`, `created_on`, `updated_on`) VALUES (NULL, '$campaignid', '$matrix_string', NOW(), NOW())";
-        mysqli_query( $this->conn , $query );
+        $query = "INSERT INTO `campaign_fund` (`id`, `campaignid`, `matrix`, `created_on`, `updated_on`) VALUES (NULL, '$campaignid', '$matrix_string', NOW(), NOW())";
+        $flag = mysqli_query( $this->conn , $query );
     }
 }
