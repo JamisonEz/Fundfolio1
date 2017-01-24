@@ -3,9 +3,11 @@
     height: 35px;
 }
 
+
 .line input {
     border-bottom-color: white;
 }
+
 
 #llogin:hover, #lregister:hover {
     cursor: pointer;
