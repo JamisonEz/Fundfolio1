@@ -506,7 +506,9 @@
 					
 				?>
 				 <!--Campaign Content -->
-                <div class="col s3" style="margin-left: 0px; margin-top: 50px">
+		 <div class="col s9">
+			<div class="row">
+		                <div class="col s4" style="margin-left: 0px; margin-top: 50px">
 		                    <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
 		                        <div class="card" style="">
 		                            <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
@@ -539,123 +541,12 @@
 		                        </div>
 		                    </div>
 		                </div>
+	                </div>
+            	 </div>
 				
 				<?php } ?>
 				
 				<!--end campaign -->
-				
-				
-
-                <!--Campaign Content 1-->
-				
-				<!--
-                <div class="col s3" style="margin-left: 0px; margin-top: 50px">
-                    <a href="#">
-                        <div class="card" style="">
-                            <img src="images/campaign1.png" alt="Avatar" style="width:100%">
-                            <div class="container1">
-                                <h5><b>Mission trip to Africa</b></h5>
-                                <p>Vut perspiciatis unde omnis iste natus error sit voluptatem acc</p>
-                                <div class="row">
-                                    <img class="col s2" src="images/location.png" style="padding: 0; height: 30px; width: 20px;">
-                                    <h5 class="col s9">Indianapolis, IN</h5>
-            </div>
-        </div>
-                        </div>
-                    </a>
-                    <div class="progress">
-                        <div class="determinate" style="width: 30%"></div>
-                    </div>
-                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B">
-                        <div class="col s4">
-                            <h4>16 of 24</h4>
-                            <p>Backers</p>
-                        </div>
-                        <div class="col s4">
-                            <h4>$300</h4>
-                            <p>Goal</p>
-                        </div>
-                        <div class="col s4">
-                            <h4>14 days</h4>
-                            <p>open folio</p>
-                        </div>
-                    </div>
-                </div>
-				
-				-->
-
-                <!--Campaign Content 2-->
-				<!--
-                <div class="col s3" style="margin-left: 0px; margin-top: 50px">
-                    <a href="#">
-                        <div class="card">
-                            <img src="images/campaign2.png" alt="Avatar" style="width:100%">
-                            <div class="container1">
-                                <h5><b>Race for Recovery</b></h5>
-                                <p>Vut perspiciatis unde omnis iste natus error sit voluptatem acc</p>
-                                <div class="row">
-                                    <img class="col s2" src="images/location.png" style="padding: 0; height: 30px; width: 20px;">
-                                    <h5 class="col s9">Chicago, IL</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="progress">
-                        <div class="determinate" style="width: 50%"></div>
-                    </div>
-                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B">
-                        <div class="col s4">
-                            <h4>42 of 24</h4>
-                            <p>Backers</p>
-                        </div>
-                        <div class="col s4">
-                            <h4>$1000</h4>
-                            <p>Goal</p>
-                        </div>
-                        <div class="col s4">
-                            <h4>8 days</h4>
-                            <p>open folio</p>
-                        </div>
-                    </div>
-                </div>
-				-->
-                <!--Campaign Content 3-->
-				
-				<!--
-                <div class="col s3" style="margin-left: 0px; margin-top: 50px">
-                    <a href="#">
-                        <div class="card">
-                            <img src="images/campaign3.png" alt="Avatar" style="width:100%">
-                            <div class="container1">
-                                <h5><b>Avon steps</b></h5>
-                                <p>Vut perspiciatis unde omnis iste natus error sit voluptatem acc</p>
-                                <div class="row">
-                                    <img class="col s2" src="images/location.png" style="padding: 0; height: 30px; width: 20px;">
-                                    <h5 class="col s9">West Avon, IN</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="progress">
-                        <div class="determinate" style="width: 80%"></div>
-                    </div>
-                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B">
-                        <div class="col s4">
-                            <h4>31 of 24</h4>
-                            <p>Backers</p>
-                        </div>
-                        <div class="col s4">
-                            <h4>$800</h4>
-                            <p>Goal</p>
-                        </div>
-                        <div class="col s4">
-                            <h4>3 days</h4>
-                            <p>open folio</p>
-                        </div>
-                    </div>
-                </div>
-				 
-				 -->
             </div>
         </div>
 
@@ -844,7 +735,6 @@
 			llocation.style.visibility = "visible"
         };
 
-		
 		
 		
 		function onLocationChange()
