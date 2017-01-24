@@ -172,7 +172,6 @@ input::-webkit-input-placeholder {
 .card img {
     border-radius: 5px 5px 0 0;
     height: 50%;
-/*     width: 100%; */
 }
 
 .progress {
