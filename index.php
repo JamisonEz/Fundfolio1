@@ -512,7 +512,7 @@
 		                    <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
 		                        <div class="card" style="">
 		                            <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
-									<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" style="width:100%">
+									<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar">
 		                            <div class="container1">
 		                                <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
 		                                <p><?php  echo $campaign['description']; ?></p>
