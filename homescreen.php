@@ -39,6 +39,10 @@ error_reporting(E_ERROR);
 			$campaign_list = $db -> getCampaign(-1);
 		}
 		
+		if( isset ( $_REQUEST['user_id'] ) ){
+			$user_id = $_REQUEST['user_id'] ;
+		}
+		
 
 
 

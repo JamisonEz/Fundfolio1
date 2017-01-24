@@ -356,15 +356,18 @@ class DBController {
 				$where  .="and c.categoryid=".$cat_id; 
 			}
 		
-			$query = "SELECT cat.categorytype , c.* ,COUNT(g.campaignid) as total_doner , SUM(g.amount) as total_amount 
+			
+			$query = "SELECT cat.categorytype , c.* , COUNT(g.campaignid) as total_doner , SUM(g.amount) as total_amount 
 				FROM `campaign` as c
 				LEFT JOIN  gifts as g  ON  g.campaignid = c.campaignid
-                                LEFT JOIN category as cat ON cat.categoryid = c.categoryid
+                 LEFT JOIN category as cat ON cat.categoryid = c.categoryid
+				 
 				where $where
 				
 				GROUP by c.campaignid
 				ORDER BY c.c_date DESC ";
-                        
+				
+				
 				
 			$sql = mysqli_query( $this->conn, $query ) or die(mysqli_error($this->conn));
 
@@ -710,7 +713,9 @@ class DBController {
     {
         //calculate % completed
         $folio_id = (int) $folio_id;
-        $sql = mysqli_query( $this->conn ,"SELECT * FROM `campaign` WHERE campaignid = $folio_id");
+        $sql = mysqli_query( $this->conn ,"SELECT * FROM `campaign` as c
+		LEFT JOIN register as r ON r.id = c.loginid
+		WHERE c.campaignid = $folio_id");
         $temp_campaign_result = mysqli_fetch_assoc($sql);
         
         return $temp_campaign_result;

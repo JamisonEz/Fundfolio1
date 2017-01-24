@@ -137,7 +137,7 @@
             <div class="col-xs-7 wrap-full-sm">
                 <iframe width="100%" src="campaign_uploads/<?php
 				if( $folio_info['campaignvidio'] != ""){
-					echo $folio_info['campaignvidio'] ; 
+				echo $folio_info['campaignvidio'] ; 
 				}
 				else{
 					echo "http://www.youtube.com/v/XGSy3_Czz8k";
@@ -148,7 +148,7 @@
                     </div>
                     <div class="col-xs-1 wrap-auto no-l-padding text-center">
                         <p style="margin: 5px 5px; font-size: large">
-						<a href="#"> <b> <?php echo $folio_info['campaignname']; ?></a></b> <?php echo $folio_info['company_location'] ; ?></p>
+						<a href="homescreen.php?user_id=<?php echo $folio_info['loginid']; ?>"> <b> <?php echo $folio_info['name']; ?></a></b> <?php echo $folio_info['company_location'] ; ?></p>
                     </div>
                     <div style="float: right;">
                         <div class="col-xs-1 wrap-auto no-l-padding">

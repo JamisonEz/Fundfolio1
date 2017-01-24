@@ -54,11 +54,17 @@
 			if( !empty( $_FILES["upload_img"]["name"] )){
 
 			
-				$image_name = $_FILES["upload_img"]["name"];
+				//$image_name = $_FILES["upload_img"]["name"];
+				
+				$temp = explode(".", $_FILES["upload_img"]["name"]);
+				
+				$image_name = 'img_'.round(microtime(true)) . '.' . end($temp);
 				
 				
 				$target_dir = "profile_uploads/";
-				$target_file = $target_dir . basename($_FILES["upload_img"]["name"]);
+				//$target_file = $target_dir . basename($_FILES["upload_img"]["name"]);
+				$target_file = $target_dir . basename($image_name);
+				
 				$uploadOk = 1;
 				$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 				// Check if image file is a actual image or fake image
@@ -87,6 +93,7 @@
 						//echo "Sorry, your file was not uploaded.";
 					// if everything is ok, try to upload file
 					} else {
+						//move_uploaded_file($_FILES["file"]["tmp_name"], "../img/imageDirectory/" . $newfilename);
 						if (move_uploaded_file($_FILES["upload_img"]["tmp_name"], $target_file)) {
 							//echo "The file ". basename( $_FILES["upload_img"]["name"]). " has been uploaded.";
 						} else {
@@ -99,24 +106,36 @@
 			}
 			$res = 0 ;
 			if( $_POST['btn_action'] == "register" && isset ( $_POST['lemail'] ) && isset ( $_POST['lpassword'] ) ){
-			   $res = $db -> userRegister (  $_POST['lemail'] , $_POST['lpassword'] , $_POST['name'] ,$_POST['location'], $image_name );
-			   if( $res == 1){
-					//echo "Sucsess";
-					header("Location: ".dirname('__DIR__')."/homescreen.php");
-							die();
-			   }
-				else  if( $res == 2){
-					//echo "User already exist";
+				
+				if (filter_var($_POST['lemail'] , FILTER_VALIDATE_EMAIL)) {
+    // invalid emailaddress
+				
+				   $res = $db -> userRegister (  $_POST['lemail'] , $_POST['lpassword'] , $_POST['name'] ,$_POST['location'], $image_name );
+				   if( $res == 1){
+						//echo "Sucsess";
+						header("Location: ".dirname('__DIR__')."/homescreen.php");
+								die();
+				   }
+					else  if( $res == 2){
+						//echo "User already exist";
+						
+						echo "<script>
+							alert('User already exist');
+							
+							</script>";
+					}
+					else{
+						//echo "Error";
+						echo "<script>
+							alert('Error');
+							
+							</script>";
+					}
+				}
+				else {
 					
 					echo "<script>
-						alert('User already exist');
-						
-						</script>";
-				}
-				else{
-					//echo "Error";
-					echo "<script>
-						alert('Error');
+						alert('Enter valid email');
 						
 						</script>";
 				}

@@ -40,11 +40,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			if( !empty( $_FILES["fileimage"]["name"] )){
 
 			
-				$image_name = $_FILES["fileimage"]["name"];
+				//$image_name = $_FILES["fileimage"]["name"];
+				
+				$temp = explode(".", $_FILES["fileimage"]["name"]);
+				
+				$image_name = 'img_'.round(microtime(true)) . '.' . end($temp);
 				
 				
 				$target_dir = "../campaign_uploads/";
-				$target_file = $target_dir . basename($_FILES["fileimage"]["name"]);
+				
+				$target_file = $target_dir . basename($image_name);
+				//$target_file = $target_dir . basename($_FILES["fileimage"]["name"]);
 				$uploadOk = 1;
 				$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 				// Check if image file is a actual image or fake image
@@ -88,29 +94,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			if( !empty( $_FILES["filevidio"]["name"] )){
 
 			
-				$vidio_name = $_FILES["filevidio"]["name"];
+				//$vidio_name = $_FILES["filevidio"]["name"];
+				
+				$temp = explode(".", $_FILES["filevidio"]["name"]);
+				
+				$vidio_name = 'vid_'.round(microtime(true)) . '.' . end($temp);
 				
 				
 				$target_dir = "../campaign_uploads/";
-				$target_file = $target_dir . basename($_FILES["filevidio"]["name"]);
+								
+				$target_file = $target_dir . basename($vidio_name);
+				
 				$uploadOk = 1;
 				$allowedExts = array( "mp3", "mp4", "wma");
 				//$extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 				$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 				// Check if image file is a actual image or fake image
 				//if(isset($_POST["submit"])) {
-					$check = getimagesize($_FILES["filevidio"]["tmp_name"]);
-					if($check !== false) {
-						//echo "File is an image - " . $check["mime"] . ".";
-										
-						$uploadOk = 1;
-						
-					} else {
-						
-						$vidio_name ="";
-						//echo "File is not an image.";
-						$uploadOk = 0;
-					}
+					//$check = getvideosize($_FILES["filevidio"]["tmp_name"]);
+					
 					
 					// Allow certain file formats
 					if($imageFileType != "mp3" && $imageFileType != "mp4" && $imageFileType != "wma") {
@@ -122,20 +124,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 						//echo "Sorry, your file was not uploaded.";
 					// if everything is ok, try to upload file
 					} else {
-						if (move_uploaded_file($_FILES["filevidio"]["tmp_name"], $target_file)) {
+						
+						//echo "    upload in pro ";
+						if( move_uploaded_file($_FILES["filevidio"]["tmp_name"], $target_file)) {
 							//echo "The file ". basename( $_FILES["upload_img"]["name"]). " has been uploaded.";
 						} else {
-							$image_name ="";
+							$vidio_name ="";
 							echo "Sorry, there was an error uploading your Video.";
 						}
 					}
 				//}
 			}
 			
-			//$_POST['filevidio'];
-
-
-
+			
+			
+			
 					$res = $db -> addCampaign ( 
 					
 							$_POST['company_team_name1'],
