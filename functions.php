@@ -569,9 +569,11 @@ class DBController {
                 
                 //project wise total
                 if(isset($campaign_result[$pr['itemid']]) && isset($no_of_payments_per_folio[$campaign_result[$pr['itemid']]['campaignname']]))
-                    $no_of_payments_per_folio[$campaign_result[$pr['itemid']]['campaignname']] += $pr['payment_amount'];
+                {
+                    $no_of_payments_per_folio[$pr['itemid']] += $pr['payment_amount'];
+                }
                 else if(isset($campaign_result[$pr['itemid']]))
-                    $no_of_payments_per_folio[$campaign_result[$pr['itemid']]['campaignname']] = $pr['payment_amount'];
+                    $no_of_payments_per_folio[$pr['itemid']] = $pr['payment_amount'];
             }
             
             $all_categories = $this->getAllCategory();
@@ -582,6 +584,7 @@ class DBController {
             }
             
             $result_array['no_of_payments_per_folio'] = $no_of_payments_per_folio;
+            $result_array['campaign_array'] = $campaign_result;
             
             $temp_table_row = array();
             
@@ -659,11 +662,6 @@ class DBController {
         }
     }
     
-    function sortByElapsedtime($a, $b)
-    {
-      return $a['strtotime_for_sort'] - $b['strtotime_for_sort'];
-    }
-    
     function getDonationlist($folio_id)
     {
         //all users data
@@ -726,7 +724,9 @@ class DBController {
         if($temp_campaign_result)
             $percentage_completed = (100*$total_donations)/$temp_campaign_result['amount'];
         
-        usort($result_array, 'sortByElapsedtime');
+        usort($result_array, function($a, $b){
+          return $a['strtotime_for_sort'] - $b['strtotime_for_sort'];
+        });
         
         return array('list'=>$result_array, 'progressbarinfo'=>array('needed_backers'=>$needed_backers, 'total_donators'=>$total_donators, 'total_donations'=>$total_donations, 'percentage_completed'=>$percentage_completed));
     }

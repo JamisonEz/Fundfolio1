@@ -81,28 +81,30 @@ error_reporting(E_ERROR);
 </style>
 
 <body>
+    <div id="view_history_popup" style='display:none;' title="History of Donations">
+        <table style='border: none;' cellspacing="10" cellpadding="5">
+            <th>Campaign Name</th>
+            <th>Donation</th>
+            <?php
+                foreach($profilepage_info['no_of_payments_per_folio'] as $folio_id=>$folio_fund)
+                {
+                    $folio_name = $profilepage_info['campaign_array'][$folio_id]['campaignname'];
+                    ?>
+                    <tr>
+                        <td>
+                            <?php echo "<a style='text-decoration: underline !important;' href='usercampaign.php?folio_id=".$folio_id."'>$folio_name</a>"; ?>
+                        </td>
+                        <td>
+                            <?php echo "$".number_format($folio_fund); ?>
+                        </td>
+                    </tr>
+                    <?php
+                }
+            ?>
+        </table>
+    </div>
     <div>
-        <div id="view_history_popup" style='display:none;' title="History of Donations" style="position: absolute">
-            <table style='border: none;' cellspacing="10" cellpadding="5">
-                <th>Campaign Name</th>
-                <th>Donation</th>
-                <?php
-                    foreach($profilepage_info['no_of_payments_per_folio'] as $folio_name=>$folio_fund)
-                    {
-                        ?>
-                        <tr>
-                            <td>
-                                <?php echo $folio_name; ?>
-                            </td>
-                            <td>
-                                <?php echo "$".number_format($folio_fund); ?>
-                            </td>
-                        </tr>
-                        <?php
-                    }
-                ?>
-            </table>
-        </div>
+        
         <!--Top menu-->
         <header class="row" style="margin: 0">
             <div class="col s3" style="margin-top: 40px; margin-bottom: 20px; margin-left: 70px">
@@ -135,7 +137,6 @@ error_reporting(E_ERROR);
         </header>
 
         <div id="main_content">
-
             <div class="row" style="margin-left: 50px">
                 <!--<a href="#">-->
                     <div id="card1" class="col s7" style="position: relative">
@@ -822,10 +823,10 @@ error_reporting(E_ERROR);
             
             $('#view_history').click( function () {
                 $("#view_history_popup").dialog({
-                    modal: false,
                     width:'60%',
                     height:'auto',
                     dialogClass: 'success-dialog',
+                    position:{my:"center center",at:"center center-200", of:"body"},
                     buttons: {
                     }
                 });
