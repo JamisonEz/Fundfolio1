@@ -21,3 +21,17 @@ CREATE TABLE IF NOT EXISTS `fundfolio_payments` (
   `createdtime` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM
+
+CREATE TABLE IF NOT EXISTS `user_campaign_rel` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `campaignid` int(11) NOT NULL,
+  `has_liked` tinyint(1) NOT NULL,
+  `facebook_shared` varchar(1500) NOT NULL,
+  `twitter_shared` varchar(1500) NOT NULL,
+  `created_on` datetime NOT NULL,
+  `updated_on` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `register` ADD `community_points` INT NOT NULL AFTER `interested_category`;

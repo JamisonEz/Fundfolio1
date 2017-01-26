@@ -1,18 +1,16 @@
 <?php
 
-
+include_once 'googlelogin.php';
 class DBController {
 	
 	private $host = "localhost"; //database location
 	private $user = "root"; //database username
-	
-        
         
 	private $password = "";
 	private $database = "ahartwel_fundfolio";
         private $port = '';
 	
-	private  $conn;
+	public  $conn;
 	
 	var $rand_key;
 	//global $link;
@@ -87,7 +85,7 @@ class DBController {
 		return true;
 	}
 
-	function userRegister ( $email , $paw ,$name , $location , $image ){
+	function userRegister ( $email , $paw ,$name , $location , $image, $socialid='' ){
 
 		$pwdmd5 = md5($paw);
 		
@@ -101,13 +99,14 @@ class DBController {
 			return "2";
 		}
 				
-		$sql = mysqli_query(  $this->conn , "INSERT INTO `register`( `email` , `password` , `name`, `location` , `profilepic`) 
+		$sql = mysqli_query(  $this->conn , "INSERT INTO `register`( `email` , `password` , `name`, `location` , `profilepic`, `socialid`) 
 						VALUES ( 						
 						'$email' ,					
 						'$pwdmd5' ,	
 						'$name' ,	
 						'$location' ,							
-						'$image'
+						'$image',
+                                                '$socialid'
 						)");
 						
 						
@@ -203,17 +202,20 @@ class DBController {
 		
 	}
 	
-	function login ( $email , $paw  ){
+	function login ( $email , $paw, $google_login_success=false){
 		
 		$pwdmd5 = md5($paw);
 		$query = "SELECT *
 				FROM `register` 
-				where email = '$email' and password = '$pwdmd5' 
-				";
+				where email = '$email'";
+                if(!$google_login_success)
+                {
+                    $query .= " and password = '$pwdmd5'";
+                }
 				
 		$result = mysqli_query( $this->conn, $query ) or die(mysqli_error($this->conn));
 			
-		if($result && mysqli_num_rows($result) > 0)
+		if(($result && mysqli_num_rows($result) > 0) || $google_login_success)
         {
 			
 			if(!isset($_SESSION)){ session_start(); }
@@ -228,7 +230,7 @@ class DBController {
 			$_SESSION['user_id'] = $row['id'];
 			$_SESSION['user_name']  = $row['name'];
 			$_SESSION['user_email'] = $row['email'];
-
+                        $_SESSION['community_points'] = $row['community_points'];
 			$_SESSION['user_image'] = $row['profilepic'];
 			
 			$_SESSION['user_location'] = $row['location'];
@@ -308,6 +310,16 @@ class DBController {
         $_SESSION[$sessionvar]=NULL;
         
         unset($_SESSION[$sessionvar]);
+        
+        if(isset($_SESSION['g_token']))
+            unset($_SESSION['g_token']);
+        
+        if ($google_client && $google_client->getAccessToken()) {
+            //Reset OAuth access token
+            $google_client->revokeToken();
+            //Destroy entire session
+            session_destroy();
+        }
     }
 	
 	function GetLoginSessionVar()
@@ -360,24 +372,10 @@ class DBController {
 		
 		
 			$where  = " 1=1 ";
+
 			if( isset( $cat_id ) && ( $cat_id != -1) && ( $cat_id < 11) ){
 				$where  .="and c.categoryid=".$cat_id; 
 			}
-			/* else if( isset( $cat_id ) && ( $cat_id == 11) ){
-				$where  .="and c.categoryid=".$cat_id; 
-			} 
-			else if( isset( $cat_id ) && ( $cat_id == 12) ){
-				$where  .="and c.categoryid=".$cat_id; 
-			}
-			else if( isset( $cat_id ) && ( $cat_id == 13) ){
-				$where  .="and c.categoryid=".$cat_id; 
-			}
-			else if( isset( $cat_id ) && ( $cat_id == 14) ){
-				$where  .="and c.categoryid=".$cat_id; 
-			}
-			else if( isset( $cat_id ) && ( $cat_id == 15) ){
-				$where  .="and c.company_location=".$this->UserLocation(); 
-			} */
 			
 		
 			
@@ -487,13 +485,16 @@ class DBController {
     function getAllUserInfo()
     {
         $temp_array = array();
+        
         if($this->CheckLogin())
         {
+            $sql = mysqli_query($this->conn ,"SELECT * FROM `register` where id = {$_SESSION['user_id']}");
+            $result = $sql->fetch_assoc();
             $temp_array['user_id'] = $_SESSION['user_id'];
             $temp_array['type'] = $_SESSION['type'];
             $temp_array['user_email'] = $_SESSION['user_email'];
             $temp_array['user_name'] = $_SESSION['user_name'];
-            
+            $temp_array['community_points'] = $result['community_points'];
         }
         else
         {
@@ -686,6 +687,11 @@ class DBController {
         }
     }
     
+    function sortByElapsedtime($a, $b)
+    {
+      return $a['strtotime_for_sort'] - $b['strtotime_for_sort'];
+    }
+    
     function getDonationlist($folio_id)
     {
         //all users data
@@ -722,6 +728,7 @@ class DBController {
                         
                         $datetime1 = new DateTime();
                         $datetime2 = new DateTime($result_payment['createdtime']);
+                        $strtotime_for_sort = strtotime('now') - strtotime($result_payment['createdtime']); //used for sorting
                         $interval = $datetime1->diff($datetime2);
                         $elapsed_time = array();
                         $elapsed_time['seconds'] = $interval->format('%S');
@@ -732,7 +739,7 @@ class DBController {
                         
                         $elapsed_show_string = $elapsed_time['months']>0 ? $elapsed_time['months'].' months ago' : ($elapsed_time['days']>0 ? $elapsed_time['days'].' days ago' : ($elapsed_time['hours']>0 ? $elapsed_time['hours'].' hours ago' : ($elapsed_time['minutes']>0 ? $elapsed_time['minutes'].' minutes ago' : $elapsed_time['seconds'].' seconds ago')));
                         
-                        $result_array[] = array('amount'=>$donated_amount,'userid'=>$user_id, 'name'=>$all_users[$user_id]['name'], 'email'=>$all_users[$user_id]['email'], 'profilepic'=> $all_users[$user_id]['profilepic'], 'elapsed_time'=>$elapsed_time, 'elapsed_time_string'=>$elapsed_show_string);
+                        $result_array[] = array('amount'=>$donated_amount,'userid'=>$user_id, 'name'=>$all_users[$user_id]['name'], 'email'=>$all_users[$user_id]['email'], 'profilepic'=> $all_users[$user_id]['profilepic'], 'elapsed_time'=>$elapsed_time, 'elapsed_time_string'=>$elapsed_show_string, 'strtotime_for_sort' => $strtotime_for_sort);
                     }
                 }
             }
@@ -747,20 +754,30 @@ class DBController {
         if($temp_campaign_result)
             $percentage_completed = (100*$total_donations)/$temp_campaign_result['amount'];
         
+        usort($result_array, 'sortByElapsedtime');
         
         return array('list'=>$result_array, 'progressbarinfo'=>array('needed_backers'=>$needed_backers, 'total_donators'=>$total_donators, 'total_donations'=>$total_donations, 'percentage_completed'=>$percentage_completed));
     }
+
     
     function getCampaignById($folio_id)
     {
         //calculate % completed
         $folio_id = (int) $folio_id;
-        $sql = mysqli_query( $this->conn ,"SELECT * FROM `campaign` as c
+        $temp_campaign_result = array();
+        $sql = mysqli_query( $this->conn ,"SELECT c.* FROM `campaign` as c
 		LEFT JOIN register as r ON r.id = c.loginid
 		WHERE c.campaignid = $folio_id");
-        $temp_campaign_result = mysqli_fetch_assoc($sql);
+        if($sql->num_rows > 0)
+            $temp_campaign_result = mysqli_fetch_assoc($sql);
         
-        return $temp_campaign_result;
+        $user_info = $this->getAllUserInfo();
+        $user_id = $user_info['user_id'];
+        $sql = mysqli_query( $this->conn ,"SELECT has_liked, facebook_shared, twitter_shared FROM user_campaign_rel WHERE campaignid = $folio_id AND userid = $user_id");
+        $temp_campaign_result2 = array();
+        if($sql->num_rows > 0)
+            $temp_campaign_result2 = mysqli_fetch_assoc($sql);
+        return $temp_campaign_result + $temp_campaign_result2;
     }
     
     function updateFolioMatrix($folio_id, $amount, $userid)
@@ -837,5 +854,45 @@ class DBController {
         $matrix_string = $this->createMatrix($amount);
         $query = "INSERT INTO `campaign_fund` (`id`, `campaignid`, `matrix`, `created_on`, `updated_on`) VALUES (NULL, '$campaignid', '$matrix_string', NOW(), NOW())";
         $flag = mysqli_query( $this->conn , $query );
+    }
+    
+    function checkEmailForGoogleLogin($email)
+    {
+        $query = "SELECT * FROM `register` where email = '$email'";
+        $result = mysqli_query( $this->conn, $query ) or die(mysqli_error($this->conn));
+        if($result && mysqli_num_rows($result) > 0)
+        {
+            return true;
+        }
+    }
+    
+    function dynamicUserRegister()
+    {
+        
+    }
+    
+    function addCommunityPoints($user_id, $amount)
+    {
+        $query = "SELECT * FROM `register` where id = '$user_id'";
+        $result = mysqli_query( $this->conn, $query ) or die(mysqli_error($this->conn));
+        if($result && mysqli_num_rows($result) > 0)
+        {
+            $result = $result->fetch_assoc();
+            $current_points = $result['community_points'];
+            $final_points = $current_points+$amount;
+            $sql = mysqli_query( $this->conn , "UPDATE `register` SET `community_points` = $final_points WHERE id = $user_id;");
+            if($sql)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 }

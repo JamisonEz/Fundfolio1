@@ -1,0 +1,8 @@
+{
+    "name": "Fundfolio",
+    "description": "Fundfolio.",
+    "license": "Apache-2.0",
+    "require": {
+		"google/apiclient": "^2.0"
+    }
+}

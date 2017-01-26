@@ -30,10 +30,9 @@ $_POST['link'] */
 		
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-	
+
 	//echo "post work";
 		//if( isset( $_POST['add_form']))
-			
 			
 			$image_name = "" ;
 
@@ -721,7 +720,7 @@ function showseconddiv()
 	
 	if(checker==2) {
     alert('Please Select Category First');
-	return;
+	return false;
 	}
 	
 	if(cmname.length>0){ checker=1; }else{ checker=0; }
@@ -739,6 +738,7 @@ function showseconddiv()
 	
 	else if(checker==0) {
 		alert('Please Fill the Above Fields First');
+                return false;
 	}
 	
 }
@@ -753,10 +753,9 @@ function showseconddiv1()
 	  
 	  if(!(fileimage .length>0) && !(filevidio.length>0)){
 		  alert('Please Select a Image or Video');
-		  
+		  return false;
 	  }
 	  else{
-	  
 	var checker=0;
 	if(cmname.length>1){ checker=1; }else{ checker=0; }
 	if(cmtg.length>1){ if(checker==1){ checker=1; } }else{ checker=0; }
@@ -766,12 +765,12 @@ function showseconddiv1()
 	
 	document.getElementById("company_team_name1").value = cmname;
 	document.getElementById("company_tag_line1").value = cmtg;
-	
+        
 	document.getElementById('add_form').submit();
 	
 	
     }else{
-    alert('Please Fill the Above Fields First');
+    return false;
 	}
 	  }
 

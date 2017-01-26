@@ -24,6 +24,7 @@
         Stripe.setPublishableKey('pk_test_ALLXQ4toDK0RVyF6c3hTtSha');
     </script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 
 </head>
 <?php 
@@ -50,10 +51,10 @@
     $donation_info = ($db->getDonationlist($folio_id));
     $folio_info = ($db->getCampaignById($folio_id));
 	
-	//print_r($folio_info);
+    //print_r($folio_info);
     //echo "<pre>";
     //var_dump($getMatrix);
-    //var_dump($db->getAllUserInfo());
+    //var_dump($folio_info);
     //exit;
 ?>
 
@@ -109,7 +110,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#">
                             <div class="user-img wrap-auto">
-                                <img class="img-circle" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" alt="Profile Pic" width="50px">
+                                <img class="img-circle" onerror="this.src='images/userimagenotfound.png'" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" alt="Profile Pic" width="50px">
                             </div>
                         </a></li>
                         <li><a href="#">
@@ -150,15 +151,15 @@
                         <p style="margin: 5px 5px; font-size: large">
 						<a href="homescreen.php?user_id=<?php echo $folio_info['loginid']; ?>"> <b> <?php echo $folio_info['name']; ?></a></b> <?php echo $folio_info['company_location'] ; ?></p>
                     </div>
-                    <div style="float: right;">
+                    <div style="float: right;" id="share_div">
                         <div class="col-xs-1 wrap-auto no-l-padding">
-                            <a href="#"><img src="images/heart-holo.png" width="50" height="50"></a>
+                            <a href="#" id='campaign_like_button' rel="<?php echo $folio_info['has_liked']==1 ? 1 : 0?>"><img src="<?php echo $folio_info['has_liked']==1 ? 'images/heart-filled.png' : 'images/heart-holo.png'?>" width="50" height="50"></a>
                         </div>
                         <div class="col-xs-1 wrap-auto no-l-padding">
-                            <a href="#"><img src="images/facebook-holo.png" width="50" height="50"></a>
+                            <a href="#" id='facebook_share_button'><img src="images/facebook-holo.png" width="50" height="50"></a>
                         </div>
                         <div class="col-xs-1 wrap-auto no-l-padding">
-                            <a href="#"><img src="images/twitter-holo.png" width="50" height="50"></a>
+                            <a href="http://twitter.com/intent/tweet?text=Just donated to this folio, its for good cause - try it here - ;url=<?php echo "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>;via=fundfolio" id='twitter_share_button'><img src="images/twitter-holo.png" width="50" height="50"></a>
                         </div>
                         <div class="col-xs-1 wrap-auto no-l-padding">
                             <a href="#"><img src="images/link-holo.png" width="50" height="50"></a>
@@ -166,7 +167,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-4 common-margin font-bolder wrap-auto">
+            <div class="col-xs-4 common-margin font-bolder wrap-auto" id="donation_matrix">
                 <div id="table-div">
                     <h1><?php echo $folio_info['campaignname']; ?></h1>
                     <h4><?php echo $folio_info['tag_line']; ?></h4>
@@ -233,7 +234,7 @@
                 <p>OVERVIEW</p>
                 <div class="row margin-b">
                     <div class="col-xs-6">
-                        <img src="campaign_uploads/<?php echo $folio_info['campaignimage'] ; ?>" width="100%">
+                        <img onerror="this.src='campaign_uploads/imagenotfound.jpg'" src="campaign_uploads/<?php echo $folio_info['campaignimage'] ; ?>" width="100%">
                     </div>
                     <div class="col-xs-6 overview-detail">
                         <p><b><?php echo $folio_info['campaignname'] ; ?>.</b> <?php echo $folio_info['quote_input'] ; ?>
@@ -256,7 +257,7 @@
             </div>
             <div class="col-xs-4 common-margin wrap-full-sm middle-content-2">
                 <p>DONATIONS</p>
-                <div class="donate">
+                <div class="donate" id="donation_list">
                     <?php 
                         $donation_list = $donation_info['list'];
                         foreach($donation_list as $donar_details)
@@ -379,128 +380,302 @@
             </div>
         </div>
     </footer>
+</body>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1187463224685176',
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+    FB.AppEvents.logPageView();
+  
+  
+    window.facebookShare = function( callback ) {
+        fbAsyncInit();        
+        var options = {
+            method: 'stream.share',
+            u: window.location.href
+        };
 
+        FB.ui(options, function( response ){
 
-    <script>
-        $(function () {
-            setInterval(function () {
-                var user_img = $(".user-img img");
-                var video = $('iframe');
+            if (response && !response.error_code) {
+                return response.post_id;
+
+            } else {
+                return 'error';
+            }
+
+            if(callback && typeof callback === "function") {
+                callback.call(this, status);
+            } else {
+                return response;
+            }
+        });
+    }
+  };
+  
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<script>
+// Performant asynchronous method of loading widgets.js
+window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));
+</script>
+
+<script>
+    $(function () {
+        setInterval(function () {
+            var user_img = $(".user-img img");
+            var video = $('iframe');
 //                var image = $('.middle-content-1 img');
 //                image.height(image.width() * 0.82);
-                user_img.height(user_img.width());
+            user_img.height(user_img.width());
 
-                // media query event handler
-                if (matchMedia) {
-                    var mq = window.matchMedia("screen and (min-width: 1210px)");
-                    mq.addListener(WidthChange);
-                    WidthChange(mq);
-                }
+            // media query event handler
+            if (matchMedia) {
+                var mq = window.matchMedia("screen and (min-width: 1210px)");
+                mq.addListener(WidthChange);
+                WidthChange(mq);
+            }
 
-                // media query change
-                function WidthChange(mq) {
-                    if (mq.matches) {
-                        video.height($('#table-div').height());
-                    } else {
-                        video.height($('.wrap-full-sm').width() * (9/16));
-                    }
+            // media query change
+            function WidthChange(mq) {
+                if (mq.matches) {
+                    video.height($('#table-div').height());
+                } else {
+                    video.height($('.wrap-full-sm').width() * (9/16));
                 }
-            }, 500);
-            
-            //dialogue for payment
-            $('.donate_to_folio').click(function () {
-                var amount = $(this).attr('rel');
-                console.log(amount);
-                $("#donate_to_folio").dialog({
-                    modal: false,
-                    width:'60%',
-                    height:'auto',
-                    dialogClass: 'success-dialog',
-                    title: 'Donate $'+amount,
-                    amount: amount,
-                    buttons: {
-                        "PayPal": function(){ $(this).dialog( "close" ); paypalpayment(amount)},
-                        "Stripe": function(){ $(this).dialog( "close" ); stripepayment(amount)},
-                    },
-                    close: function() {
-                        $(this).dialog( "close" );
+            }
+        }, 500);
+
+        //like the campaign
+        $('#campaign_like_button').on('click', function (e) {
+            e.preventDefault();
+            var campaign_id = "<?php echo isset($_GET['folio_id']) ? (int)$_GET['folio_id'] : ''?>";
+            var user_id = "<?php echo $user_info['user_id'] ?>";
+            var function_name = 'like_campaign';
+            var rel = $(this).attr('rel');
+            if(rel==1)
+                return false;
+
+            $.ajax({
+                type: "POST",
+                data: {function_name:function_name, function_params:{campaign_id: campaign_id, user_id: user_id}},
+                url:"ajaxfunctions.php",
+                dataType: 'json',
+                success:function(response_flag)
+                {
+                    if(response_flag.status===true)
+                    {
+                        $("#share_div").load(location.href+" #share_div>*","");
                     }
-                });
+                    else
+                    {
+                        alert(response_flag.message);
+                    }
+                },
+                failure:function(response_flag)
+                {
+                    alert("Some error occured, try again.");
+                }
             });
-            
-            function paypalpayment()
-            {
-                console.log('paypal payment');
-            }
-            
-            function stripepayment(amount)
-            {
-                var folio_name = "<?php echo $folio_info['campaignname']; ?>";
-                var folio_description = "<?php echo $folio_info['description']; ?>";
-                var folio_id = "<?php echo $folio_info['campaignid']; ?>";
-                amount = amount*100;
-                
-                //to prevent simultaneous payments
-                $.ajax({
-                    type: "POST",
-                    data: {amount:amount, folio_id:folio_id, folio_name:folio_name, folio_description:folio_description},
-                    url:"payment_start.php",
-                    dataType: 'json',
-                    success:function(response_flag)
-                    {
-                        if(response_flag.status===true)
-                        {
-                            var handler = StripeCheckout.configure({
-                                key: 'pk_test_hLl88jDU06gYZaT0V8or44gF',
-                                image: '/fundfolio/images/logo.png',
-                                token: function(token) {
-                                    //console.log(token);
-                                    $.ajax({
-                                        type: "POST",
-                                        data: {token:token, amount:amount, folio_id:folio_id, folio_name:folio_name, folio_description:folio_description},
-                                        url:"stripe_payment_response.php",
-                                        success:function(response)
-                                        {
-                                            //alert(response);
-                                            location.reload();
-                                        },
-                                        failure:function(response)
-                                        {
-                                            alert("Some error occured, try again.");
-                                        }
-                                    });
-                                    //to save
-                                    //$("#stripeAmount").val(amount);
-                                    //$("#stripeToken").val(token.id);
-                                    //$("#stripeEmail").val(token.email);
-                                    //$("#stripeForm").submit();
-                                }
-                            });
+        });
 
-                            // Open Checkout with further options
-                            handler.open({
-                              name: 'Fundfolio',
-                              description: 'Donate ($'+(amount/100)+')',
-                              amount: amount //as its in cents
-                            });
+        //dialogue for payment
+        $('.donate_to_folio').on('click', function () {
+            var amount = $(this).attr('rel');
+            var click_object = $(this);
 
-                            // Close Checkout on page navigation
-                            $(window).on('popstate', function() {
-                              handler.close();
-                            });
-                        }
-                        else
+            $("#donate_to_folio").dialog({
+                modal: false,
+                width:'60%',
+                height:'auto',
+                dialogClass: 'success-dialog',
+                title: 'Donate $'+amount,
+                amount: amount,
+                buttons: {
+                    "PayPal": function(){ $(this).dialog( "close" ); paypalpayment(amount, click_object)},
+                    "Stripe": function(){ $(this).dialog( "close" ); stripepayment(amount, click_object)},
+                },
+                close: function() {
+                    $(this).dialog( "close" );
+                }
+            });
+        });
+
+        function paypalpayment()
+        {
+            console.log('paypal payment');
+        }
+
+        $('#facebook_share_button').on('click',function (e)
+        {
+            e.preventDefault();
+            var campaign_id = "<?php echo isset($_GET['folio_id']) ? (int)$_GET['folio_id'] : ''?>";
+            var user_id = "<?php echo $user_info['user_id'] ?>";
+            facebookShare(function( response ) {
+                // simple function callback
+                if(response!==false && response != 'error')
+                {
+                    $.ajax({
+                        type: "POST",
+                        data: {function_name:'countcp_for_social', function_params:{facebook: response, campaign_id: campaign_id, user_id: user_id}},
+                        url:"ajaxfunctions.php",
+                        dataType: 'json',
+                        success:function(response_flag)
                         {
-                            alert(response_flag.message)
+                            if(response_flag.status===true)
+                            {
+                                $("#share_div").load(location.href+" #share_div>*","");
+                            }
+                            else
+                            {
+                                alert(response_flag.message);
+                            }
+                        },
+                        failure:function(response_flag)
+                        {
+                            alert("Some error occured, try again.");
                         }
-                    },
-                    failure:function(response_flag)
+                    });
+                }
+            });
+        });
+        
+        twttr.events.bind('tweet', function(event) {
+            countcpfortwitter();
+        });
+        
+        function countcpfortwitter()
+        {
+            var campaign_id = "<?php echo isset($_GET['folio_id']) ? (int)$_GET['folio_id'] : ''?>";
+            var user_id = "<?php echo $user_info['user_id'] ?>";
+            $.ajax({
+                type: "POST",
+                data: {function_name:'countcp_for_social', function_params:{twitter: 1, campaign_id: campaign_id, user_id: user_id}},
+                url:"ajaxfunctions.php",
+                dataType: 'json',
+                success:function(response_flag)
+                {
+                    if(response_flag.status===true)
                     {
-                        alert("Some error occured, try again.");
+                        $("#share_div").load(location.href+" #share_div>*","");
                     }
-                });
-            }
-        })
-    </script>
-</body>
+                    else
+                    {
+                        alert(response_flag.message);
+                    }
+                },
+                failure:function(response_flag)
+                {
+                    alert("Some error occured, try again.");
+                }
+            });
+        }
+
+        function stripepayment(amount, element)
+        {
+            var folio_name = '<?php echo $folio_info['campaignname']; ?>';
+            var folio_description = '<?php echo str_replace(array("\r", "\n"), '', $folio_info['description']);?>';
+            var folio_id = '<?php echo $folio_info['campaignid']; ?>';
+            amount = amount*100;
+
+            //to prevent simultaneous payments
+            $.ajax({
+                type: "POST",
+                data: {amount:amount, folio_id:folio_id, folio_name:folio_name, folio_description:folio_description},
+                url:"payment_start.php",
+                dataType: 'json',
+                success:function(response_flag)
+                {
+                    if(response_flag.status===true)
+                    {
+                        var handler = StripeCheckout.configure({
+                            key: 'pk_test_hLl88jDU06gYZaT0V8or44gF',
+                            image: '/fundfolio/images/logo.png',
+                            token: function(token) {
+                                //console.log(token);
+                                $.ajax({
+                                    type: "POST",
+                                    data: {token:token, amount:amount, folio_id:folio_id, folio_name:folio_name, folio_description:folio_description},
+                                    url:"stripe_payment_response.php",
+                                    success:function(response)
+                                    {
+
+                                        //alert(response);
+                                        //location.reload();
+                                        refreshDonations();
+                                    },
+                                    failure:function(response)
+                                    {
+                                        alert("Some error occured, try again.");
+                                    }
+                                });
+                                //to save
+                                //$("#stripeAmount").val(amount);
+                                //$("#stripeToken").val(token.id);
+                                //$("#stripeEmail").val(token.email);
+                                //$("#stripeForm").submit();
+                            }
+                        });
+
+                        // Open Checkout with further options
+                        handler.open({
+                          name: 'Fundfolio',
+                          description: 'Donate ($'+(amount/100)+')',
+                          amount: amount //as its in cents
+                        });
+
+                        // Close Checkout on page navigation
+                        $(window).on('popstate', function() {
+                          handler.close();
+                        });
+                    }
+                    else
+                    {
+                        alert(response_flag.message)
+                    }
+                },
+                failure:function(response_flag)
+                {
+                    alert("Some error occured, try again.");
+                }
+            });
+        }
+
+        window.setInterval(function(){
+            refreshDonations();
+        }, 15000);
+
+    });
+
+    function refreshDonations()
+    {
+        $("#donation_matrix").load(location.href+" #donation_matrix>*","");
+        $("#donation_list").load(location.href+" #donation_list>*","");
+    }
+</script>
 </html>
