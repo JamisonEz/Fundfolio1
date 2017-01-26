@@ -41,6 +41,7 @@ if(!empty($_POST))
                         
                 $db->updatePayments($data);
                 $db->updateFolioMatrix($folio_id, $amount/100, $user_info['user_id']);
+                $db->addCommunityPoints($user_info['user_id'], $amount/100);
             }
             
         }

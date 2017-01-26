@@ -5,7 +5,7 @@ error_reporting(E_ERROR);
 	
 		$cat_id = -1;
 		// Include Functions
-		include("functions.php");	
+		include_once("functions.php");	
 		$db = new DBController();
                 
                 $profilepage_info = ($db->dataForProfilePage());
@@ -117,7 +117,7 @@ error_reporting(E_ERROR);
                 <div class="col" style="text-align: center;" >
                     <!--<img src="images/background.png" style="border-radius: 50%; height: 50px; width: 50px"-->
 					 <a href="?action_logout=logout" class="button">LogOut </a> 
-					 <img src="profile_uploads/<?php echo $db -> UserImage() ; ?>" style="border-radius: 50%; height: 50px; width: 50px">
+					 <img onerror="this.src='images/userimagenotfound.png'" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" style="border-radius: 50%; height: 50px; width: 50px">
 					
                 </div>
                 <div class="col" style="text-align: center;">
@@ -146,33 +146,33 @@ error_reporting(E_ERROR);
                     </div>
                 <!--</a>-->
 
-                <!--<a href="#">-->
+                <a href="#">
                     <div id="card2" class="col s4">
-                        <!--<div style="margin-top: 20%; position: relative">-->
-                            <!--<div class="row" style="font-size: 35px; font-weight: bolder; color: white; height: 25px; margin: 0 auto">-->
-                                <!--1,042-->
-                            <!--</div>-->
-                            <!--<div class="row" style="font-size: 35px; font-weight: bolder; color: white;height: 30px;margin-top: 5%">-->
-                                <!--Community Points-->
-                            <!--</div>-->
-                            <!--<div style="font-size: 35px; font-weight: bolder; color: white; text-align: left; position: absolute; left: 20%">-->
-                                <!--<div class="row" style="margin-top: 30%; margin-bottom: 0; position: relative">-->
-                                    <!--<div class="col s1" style="width: 15px; height: 15px; background-color: white; padding: 0; position: absolute; top: 30%"></div>-->
-                                    <!--<div class="col s11" style="margin-left: 40px; padding: 0;">Donate to a folio</div>-->
-                                <!--</div>-->
-                                <!--<div class="row" style="margin-bottom: 0; position: relative">-->
-                                    <!--<div class="col s1" style="width: 15px; height: 15px; background-color: white; padding: 0; position: absolute; top: 30%"></div>-->
-                                    <!--<div class="col s11" style="margin-left: 40px; padding: 0">Share on Social</div>-->
-                                <!--</div>-->
-                                <!--<div class="row" style="margin-top: 0; position: relative">-->
-                                    <!--<div class="col s1" style="width: 15px; height: 15px; background-color: white; padding: 0; position: absolute; top: 30%"></div>-->
-                                    <!--<div class="col s11" style="margin-left: 40px; padding: 0">Like a Campaign</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <img src="images/card2.png" style="height: 100%; width: 100%">
+                        <div style="margin-top: 20%; position: relative">
+                            <div class="row" style="font-size: 35px; font-weight: bolder; color: white; height: 25px; margin: 0 auto">
+                                <?php echo !empty($user_info['community_points']) ? number_format($user_info['community_points']) : 0; ?>
+                            </div>
+                            <div class="row" style="font-size: 35px; font-weight: bolder; color: white;height: 30px;margin-top: 5%">
+                                Community Points
+                            </div>
+                            <div style="font-size: 35px; font-weight: bolder; color: white; text-align: left; position: absolute; left: 20%">
+                                <div class="row" style="margin-top: 30%; margin-bottom: 0; position: relative">
+                                    <div class="col s1" style="width: 15px; height: 15px; background-color: white; padding: 0; position: absolute; top: 30%"></div>
+                                    <div class="col s11" style="margin-left: 40px; padding: 0;">Donate to a folio</div>
+                                </div>
+                                <div class="row" style="margin-bottom: 0; position: relative">
+                                    <div class="col s1" style="width: 15px; height: 15px; background-color: white; padding: 0; position: absolute; top: 30%"></div>
+                                    <div class="col s11" style="margin-left: 40px; padding: 0">Share on Social</div>
+                                </div>
+                                <div class="row" style="margin-top: 0; position: relative">
+                                    <div class="col s1" style="width: 15px; height: 15px; background-color: white; padding: 0; position: absolute; top: 30%"></div>
+                                    <div class="col s11" style="margin-left: 40px; padding: 0">Like a Campaign</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<img src="images/card2.png" style="height: 100%; width: 100%">-->
                     </div>
-                <!--</a>-->
+                </a>
             </div>
             <div class="row" style="margin-top: 40px; margin-left: 50px; margin-bottom: 0px">
                 <div id="myDiv" class="row col s7" style="padding: 0; margin-bottom: 0px;">
@@ -277,7 +277,7 @@ error_reporting(E_ERROR);
                                 Community Points
                             </div>
                             <div class="medium-font">
-                                1,042
+                                <?php echo !empty($user_info['community_points']) ? number_format($user_info['community_points']) : 0; ?>
                             </div>
                         </div>
                     </div>
@@ -462,11 +462,13 @@ error_reporting(E_ERROR);
 				<?php 
 				
 				$date = date('Y-m-d H:i:s');
-				
+                                
 				//$len = count($campaign_list);
 				foreach( $campaign_list as $campaign ){
-					
-					
+                                 
+                                 
+				 $donation_info = ($db->getDonationlist($campaign['campaignid']));
+                                 $progressbar_info = $donation_info['progressbarinfo'];
 					
 				 $startTimeStamp = strtotime( $campaign['c_date']);
 				 $endTimeStamp = strtotime( $date );
@@ -496,7 +498,7 @@ error_reporting(E_ERROR);
                     <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
                         <div class="card" style="">
                             <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
-							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" style="width:100%">
+							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
                             <div class="container1">
                                 <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
                                 <p><?php  echo $campaign['description']; ?></p>
@@ -508,17 +510,17 @@ error_reporting(E_ERROR);
                         </div>
                     </a>
                     <div class="progress">
-                        <div class="determinate" style="width: <?php echo $percent; ?>%"></div>
+                        <div class="determinate" style="width: <?php echo $progressbar_info['percentage_completed']; ?>%"></div>
                     </div>
 					
 					
                     <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B">
                         <div class="col s4">
-                            <h5><?php  echo $campaign['total_doner']; ?> of <?php  echo $campaign['total_backers']; ?></h5>
+                            <h5><?php echo $progressbar_info['total_donators']; ?> of <?php  echo $progressbar_info['needed_backers']; ?></h5>
                             <p>Backers</p>
                         </div>
                         <div class="col s4">
-                            <h5> <?php  echo $campaign['amount']; ?> </h5>
+                            <h5> <?php echo $campaign['amount'];  ?>$ </h5>
                             <p>Goal</p>
                         </div>
                         <div class="col s4">
