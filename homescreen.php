@@ -18,6 +18,25 @@ error_reporting(E_ERROR);
 		}
 		
 		
+		function sortArrayKeyWise( $arrray , $sort_key ){
+			
+			
+				$arr  = $arrray;
+				$sort = array();
+				foreach($arr as $k=>$v) {
+					$sort[$sort_key][$k] = $v[$sort_key];
+				}
+
+				array_multisort($sort[$sort_key], SORT_DESC, $arr);
+
+				/* echo "<pre>";
+				print_r($arr);
+				
+				exit; */
+				return  $arr;
+			
+			
+		}
 		
 		
 		 if( isset( $_REQUEST [ 'action_logout' ] )){
@@ -31,16 +50,107 @@ error_reporting(E_ERROR);
 			
 			//echo
 			$cat_id =$_REQUEST['cat_id'];
-			$campaign_list = $db -> getCampaign(  $_REQUEST['cat_id'] );
+			$campaign_list_main = $db -> getCampaign(  $_REQUEST['cat_id'] );
 		}
 		else{
 			
 			//echo " not set " ;
-			$campaign_list = $db -> getCampaign(-1);
+			$campaign_list_main = $db -> getCampaign(-1);
 		}
 		
 		if( isset ( $_REQUEST['user_id'] ) ){
 			$user_id = $_REQUEST['user_id'] ;
+		}
+		
+		$campaign_list = array();
+		
+		if( isset ( $_REQUEST['cat_id_le'] ) ){
+			
+			$cat_id_le = $_REQUEST['cat_id_le'] ;
+			
+			
+			if($cat_id_le == 11){
+				foreach( $campaign_list_main as $campaign ){
+					
+					$likes = $db->getCampaignLike($campaign['campaignid'] );
+
+					
+					$campaign['likes'] = $likes['likes'];
+					$campaign_list[] = $campaign;
+					
+					/* if($campaign['monthly_charity'] == 1  ){
+						$campaign_list[] = $campaign;
+					} */
+					
+				}
+				
+				$campaign_list = sortArrayKeyWise( $campaign_list , 'likes' );
+			}
+			else if($cat_id_le == 12){
+				foreach( $campaign_list_main as $campaign ){
+					
+					if($campaign['monthly_charity'] == 1  ){
+						$campaign_list[] = $campaign;
+					}
+					
+				}
+			}
+			else if($cat_id_le == 13){
+				foreach( $campaign_list_main as $campaign ){
+					$donation_info = ($db->getDonationlist($campaign['campaignid']));
+					
+					/* print_r($donation_info) ;
+					echo '<br/>';
+					echo $campaign['amount'];
+					
+					echo "shahid"; */
+					
+					if( ($campaign['amount'] - $donation_info['total_donations'] ) > 0  ){
+						
+						$campaign['isfunded'] = $donation_info['total_donations'];
+						$campaign_list[] = $campaign;
+						
+					}
+					
+				}
+				$campaign_list = sortArrayKeyWise( $campaign_list , 'isfunded' );
+				//print_r( $campaign_list);
+			}
+			else if($cat_id_le == 14){
+				foreach( $campaign_list_main as $campaign ){
+					
+					if($campaign['staff_picks'] == 1  ){
+						$campaign_list[] = $campaign;
+					}
+					
+				}
+			}
+			else if($cat_id_le == 15){
+				foreach( $campaign_list_main as $campaign ){
+					
+					if($campaign['company_location'] == $db ->  UserLocation()  ){
+						$campaign_list[] = $campaign;
+					}
+					
+				}
+			}
+			
+			else if($cat_id_le == 16){
+				foreach( $campaign_list_main as $campaign ){
+					
+					$location =  $_REQUEST['location'];
+					
+					if($campaign['company_location'] == $location  ){
+						$campaign_list[] = $campaign;
+					}
+					
+				}
+			}
+			
+			
+		}
+		else{
+			$campaign_list =  $campaign_list_main;
 		}
 		
 
@@ -418,26 +528,26 @@ error_reporting(E_ERROR);
                 <div class="col s2" style="width: 375px">
                     <div id="sidenavbar" style="margin-top: 50px; margin-left: 20px; background-color: #F9F9F9">
                         <ul style="margin-left: 20px">
-                            <li>
+                            <li <?php  if ( $cat_id_le == 10 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=10'" >
                                 <label style="color: #545557; font-weight: bold; font-size: medium">TRENDING NOW</label>
                             </li>
-                            <li class="active">
+                            <li <?php  if ( $cat_id_le == 11 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=11'"  >
                                 <img src="images/star.png" style="width: 20px; height: 20px;">
                                 <a>Popular</a>
                             </li>
-                            <li>
+                            <li <?php  if ( $cat_id_le == 12 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=12'" >
                                 <img src="images/staff.png" style="width: 20px; height: 20px;">
                                 <a>Staff Picks</a>
                             </li>
-                            <li>
+                            <li <?php  if ( $cat_id_le == 13 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=13'" >
                                 <img src="images/eye.png" style="width: 20px; height: 13px;">
                                 <a>Almost there</a>
                             </li>
-                            <li>
+                            <li  <?php  if ( $cat_id_le == 14 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=14'" >
                                 <img src="images/heart.png" style="width: 20px; height: 22px;">
                                 <a>Monthly Charity</a>
                             </li>
-                            <li>
+                            <li <?php  if ( $cat_id_le == 15 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=15'"  >
                                 <img src="images/location.png" style="width: 20px; height: 25px;">
                                 <a>Near Me</a>
                             </li>
@@ -445,11 +555,15 @@ error_reporting(E_ERROR);
                     </div>
 
                     <!--Search by location button-->
-                    <div class="row" style="margin-top: 0px; margin-left: 20px;">
+                    <div class="row" id = "div_show" onclick = "showSearchBox();"  style="margin-top: 0px; margin-left: 20px;">
                         <button id="search_btn">
                             <div style="float: left; margin-left: 20px; font-size: large">Search By Location</div>
                             <img src="images/downarrow.png"; style="float: right; width: 23px; height: 13px; margin-top: 5px; margin-right: 20px">
                         </button>
+                    </div>
+					
+					<div class="row">
+                       <input type = "text" placeholder="Ex. Indianapolis, United States" id = "loc_name" name = "loc_name" style="visibility: hidden;" />
                     </div>
 
                     <!--Tag-->
@@ -462,6 +576,10 @@ error_reporting(E_ERROR);
 				<?php 
 				
 				$date = date('Y-m-d H:i:s');
+				
+				if( count($campaign_list) == 0 ){
+					echo "<h4>No Projects found</h4>";
+				}
 				
 				//$len = count($campaign_list);
 				foreach( $campaign_list as $campaign ){
@@ -711,6 +829,26 @@ error_reporting(E_ERROR);
     </div>
         </div>
     </div>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	
+ <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyCgwupCCqrpms0vsY6k4ijoVEeGgNZQnZs&language=en-AU"></script>
+        <script>
+            var autocomplete = new google.maps.places.Autocomplete($("#loc_name")[0], {});
+
+            google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                var place = autocomplete.getPlace();
+				
+				
+				var loc_n = document.getElementById("loc_name");
+				alert("its call"+loc_n.value);
+				
+				document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=16&location='+loc_n.value;
+				
+                console.log(place.address_components);
+            });
+        </script>
+	
     <script type="text/javascript">
         $(function () {
             $('#main_content').show();
@@ -766,6 +904,20 @@ error_reporting(E_ERROR);
                 mq.addListener(WidthChange);
                 WidthChange(mq);
             }
+			
+			var el = document.getElementById("div_show");
+				el.onclick = showSearchBox;
+			
+			function showSearchBox(){
+				//alert("test");
+				
+				 //$('#loc_name').show();
+				  var loc_name = document.getElementById("loc_name");
+				  if( loc_name.style.visibility == "visible" )
+					loc_name.style.visibility = "hidden"
+				  else
+					loc_name.style.visibility = "visible"
+			}
 
             // media query change
             function WidthChange(mq) {

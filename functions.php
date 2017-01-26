@@ -125,6 +125,7 @@ class DBController {
 					$_SESSION['user_name']  = $name ;
 					$_SESSION['user_email'] = $email;
 					$_SESSION['user_image'] = $image;
+					$_SESSION['user_location'] = $location;
 				}
 				else{
 
@@ -229,6 +230,8 @@ class DBController {
 			$_SESSION['user_email'] = $row['email'];
 
 			$_SESSION['user_image'] = $row['profilepic'];
+			
+			$_SESSION['user_location'] = $row['location'];
 
 			//$_SESSION['type_of_user'] = $row['type'];
 		   
@@ -287,6 +290,11 @@ class DBController {
 	function UserImage()
     {
         return isset($_SESSION['user_image'])?$_SESSION['user_image']:'';
+    }
+	
+	function UserLocation()
+    {
+        return isset($_SESSION['user_location'])?$_SESSION['user_location']:'no';
     }
 	
 	
@@ -352,9 +360,25 @@ class DBController {
 		
 		
 			$where  = " 1=1 ";
-			if( isset( $cat_id ) && ( $cat_id != -1 ) ){
+			if( isset( $cat_id ) && ( $cat_id != -1) && ( $cat_id < 11) ){
 				$where  .="and c.categoryid=".$cat_id; 
 			}
+			/* else if( isset( $cat_id ) && ( $cat_id == 11) ){
+				$where  .="and c.categoryid=".$cat_id; 
+			} 
+			else if( isset( $cat_id ) && ( $cat_id == 12) ){
+				$where  .="and c.categoryid=".$cat_id; 
+			}
+			else if( isset( $cat_id ) && ( $cat_id == 13) ){
+				$where  .="and c.categoryid=".$cat_id; 
+			}
+			else if( isset( $cat_id ) && ( $cat_id == 14) ){
+				$where  .="and c.categoryid=".$cat_id; 
+			}
+			else if( isset( $cat_id ) && ( $cat_id == 15) ){
+				$where  .="and c.company_location=".$this->UserLocation(); 
+			} */
+			
 		
 			
 			$query = "SELECT cat.categorytype , c.* , COUNT(g.campaignid) as total_doner , SUM(g.amount) as total_amount 
@@ -381,6 +405,13 @@ class DBController {
 			
 		
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	function getTotalDonateAmount(){
 	
@@ -438,6 +469,17 @@ class DBController {
              $arr[$row['categoryid']] = $row['categorytype'];
         }
         return $arr;
+
+    }
+	
+	
+	 function getCampaignLike( $comp_id ){
+		 
+		
+		 
+        $sql = mysqli_query( $this->conn ,"SELECT COUNT(id) as likes FROM `user_campaign_rel` where 	campaignid ='$comp_id'");
+
+        return mysqli_fetch_assoc($sql);
 
     }
         
