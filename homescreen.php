@@ -116,7 +116,7 @@ error_reporting(E_ERROR);
 			
 				
 			
-                <div class="col" style="text-align: center;" >
+                <div class="col" style="text-align: center; border: 2px solid black;" >
                     <!--<img src="images/background.png" style="border-radius: 50%; height: 50px; width: 50px"-->
 					 <a href="?action_logout=logout" class="button">LogOut </a> 
 					 <img onerror="this.src='images/userimagenotfound.png'" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" style="border-radius: 50%; height: 50px; width: 50px">
@@ -137,7 +137,7 @@ error_reporting(E_ERROR);
         </header>
 
         <div id="main_content">
-            <div class="row" style="margin-left: 50px">
+            <div class="row" style="margin-left: 50px;">
                 <!--<a href="#">-->
                     <div id="card1" class="col s7" style="position: relative">
                         <!--<div style="font-size: 6vh; font-weight: bolder; color: white; position: absolute; top: 40%; left: 35%">-->
@@ -149,14 +149,13 @@ error_reporting(E_ERROR);
 
                 <a href="#">
                     <div id="card2" class="col s4">
-                        <div style="margin-top: 20%; position: relative">
-                            <div class="row" style="font-size: 35px; font-weight: bolder; color: white; height: 25px; margin: 0 auto">
+                        <div style="margin-top: 25%; position: relative">
+                            <div class="row" style="font-size: 25px; font-weight: bolder; color: white; height: 25px;">
                                 <?php echo !empty($user_info['community_points']) ? number_format($user_info['community_points']) : 0; ?>
-                            </div>
-                            <div class="row" style="font-size: 35px; font-weight: bolder; color: white;height: 30px;margin-top: 5%">
+                            
                                 Community Points
                             </div>
-                            <div style="font-size: 35px; font-weight: bolder; color: white; text-align: left; position: absolute; left: 20%">
+                            <div style="font-size: 25px; font-weight: bolder; color: white; text-align: left; position: absolute; left: 30%">
                                 <div class="row" style="margin-top: 30%; margin-bottom: 0; position: relative">
                                     <div class="col s1" style="width: 15px; height: 15px; background-color: white; padding: 0; position: absolute; top: 30%"></div>
                                     <div class="col s11" style="margin-left: 40px; padding: 0;">Donate to a folio</div>
@@ -181,19 +180,13 @@ error_reporting(E_ERROR);
                         <div id="card3" class="col s5" style="position: relative">
                             <div style="font-size: 20px; font-weight: bolder; color: white; top: 40%; position: absolute; left: 15%">
                                 <div class="row" style="margin-bottom: 0px">
-                                    <div class="col s2" style="text-align: right; padding: 0px">
-                                        <?php echo !empty($profilepage_info['total_donate']) ? $profilepage_info['total_donate'] : 0; ?>
-                                    </div>
-                                    <div class="col s9 offset-s1" style="padding: 0">
-                                        Total Donated
+                                    <div class="col s12" style="text-align: right; padding: 0px">
+                                        <?php echo !empty($profilepage_info['total_donate']) ? $profilepage_info['total_donate'] : 0; ?> Total Donated
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col s2" style="text-align: right; padding: 0px">
-                                        <?php echo !empty($profilepage_info['folio_backed']) ? count($profilepage_info['folio_backed']) : 0; ?>
-                                    </div>
-                                    <div class="col s9 offset-s1" style="padding: 0">
-                                        Folios Backed
+                                    <div class="col s12" style="text-align: right; padding: 0px">
+                                        <?php echo !empty($profilepage_info['folio_backed']) ? count($profilepage_info['folio_backed']) : 0; ?> Folios Backed
                                     </div>
                                 </div>
                             </div>
@@ -353,10 +346,10 @@ error_reporting(E_ERROR);
             <!--Horizontal Navigation Bar-->
             <nav id="site">
                 <div class="nav-wrapper">
-                    <ul id="nav-mobile" class="left hide-on-med-and-down" style="width: 100%">
+                    <ul id="nav-mobile" class="left hide-on-med-and-down" style="width: 100%;">
 					
 					 <!--<div class="col s1 offset-s2">-->
-                        <li  <?php  if ( $cat_id == -1 ) { ?> class="active" <?php  } ?> ><a href="?cat_id=-1">OVERVIEW</a></li>
+                        <li style=" font-size: 16px;" <?php  if ( $cat_id == -1 ) { ?> class="active" <?php  } ?> ><a href="?cat_id=-1">OVERVIEW</a></li>
                         <!--</div>-->
                         <!--<div class="col s1">-->
                         <li  <?php  if ( $cat_id == 1 ) { ?> class="active" <?php  } ?> ><a href="?cat_id=1">Business</a></li>
@@ -495,16 +488,17 @@ error_reporting(E_ERROR);
 				
 				
 				  <!--Campaign Content 1-->
-				 <div class="col s3" style="margin-left: 0px; margin-top: 50px">
+				 <div class="col s3" style="margin-left: 0px; margin-top: 50px;">
                     <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
                         <div class="card" style="">
                             <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
 							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
-                            <div class="container1">
+                            <div class="container1" style="height:auto;">
                                 <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
-                                <p><?php  echo $campaign['description']; ?></p>
+                                <p style="overflow: hidden; word-break: break-all;"><?php  echo $campaign['description']; ?></p>
+								<p><a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>" style="color:orange;">Read more</a></p>
                                 <div class="row">
-                                    <img class="col s2" src="images/location.png" style="padding: 0; height: 30px; width: 20px;">
+                                    <img class="col s2" src="images/location.png" style="padding: 0; height: auto; width: 20px;">
                                     <h5 class="col s9"><?php  echo $campaign['company_location']; ?></h5>
                                 </div>
                             </div>
@@ -640,7 +634,10 @@ error_reporting(E_ERROR);
 
 
         <!--Footer-->
-        <footer class="page-footer" style="background-color: #F9F9F9">
+        
+    </div>
+        </div>
+		<footer class="page-footer" style="background-color: #F9F9F9">
             <div class="container">
                 <div id="footer_links" class="row">
                     <div class="col s1">
@@ -711,8 +708,6 @@ error_reporting(E_ERROR);
                 </div>
             </div>
         </footer>
-    </div>
-        </div>
     </div>
     <script type="text/javascript">
         $(function () {
@@ -826,7 +821,7 @@ error_reporting(E_ERROR);
                     width:'60%',
                     height:'auto',
                     dialogClass: 'success-dialog',
-                    position:{my:"center center",at:"center center-200", of:"body"},
+                    position:{my:"center top+200",at:"center top+200", of:"body"},
                     buttons: {
                     }
                 });

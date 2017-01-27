@@ -18,7 +18,7 @@ FacebookSession::setDefaultApplication('191869641282457','f9ca96e7b7630837a7ca77
 // login helper with redirect_uri
     //$helper = new FacebookRedirectLoginHelper('http://demos.krizna.com/1353/fbconfig.php' );
 	 
-$helper = new FacebookRedirectLoginHelper('/1353/1353/fbconfig.php' );
+$helper = new FacebookRedirectLoginHelper('http://localhost/yfcreative/Fundfolio/1353/1353/fbconfig.php' );
 
 		
 
