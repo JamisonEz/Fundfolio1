@@ -164,9 +164,7 @@
 			
 			
 		}
-		
 		if($db -> CheckLogin()){
-						
                     header("Location: ".dirname('__DIR__')."/homescreen.php");
                     die();
 			
@@ -574,7 +572,8 @@
 				//$len = count($campaign_list);
 				foreach( $campaign_list as $campaign ){
 					
-					
+                                 $donation_info = ($db->getDonationlist($campaign['campaignid']));
+                                 $progressbar_info = $donation_info['progressbarinfo'];
 					
 				 $startTimeStamp = strtotime( $campaign['c_date']);
 				 $endTimeStamp = strtotime( $date );
@@ -598,39 +597,41 @@
 					
 				?>
 				 <!--Campaign Content -->
-                <div class="col s3" style="margin-left: 0px; margin-top: 50px">
-		                    <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
-		                        <div class="card" style="">
-		                            <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
-						<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" style="width:100%">
-		                            <div class="container1">
-		                                <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
-		                                <p><?php  echo $campaign['description']; ?></p>
-		                                <div class="row">
-		                                    <img class="col s2" src="images/location.png" style="padding: 0; height: 30px; width: 20px;">
-		                                    <h5 class="col s9"><?php  echo $campaign['company_location']; ?></h5>
-		                                </div>
-		                            </div>
-		                        </div>
-		                    </a>
-		                    <div class="progress">
-		                        <div class="determinate" style="width: <?php echo $percent; ?>%"></div>
-		                    </div>
-		                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B">
-		                        <div class="col s4">
-		                            <h4><?php  echo $campaign['total_doner']; ?> of <?php  echo $campaign['total_backers']; ?></h4>
-		                            <p>Backers</p>
-		                        </div>
-		                        <div class="col s4">
-		                            <h4> <?php  echo $campaign['amount']; ?> </h4>
-		                            <p>Goal</p>
-		                        </div>
-		                        <div class="col s4">
-		                            <h4> <?php  echo /* $campaign['days'] */$numberDays; ?> days</h4>
-		                            <p>open folio</p>
-		                        </div>
-		                    </div>
-		                </div>
+               <div class="col s3" style="margin-left: 0px; margin-top: 50px">
+                    <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
+                        <div class="card" style="">
+                            <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
+							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
+                            <div class="container1">
+                                <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
+                                <p><?php  echo $campaign['description']; ?></p>
+                                <div class="row">
+                                    <img class="col s2" src="images/location.png" style="padding: 0; height: 30px; width: 20px;">
+                                    <h5 class="col s9"><?php  echo $campaign['company_location']; ?></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="progress">
+                        <div class="determinate" style="width: <?php echo $progressbar_info['percentage_completed']; ?>%"></div>
+                    </div>
+					
+					
+                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B">
+                        <div class="col s4">
+                            <h5><?php echo $progressbar_info['total_donators']; ?> of <?php  echo $progressbar_info['needed_backers']; ?></h5>
+                            <p>Backers</p>
+                        </div>
+                        <div class="col s4">
+                            <h5> <?php echo $campaign['amount'];  ?>$ </h5>
+                            <p>Goal</p>
+                        </div>
+                        <div class="col s4">
+                            <h5> <?php  echo /* $campaign['days'] */$numberDays; ?> days</h5>
+                            <p>open folio</p>
+                        </div>
+                    </div>
+                </div>
 				
 				<?php } ?>
 				

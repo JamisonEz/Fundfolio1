@@ -136,13 +136,15 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-7 wrap-full-sm">
-                <iframe width="100%" src="campaign_uploads/<?php
-				if( $folio_info['campaignvidio'] != ""){
-				echo $folio_info['campaignvidio'] ; 
-				}
-				else{
-					echo "http://www.youtube.com/v/XGSy3_Czz8k";
-				}?>" frameborder="0" allowfullscreen></iframe>
+                <?php
+				if( $folio_info['campaignvidio'] != ""){?>
+                <iframe width="100%" src="campaign_uploads/<?php echo $folio_info['campaignvidio']?>" frameborder="0" allowfullscreen></iframe>; 
+                                <?php }
+                                else {
+                                    ?>
+					<iframe width="100%" src="images/novideoavail.png" frameborder="0" allowfullscreen></iframe>
+                                        <?php
+				}?>
                 <div class="row">
                     <div class="col-xs-1 wrap-auto">
                         <img src="images/location-blue.png" width="20" height="30">
@@ -237,7 +239,7 @@
                         <img onerror="this.src='campaign_uploads/imagenotfound.jpg'" src="campaign_uploads/<?php echo $folio_info['campaignimage'] ; ?>" width="100%">
                     </div>
                     <div class="col-xs-6 overview-detail">
-                        <p><b><?php echo $folio_info['campaignname'] ; ?>.</b> <?php echo $folio_info['quote_input'] ; ?>
+                        <p style="overflow: hidden; word-break: break-all;"><b><?php echo $folio_info['campaignname'] ; ?>.</b> <?php echo $folio_info['quote_input'] ; ?>
                         </p>
                     </div>
                 </div>
@@ -250,7 +252,7 @@
                 </nav>
                 <h1><b>Short Summary</b></h1>
                 <div>
-                    <p style="color: rgb(67,67,67); font-size: large; text-align: justify">
+                    <p style="color: rgb(67,67,67); font-size: large; text-align: justify; overflow: hidden; word-break: break-all;">
                         <?php echo $folio_info['description'] ; ?>
                     </p>
                 </div>
@@ -472,7 +474,7 @@ window.twttr = (function(d, s, id) {
         }, 500);
 
         //like the campaign
-        $('#campaign_like_button').on('click', function (e) {
+        $(document.body).on('click', '#campaign_like_button' , function (e) {
             e.preventDefault();
             var campaign_id = "<?php echo isset($_GET['folio_id']) ? (int)$_GET['folio_id'] : ''?>";
             var user_id = "<?php echo $user_info['user_id'] ?>";
@@ -505,7 +507,7 @@ window.twttr = (function(d, s, id) {
         });
 
         //dialogue for payment
-        $('.donate_to_folio').on('click', function () {
+        $(document.body).on('click', '.donate_to_folio' , function () {
             var amount = $(this).attr('rel');
             var click_object = $(this);
 
@@ -531,7 +533,7 @@ window.twttr = (function(d, s, id) {
             console.log('paypal payment');
         }
 
-        $('#facebook_share_button').on('click',function (e)
+        $(document.body).on('click', '#facebook_share_button',function (e)
         {
             e.preventDefault();
             var campaign_id = "<?php echo isset($_GET['folio_id']) ? (int)$_GET['folio_id'] : ''?>";
@@ -615,7 +617,7 @@ window.twttr = (function(d, s, id) {
                     {
                         var handler = StripeCheckout.configure({
                             key: 'pk_test_hLl88jDU06gYZaT0V8or44gF',
-                            image: '/fundfolio/images/logo.png',
+                            image: 'images/logo.png',
                             token: function(token) {
                                 //console.log(token);
                                 $.ajax({

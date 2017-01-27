@@ -11,6 +11,8 @@ include_once 'vendor/google/apiclient-services/src/Google/Service/Oauth2.php';
 $client_id = '354970537307-udhlo09sg5jmfd7f7o3u45pcm3j9iv3a.apps.googleusercontent.com'; //Google client ID
 $client_secret = 'XYHL-3bCL2eg3uS9b6ccHQfM'; //Google client secret
 $redirect_url = 'http://localhost/Fundfolio1/'; //Callback URL
+if($_SERVER['HTTP_HOST'] != 'localhost')
+    $redirect_url = 'http://launchafolio.com/Fundfolio1-master/index.php';
 
 //Call Google API
 $google_client = new Google_Client();
