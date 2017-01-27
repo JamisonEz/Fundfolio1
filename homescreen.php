@@ -46,6 +46,9 @@ error_reporting(E_ERROR);
 		} 
 		
 		
+		
+		
+		
 		if( isset ( $_REQUEST['cat_id'] ) ){
 			
 			//echo
@@ -85,11 +88,13 @@ error_reporting(E_ERROR);
 				}
 				
 				$campaign_list = sortArrayKeyWise( $campaign_list , 'likes' );
+				
+				
 			}
 			else if($cat_id_le == 12){
 				foreach( $campaign_list_main as $campaign ){
 					
-					if($campaign['monthly_charity'] == 1  ){
+					if($campaign['staff_picks'] == 1  ){
 						$campaign_list[] = $campaign;
 					}
 					
@@ -119,7 +124,7 @@ error_reporting(E_ERROR);
 			else if($cat_id_le == 14){
 				foreach( $campaign_list_main as $campaign ){
 					
-					if($campaign['staff_picks'] == 1  ){
+					if($campaign['monthly_charity'] == 1  ){
 						$campaign_list[] = $campaign;
 					}
 					
@@ -304,7 +309,7 @@ error_reporting(E_ERROR);
                         </div>
                     </a>
                     <!--<a href="#">-->
-                        <div id="card4" class="col s5">
+                        <div id="card4" class="col s5"  onClick="document.location.href='?user_id=<?php echo $db->UserUserID(); ?>'" >
                             <!--<div style="color: white; font-weight: bolder; font-size: 35px; position: absolute; top: 45%; left: 30%">-->
                                 <!--My Fundfolio-->
                             <!--</div>-->
@@ -424,8 +429,112 @@ error_reporting(E_ERROR);
             </div>
         </div>
 
-        <div id="fundfolio_panel">
+        <div id="fundfolio_panel"   <?php  if( isset( $_REQUEST['user_id']) )  { ?>s tyle="visibility: visible;"   <?php } ?>  >
             <div class="red-x big-x close" style="float: right; margin: 30px">&#10006;</div>
+			
+			
+			<?php 
+			
+			
+			
+			
+			if( isset( $_REQUEST['user_id']) ){
+			
+				$user_campaign =  $db -> getCampaignByUser(  $_REQUEST['user_id'] );
+				
+				//print_r( $user_campaign );
+				
+				
+				$date = date('Y-m-d H:i:s');
+
+				
+				if( count($user_campaign) == 0 ){
+					echo "<h4>No Projects found</h4>";
+				}
+				
+
+				//$len = count($campaign_list);
+				foreach( $user_campaign as $campaign ){
+                                 
+                                 
+				 $donation_info = ($db->getDonationlist($campaign['campaignid']));
+                                 $progressbar_info = $donation_info['progressbarinfo'];
+					
+				 $startTimeStamp = strtotime( $campaign['c_date']);
+				 $endTimeStamp = strtotime( $date );
+
+				 $timeDiff = abs($endTimeStamp - $startTimeStamp);
+
+				 $numberDays = $timeDiff/86400;  // 86400 seconds in one day
+
+				// and you might want to convert to integer
+				 $numberDays = intval($numberDays);
+				 $numberDays = $campaign['days'] - $numberDays ; 
+				 if( $numberDays < 0 )
+					 $numberDays = 0;
+				 if( $campaign['amount'] != 0 )
+				 $percent = ( $campaign['total_amount']/$campaign['amount'] ) * 100;
+				 else {
+					 
+				 }
+				 //determinate
+				 //echo "   ". $numberDays;
+					
+				?>
+				
+				
+				
+				 <!--Campaign Content 1-->
+				 <div class="col s3" style="margin-left: 0px; margin-top: 50px;">
+                    <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
+                        <div class="card" style="">
+                            <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
+							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
+                            <div class="container1" style="height:auto;">
+                                <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
+                                <p style="overflow: hidden; word-break: break-all;"><?php  echo $campaign['description']; ?></p>
+								<p><a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>" style="color:orange;">Read more</a></p>
+                                <div class="row">
+                                    <img class="col s2" src="images/location.png" style="padding: 0; height: auto; width: 20px;">
+                                    <h5 class="col s9"><?php  echo $campaign['company_location']; ?></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="progress">
+                        <div class="determinate" style="width: <?php echo $progressbar_info['percentage_completed']; ?>%"></div>
+                    </div>
+					
+					
+                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B">
+                        <div class="col s4">
+                            <h5><?php echo $progressbar_info['total_donators']; ?> of <?php  echo $progressbar_info['needed_backers']; ?></h5>
+                            <p>Backers</p>
+                        </div>
+                        <div class="col s4">
+                            <h5> <?php echo $campaign['amount'];  ?>$ </h5>
+                            <p>Goal</p>
+                        </div>
+                        <div class="col s4">
+                            <h5> <?php  echo /* $campaign['days'] */$numberDays; ?> days</h5>
+                            <p>open folio</p>
+                        </div>
+                    </div>
+                </div>
+				
+				<?php } 
+
+				}
+				
+			
+				?>
+				
+				
+				
+				
+				
+				
+			
         </div>
 
         <div id="help_center_panel">
