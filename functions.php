@@ -124,6 +124,7 @@ class DBController {
 					$_SESSION['user_name']  = $name ;
 					$_SESSION['user_email'] = $email;
 					$_SESSION['user_image'] = $image;
+					$_SESSION['user_location'] = $location;
 				}
 				else{
 
@@ -231,6 +232,8 @@ class DBController {
 			$_SESSION['user_email'] = $row['email'];
                         $_SESSION['community_points'] = $row['community_points'];
 			$_SESSION['user_image'] = $row['profilepic'];
+			
+			$_SESSION['user_location'] = $row['location'];
 
 			//$_SESSION['type_of_user'] = $row['type'];
 		   
@@ -289,6 +292,11 @@ class DBController {
 	function UserImage()
     {
         return isset($_SESSION['user_image'])?$_SESSION['user_image']:'';
+    }
+	
+	function UserLocation()
+    {
+        return isset($_SESSION['user_location'])?$_SESSION['user_location']:'no';
     }
 	
 	
@@ -364,9 +372,11 @@ class DBController {
 		
 		
 			$where  = " 1=1 ";
-			if( isset( $cat_id ) && ( $cat_id != -1 ) && $cat_id != ""){
+
+			if( isset( $cat_id ) && ( $cat_id != -1) && ( $cat_id < 11) ){
 				$where  .="and c.categoryid=".$cat_id; 
 			}
+			
 		
 			
 			$query = "SELECT cat.categorytype , c.* , COUNT(g.campaignid) as total_doner , SUM(g.amount) as total_amount 
@@ -393,6 +403,50 @@ class DBController {
 			
 		
 	}
+	
+	
+	
+	function getCampaignByUser( $user_id ){
+		
+		
+		
+			$where  = " 1=1 ";
+
+			if( isset( $user_id ) && ( $user_id != -1) && ( $user_id < 11) ){
+				$where  .="and c.loginid=".$user_id; 
+			}
+			
+		
+			
+			 $query = "SELECT cat.categorytype , c.* , COUNT(g.campaignid) as total_doner , SUM(g.amount) as total_amount 
+				FROM `campaign` as c
+				LEFT JOIN  gifts as g  ON  g.campaignid = c.campaignid
+                 LEFT JOIN category as cat ON cat.categoryid = c.categoryid
+				 
+				where $where
+				
+				GROUP by c.campaignid
+				ORDER BY c.c_date DESC ";
+				
+			
+				
+			$sql = mysqli_query( $this->conn, $query ) or die(mysqli_error($this->conn));
+
+			//$sql = mysqli_query( $this->conn, "SELECT * FROM `campaign` where $where") or die(mysqli_error($this->conn));
+			
+			$res = array();
+			while($row = mysqli_fetch_assoc($sql)) {
+			     $res[] = $row;
+			}
+			return $res;
+			
+		
+	}
+	
+	
+	
+	
+	
 	
 	function getTotalDonateAmount(){
 	
@@ -450,6 +504,17 @@ class DBController {
              $arr[$row['categoryid']] = $row['categorytype'];
         }
         return $arr;
+
+    }
+	
+	
+	 function getCampaignLike( $comp_id ){
+		 
+		
+		 
+        $sql = mysqli_query( $this->conn ,"SELECT COUNT(id) as likes FROM `user_campaign_rel` where 	campaignid ='$comp_id'");
+
+        return mysqli_fetch_assoc($sql);
 
     }
         
@@ -737,7 +802,7 @@ class DBController {
         //calculate % completed
         $folio_id = (int) $folio_id;
         $temp_campaign_result = array();
-        $sql = mysqli_query( $this->conn ,"SELECT c.* FROM `campaign` as c
+        $sql = mysqli_query( $this->conn ,"SELECT c.*,r.* FROM `campaign` as c
 		LEFT JOIN register as r ON r.id = c.loginid
 		WHERE c.campaignid = $folio_id");
         if($sql->num_rows > 0)

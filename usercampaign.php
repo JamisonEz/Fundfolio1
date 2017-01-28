@@ -51,6 +51,9 @@
     $donation_info = ($db->getDonationlist($folio_id));
     $folio_info = ($db->getCampaignById($folio_id));
 	
+	
+	
+	
     //print_r($folio_info);
     //echo "<pre>";
     //var_dump($getMatrix);
@@ -239,7 +242,7 @@
                         <img onerror="this.src='campaign_uploads/imagenotfound.jpg'" src="campaign_uploads/<?php echo $folio_info['campaignimage'] ; ?>" width="100%">
                     </div>
                     <div class="col-xs-6 overview-detail">
-                        <p><b><?php echo $folio_info['campaignname'] ; ?>.</b> <?php echo $folio_info['quote_input'] ; ?>
+                        <p style="overflow: hidden; word-break: break-all;"><b><?php echo $folio_info['campaignname'] ; ?>.</b> <?php echo $folio_info['quote_input'] ; ?>
                         </p>
                     </div>
                 </div>
@@ -252,7 +255,7 @@
                 </nav>
                 <h1><b>Short Summary</b></h1>
                 <div>
-                    <p style="color: rgb(67,67,67); font-size: large; text-align: justify">
+                    <p style="color: rgb(67,67,67); font-size: large; text-align: justify; overflow: hidden; word-break: break-all;">
                         <?php echo $folio_info['description'] ; ?>
                     </p>
                 </div>

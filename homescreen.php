@@ -18,6 +18,25 @@ error_reporting(E_ERROR);
 		}
 		
 		
+		function sortArrayKeyWise( $arrray , $sort_key ){
+			
+			
+				$arr  = $arrray;
+				$sort = array();
+				foreach($arr as $k=>$v) {
+					$sort[$sort_key][$k] = $v[$sort_key];
+				}
+
+				array_multisort($sort[$sort_key], SORT_DESC, $arr);
+
+				/* echo "<pre>";
+				print_r($arr);
+				
+				exit; */
+				return  $arr;
+			
+			
+		}
 		
 		
 		 if( isset( $_REQUEST [ 'action_logout' ] )){
@@ -27,20 +46,116 @@ error_reporting(E_ERROR);
 		} 
 		
 		
+		
+		
+		
 		if( isset ( $_REQUEST['cat_id'] ) ){
 			
 			//echo
 			$cat_id =$_REQUEST['cat_id'];
-			$campaign_list = $db -> getCampaign(  $_REQUEST['cat_id'] );
+			$campaign_list_main = $db -> getCampaign(  $_REQUEST['cat_id'] );
 		}
 		else{
 			
 			//echo " not set " ;
-			$campaign_list = $db -> getCampaign(-1);
+			$campaign_list_main = $db -> getCampaign(-1);
 		}
 		
 		if( isset ( $_REQUEST['user_id'] ) ){
 			$user_id = $_REQUEST['user_id'] ;
+		}
+		
+		$campaign_list = array();
+		
+		if( isset ( $_REQUEST['cat_id_le'] ) ){
+			
+			$cat_id_le = $_REQUEST['cat_id_le'] ;
+			
+			
+			if($cat_id_le == 11){
+				foreach( $campaign_list_main as $campaign ){
+					
+					$likes = $db->getCampaignLike($campaign['campaignid'] );
+
+					
+					$campaign['likes'] = $likes['likes'];
+					$campaign_list[] = $campaign;
+					
+					/* if($campaign['monthly_charity'] == 1  ){
+						$campaign_list[] = $campaign;
+					} */
+					
+				}
+				
+				$campaign_list = sortArrayKeyWise( $campaign_list , 'likes' );
+				
+				
+			}
+			else if($cat_id_le == 12){
+				foreach( $campaign_list_main as $campaign ){
+					
+					if($campaign['staff_picks'] == 1  ){
+						$campaign_list[] = $campaign;
+					}
+					
+				}
+			}
+			else if($cat_id_le == 13){
+				foreach( $campaign_list_main as $campaign ){
+					$donation_info = ($db->getDonationlist($campaign['campaignid']));
+					
+					/* print_r($donation_info) ;
+					echo '<br/>';
+					echo $campaign['amount'];
+					
+					echo "shahid"; */
+					
+					if( ($campaign['amount'] - $donation_info['total_donations'] ) > 0  ){
+						
+						$campaign['isfunded'] = $donation_info['total_donations'];
+						$campaign_list[] = $campaign;
+						
+					}
+					
+				}
+				$campaign_list = sortArrayKeyWise( $campaign_list , 'isfunded' );
+				//print_r( $campaign_list);
+			}
+			else if($cat_id_le == 14){
+				foreach( $campaign_list_main as $campaign ){
+					
+					if($campaign['monthly_charity'] == 1  ){
+						$campaign_list[] = $campaign;
+					}
+					
+				}
+			}
+			else if($cat_id_le == 15){
+				foreach( $campaign_list_main as $campaign ){
+					
+					if($campaign['company_location'] == $db ->  UserLocation()  ){
+						$campaign_list[] = $campaign;
+					}
+					
+				}
+			}
+			
+			else if($cat_id_le == 16){
+				foreach( $campaign_list_main as $campaign ){
+					
+					$location =  $_REQUEST['location'];
+					
+					if($campaign['company_location'] == $location  ){
+						$campaign_list[] = $campaign;
+					}
+					
+				}
+			}
+			
+			
+		}
+		else{
+			$campaign_list =  $campaign_list_main;
 		}
 		
 
@@ -116,7 +231,7 @@ error_reporting(E_ERROR);
 			
 				
 			
-                <div class="col" style="text-align: center;" >
+                <div class="col" style="text-align: center; border: 2px solid black;" >
                     <!--<img src="images/background.png" style="border-radius: 50%; height: 50px; width: 50px"-->
 					 <a href="?action_logout=logout" class="button">LogOut </a> 
 					 <img onerror="this.src='images/userimagenotfound.png'" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" style="border-radius: 50%; height: 50px; width: 50px">
@@ -137,7 +252,7 @@ error_reporting(E_ERROR);
         </header>
 
         <div id="main_content">
-            <div class="row" style="margin-left: 50px">
+            <div class="row" style="margin-left: 50px;">
                 <!--<a href="#">-->
                     <div id="card1" class="col s7" style="position: relative">
                         <!--<div style="font-size: 6vh; font-weight: bolder; color: white; position: absolute; top: 40%; left: 35%">-->
@@ -149,14 +264,13 @@ error_reporting(E_ERROR);
 
                 <a href="#">
                     <div id="card2" class="col s4">
-                        <div style="margin-top: 20%; position: relative">
-                            <div class="row" style="font-size: 35px; font-weight: bolder; color: white; height: 25px; margin: 0 auto">
+                        <div style="margin-top: 25%; position: relative">
+                            <div class="row" style="font-size: 25px; font-weight: bolder; color: white; height: 25px;">
                                 <?php echo !empty($user_info['community_points']) ? number_format($user_info['community_points']) : 0; ?>
-                            </div>
-                            <div class="row" style="font-size: 35px; font-weight: bolder; color: white;height: 30px;margin-top: 5%">
+                            
                                 Community Points
                             </div>
-                            <div style="font-size: 35px; font-weight: bolder; color: white; text-align: left; position: absolute; left: 20%">
+                            <div style="font-size: 25px; font-weight: bolder; color: white; text-align: left; position: absolute; left: 30%">
                                 <div class="row" style="margin-top: 30%; margin-bottom: 0; position: relative">
                                     <div class="col s1" style="width: 15px; height: 15px; background-color: white; padding: 0; position: absolute; top: 30%"></div>
                                     <div class="col s11" style="margin-left: 40px; padding: 0;">Donate to a folio</div>
@@ -181,19 +295,13 @@ error_reporting(E_ERROR);
                         <div id="card3" class="col s5" style="position: relative">
                             <div style="font-size: 20px; font-weight: bolder; color: white; top: 40%; position: absolute; left: 15%">
                                 <div class="row" style="margin-bottom: 0px">
-                                    <div class="col s2" style="text-align: right; padding: 0px">
-                                        <?php echo !empty($profilepage_info['total_donate']) ? $profilepage_info['total_donate'] : 0; ?>
-                                    </div>
-                                    <div class="col s9 offset-s1" style="padding: 0">
-                                        Total Donated
+                                    <div class="col s12" style="text-align: right; padding: 0px">
+                                        <?php echo !empty($profilepage_info['total_donate']) ? $profilepage_info['total_donate'] : 0; ?> Total Donated
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col s2" style="text-align: right; padding: 0px">
-                                        <?php echo !empty($profilepage_info['folio_backed']) ? count($profilepage_info['folio_backed']) : 0; ?>
-                                    </div>
-                                    <div class="col s9 offset-s1" style="padding: 0">
-                                        Folios Backed
+                                    <div class="col s12" style="text-align: right; padding: 0px">
+                                        <?php echo !empty($profilepage_info['folio_backed']) ? count($profilepage_info['folio_backed']) : 0; ?> Folios Backed
                                     </div>
                                 </div>
                             </div>
@@ -201,7 +309,7 @@ error_reporting(E_ERROR);
                         </div>
                     </a>
                     <!--<a href="#">-->
-                        <div id="card4" class="col s5">
+                        <div id="card4" class="col s5"  onClick="document.location.href='?user_id=<?php echo $db->UserUserID(); ?>'" >
                             <!--<div style="color: white; font-weight: bolder; font-size: 35px; position: absolute; top: 45%; left: 30%">-->
                                 <!--My Fundfolio-->
                             <!--</div>-->
@@ -321,8 +429,112 @@ error_reporting(E_ERROR);
             </div>
         </div>
 
-        <div id="fundfolio_panel">
+        <div id="fundfolio_panel"   <?php  if( isset( $_REQUEST['user_id']) )  { ?>s tyle="visibility: visible;"   <?php } ?>  >
             <div class="red-x big-x close" style="float: right; margin: 30px">&#10006;</div>
+			
+			
+			<?php 
+			
+			
+			
+			
+			if( isset( $_REQUEST['user_id']) ){
+			
+				$user_campaign =  $db -> getCampaignByUser(  $_REQUEST['user_id'] );
+				
+				//print_r( $user_campaign );
+				
+				
+				$date = date('Y-m-d H:i:s');
+
+				
+				if( count($user_campaign) == 0 ){
+					echo "<h4>No Projects found</h4>";
+				}
+				
+
+				//$len = count($campaign_list);
+				foreach( $user_campaign as $campaign ){
+                                 
+                                 
+				 $donation_info = ($db->getDonationlist($campaign['campaignid']));
+                                 $progressbar_info = $donation_info['progressbarinfo'];
+					
+				 $startTimeStamp = strtotime( $campaign['c_date']);
+				 $endTimeStamp = strtotime( $date );
+
+				 $timeDiff = abs($endTimeStamp - $startTimeStamp);
+
+				 $numberDays = $timeDiff/86400;  // 86400 seconds in one day
+
+				// and you might want to convert to integer
+				 $numberDays = intval($numberDays);
+				 $numberDays = $campaign['days'] - $numberDays ; 
+				 if( $numberDays < 0 )
+					 $numberDays = 0;
+				 if( $campaign['amount'] != 0 )
+				 $percent = ( $campaign['total_amount']/$campaign['amount'] ) * 100;
+				 else {
+					 
+				 }
+				 //determinate
+				 //echo "   ". $numberDays;
+					
+				?>
+				
+				
+				
+				 <!--Campaign Content 1-->
+				 <div class="col s3" style="margin-left: 0px; margin-top: 50px;">
+                    <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
+                        <div class="card" style="">
+                            <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
+							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
+                            <div class="container1" style="height:auto;">
+                                <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
+                                <p style="overflow: hidden; word-break: break-all;"><?php  echo $campaign['description']; ?></p>
+								<p><a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>" style="color:orange;">Read more</a></p>
+                                <div class="row">
+                                    <img class="col s2" src="images/location.png" style="padding: 0; height: auto; width: 20px;">
+                                    <h5 class="col s9"><?php  echo $campaign['company_location']; ?></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="progress">
+                        <div class="determinate" style="width: <?php echo $progressbar_info['percentage_completed']; ?>%"></div>
+                    </div>
+					
+					
+                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B">
+                        <div class="col s4">
+                            <h5><?php echo $progressbar_info['total_donators']; ?> of <?php  echo $progressbar_info['needed_backers']; ?></h5>
+                            <p>Backers</p>
+                        </div>
+                        <div class="col s4">
+                            <h5> <?php echo $campaign['amount'];  ?>$ </h5>
+                            <p>Goal</p>
+                        </div>
+                        <div class="col s4">
+                            <h5> <?php  echo /* $campaign['days'] */$numberDays; ?> days</h5>
+                            <p>open folio</p>
+                        </div>
+                    </div>
+                </div>
+				
+				<?php } 
+
+				}
+				
+			
+				?>
+				
+				
+				
+				
+				
+				
+			
         </div>
 
         <div id="help_center_panel">
@@ -353,10 +565,10 @@ error_reporting(E_ERROR);
             <!--Horizontal Navigation Bar-->
             <nav id="site">
                 <div class="nav-wrapper">
-                    <ul id="nav-mobile" class="left hide-on-med-and-down" style="width: 100%">
+                    <ul id="nav-mobile" class="left hide-on-med-and-down" style="width: 100%;">
 					
 					 <!--<div class="col s1 offset-s2">-->
-                        <li  <?php  if ( $cat_id == -1 ) { ?> class="active" <?php  } ?> ><a href="?cat_id=-1">OVERVIEW</a></li>
+                        <li style=" font-size: 16px;" <?php  if ( $cat_id == -1 ) { ?> class="active" <?php  } ?> ><a href="?cat_id=-1">OVERVIEW</a></li>
                         <!--</div>-->
                         <!--<div class="col s1">-->
                         <li  <?php  if ( $cat_id == 1 ) { ?> class="active" <?php  } ?> ><a href="?cat_id=1">Business</a></li>
@@ -419,26 +631,26 @@ error_reporting(E_ERROR);
                 <div class="col s2" style="width: 375px">
                     <div id="sidenavbar" style="margin-top: 50px; margin-left: 20px; background-color: #F9F9F9">
                         <ul style="margin-left: 20px">
-                            <li>
+                            <li <?php  if ( $cat_id_le == 10 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=10'" >
                                 <label style="color: #545557; font-weight: bold; font-size: medium">TRENDING NOW</label>
                             </li>
-                            <li class="active">
+                            <li <?php  if ( $cat_id_le == 11 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=11'"  >
                                 <img src="images/star.png" style="width: 20px; height: 20px;">
                                 <a>Popular</a>
                             </li>
-                            <li>
+                            <li <?php  if ( $cat_id_le == 12 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=12'" >
                                 <img src="images/staff.png" style="width: 20px; height: 20px;">
                                 <a>Staff Picks</a>
                             </li>
-                            <li>
+                            <li <?php  if ( $cat_id_le == 13 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=13'" >
                                 <img src="images/eye.png" style="width: 20px; height: 13px;">
                                 <a>Almost there</a>
                             </li>
-                            <li>
+                            <li  <?php  if ( $cat_id_le == 14 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=14'" >
                                 <img src="images/heart.png" style="width: 20px; height: 22px;">
                                 <a>Monthly Charity</a>
                             </li>
-                            <li>
+                            <li <?php  if ( $cat_id_le == 15 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=15'"  >
                                 <img src="images/location.png" style="width: 20px; height: 25px;">
                                 <a>Near Me</a>
                             </li>
@@ -446,11 +658,15 @@ error_reporting(E_ERROR);
                     </div>
 
                     <!--Search by location button-->
-                    <div class="row" style="margin-top: 0px; margin-left: 20px;">
+                    <div class="row" id = "div_show" onclick = "showSearchBox();"  style="margin-top: 0px; margin-left: 20px;">
                         <button id="search_btn">
                             <div style="float: left; margin-left: 20px; font-size: large">Search By Location</div>
                             <img src="images/downarrow.png"; style="float: right; width: 23px; height: 13px; margin-top: 5px; margin-right: 20px">
                         </button>
+                    </div>
+					
+					<div class="row">
+                       <input type = "text" placeholder="Ex. Indianapolis, United States" id = "loc_name" name = "loc_name" style="visibility: hidden;" />
                     </div>
 
                     <!--Tag-->
@@ -463,7 +679,13 @@ error_reporting(E_ERROR);
 				<?php 
 				
 				$date = date('Y-m-d H:i:s');
-                                
+
+				
+				if( count($campaign_list) == 0 ){
+					echo "<h4>No Projects found</h4>";
+				}
+				
+
 				//$len = count($campaign_list);
 				foreach( $campaign_list as $campaign ){
                                  
@@ -495,16 +717,17 @@ error_reporting(E_ERROR);
 				
 				
 				  <!--Campaign Content 1-->
-				 <div class="col s3" style="margin-left: 0px; margin-top: 50px">
+				 <div class="col s3" style="margin-left: 0px; margin-top: 50px;">
                     <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
                         <div class="card" style="">
                             <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
 							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
-                            <div class="container1">
+                            <div class="container1" style="height:auto;">
                                 <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
-                                <p><?php  echo $campaign['description']; ?></p>
+                                <p style="overflow: hidden; word-break: break-all;"><?php  echo $campaign['description']; ?></p>
+								<p><a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>" style="color:orange;">Read more</a></p>
                                 <div class="row">
-                                    <img class="col s2" src="images/location.png" style="padding: 0; height: 30px; width: 20px;">
+                                    <img class="col s2" src="images/location.png" style="padding: 0; height: auto; width: 20px;">
                                     <h5 class="col s9"><?php  echo $campaign['company_location']; ?></h5>
                                 </div>
                             </div>
@@ -640,7 +863,10 @@ error_reporting(E_ERROR);
 
 
         <!--Footer-->
-        <footer class="page-footer" style="background-color: #F9F9F9">
+        
+    </div>
+        </div>
+		<footer class="page-footer" style="background-color: #F9F9F9">
             <div class="container">
                 <div id="footer_links" class="row">
                     <div class="col s1">
@@ -712,8 +938,29 @@ error_reporting(E_ERROR);
             </div>
         </footer>
     </div>
+
         </div>
     </div>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	
+ <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyCgwupCCqrpms0vsY6k4ijoVEeGgNZQnZs&language=en-AU"></script>
+        <script>
+            var autocomplete = new google.maps.places.Autocomplete($("#loc_name")[0], {});
+
+            google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                var place = autocomplete.getPlace();
+				
+				
+				var loc_n = document.getElementById("loc_name");
+				//alert("its call"+loc_n.value);
+				
+				document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=16&location='+loc_n.value;
+				
+                console.log(place.address_components);
+            });
+        </script>
+
     <script type="text/javascript">
         $(function () {
             $('#main_content').show();
@@ -769,6 +1016,20 @@ error_reporting(E_ERROR);
                 mq.addListener(WidthChange);
                 WidthChange(mq);
             }
+			
+			var el = document.getElementById("div_show");
+				el.onclick = showSearchBox;
+			
+			function showSearchBox(){
+				//alert("test");
+				
+				 //$('#loc_name').show();
+				  var loc_name = document.getElementById("loc_name");
+				  if( loc_name.style.visibility == "visible" )
+					loc_name.style.visibility = "hidden"
+				  else
+					loc_name.style.visibility = "visible"
+			}
 
             // media query change
             function WidthChange(mq) {
