@@ -337,7 +337,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="container">
+                <div class="container" style="width: 800px; margin-left: -17px;">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#summary" data-toggle="tab">Short Summary</a></li>
                         <li><a href="#updates" data-toggle="tab">Updates (<?php echo count($campaign_updates)?>)</a></li>
@@ -360,7 +360,7 @@
                                 {
                                     ?>
                                     <button type="button" id="add_update" class="btn btn-primary">Add Update</button>
-                                <form  method="post" name="updates_form" id="updates_form" style="display: none" action = "" enctype="multipart/form-data" >
+                               <form  method="post" name="updates_form" id="updates_form" style="display: none" action = "" enctype="multipart/form-data" >
                                    <h5><i>(You can post updates for the campaign below): </i></h5>
                                    <span style="font-size: 100%" class="label label-primary">Upload some text</span><br>
                                    <textarea rows="4" cols="50" id="update_text"  name="update_text"  placeholder="Add some text for updates" style="margin-top:5px;margin-bottom: 20px"></textarea><br>
@@ -372,7 +372,7 @@
                                     <div class="sub_but_class" style="margin-top:10px"><button class="btn next_step" id="submit_updates_form" >Submit</button> 
                                     </div>
                                     <div style="clear:both"></div>
-                                </form>
+                               </form>
                                 <script>
                                     $(document.body).on('click', '#submit_updates_form', function(e){
                                         e.preventDefault();

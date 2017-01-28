@@ -198,18 +198,18 @@ error_reporting(E_ERROR);
 <body>
     <div id="view_history_popup" style='display:none;' title="History of Donations">
         <table style='border: none;' cellspacing="10" cellpadding="5">
-            <th>Campaign Name</th>
-            <th>Donation</th>
+            <tr style="height: 20px; font-size: 14px;"><th style="text-align: center;">Campaign Name</th>
+            <th style="text-align: center; font-size: 14px;">Donation</th></tr>
             <?php
                 foreach($profilepage_info['no_of_payments_per_folio'] as $folio_id=>$folio_fund)
                 {
                     $folio_name = $profilepage_info['campaign_array'][$folio_id]['campaignname'];
                     ?>
                     <tr>
-                        <td>
+                        <td style="font-size: 14px;">
                             <?php echo "<a style='text-decoration: underline !important;' href='usercampaign.php?folio_id=".$folio_id."'>$folio_name</a>"; ?>
                         </td>
-                        <td>
+                        <td style="font-size: 14px;">
                             <?php echo "$".number_format($folio_fund); ?>
                         </td>
                     </tr>
@@ -1122,11 +1122,11 @@ error_reporting(E_ERROR);
             });
             
             //$(window).load(function (){
-                // Load the Visualization API and the corechart package.
-                google.charts.load('current', {'packages':['corechart']});
+            // Load the Visualization API and the corechart package.
+            google.charts.load('current', {'packages':['corechart']});
 
-                // Set a callback to run when the Google Visualization API is loaded.
-                google.charts.setOnLoadCallback(drawChart);
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(drawChart);
 
                 
             //});
