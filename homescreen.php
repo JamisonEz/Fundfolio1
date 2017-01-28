@@ -218,6 +218,12 @@ error_reporting(E_ERROR);
             ?>
         </table>
     </div>
+    <div id="set_auto_back_popup" style='display:none;' title="Set Auto Back">
+        <h3>Coming soon in beta release.</h3>
+    </div>
+    <div id="exchange_community_points_popup" style='display:none;' title="Exchange Community Points">
+        <h3><?php echo !empty($user_info['community_points']) ? number_format($user_info['community_points']) : 0; ?></h3>
+    </div>
     <div>
         
         <!--Top menu-->
@@ -309,7 +315,7 @@ error_reporting(E_ERROR);
                         </div>
                     </a>
                     <!--<a href="#">-->
-                        <div id="card4" class="col s5"  onClick="document.location.href='?user_id=<?php echo $db->UserUserID(); ?>'" >
+                        <div id="card4" class="col s5">
                             <!--<div style="color: white; font-weight: bolder; font-size: 35px; position: absolute; top: 45%; left: 30%">-->
                                 <!--My Fundfolio-->
                             <!--</div>-->
@@ -340,7 +346,7 @@ error_reporting(E_ERROR);
                             Total Donated $<?php echo !empty($profilepage_info['total_donate']) ? number_format($profilepage_info['total_donate']) : 0; ?>
                         </div>
                     </div>
-                    <div class="col s3 offset-s4 left-align small-font">
+                    <div id="exchange_community_points" class="col s3 offset-s4 left-align small-font" style="cursor: pointer">
                         <span><img src="images/exchange_icon.png" width="30px" height="30px"></span>
                         <span class="top-align">Exchange Community Points</span>
                     </div>
@@ -416,7 +422,7 @@ error_reporting(E_ERROR);
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col s4 button-style">
+                    <div id='set_auto_back' class="col s4 button-style" style='cursor:pointer'>
                         <img class="img-center" src="images/set_auto.png" width="40px" height="auto"><span>Set Auto Back</span>
                     </div>
                     <div class="col s4 button-style">
@@ -429,18 +435,15 @@ error_reporting(E_ERROR);
             </div>
         </div>
 
-        <div id="fundfolio_panel" style="visibility: <?php echo isset( $_REQUEST['user_id']) ? 'visible' : 'none';?>">
-            <div class="red-x big-x close" style="float: right; margin: 30px">&#10006;</div>
+        <div id="fundfolio_panel" class="row" style="display: <?php echo isset( $_SESSION['user_id']) ? 'block' : 'none';?>">
+            <div class="red-x big-x close" style="float: right; margin: 10px">&#10006;</div>
 			
 			
 			<?php 
 			
+			if( isset( $_SESSION['user_id']) ){
 			
-			
-			
-			if( isset( $_REQUEST['user_id']) ){
-			
-				$user_campaign =  $db -> getCampaignByUser(  $_REQUEST['user_id'] );
+				$user_campaign =  $db -> getCampaignByUser(  $_SESSION['user_id'] );
 				
 				//print_r( $user_campaign );
 				
@@ -487,7 +490,7 @@ error_reporting(E_ERROR);
 				 <!--Campaign Content 1-->
 				 <div class="col s3" style="margin-left: 0px; margin-top: 50px;">
                     <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
-                        <div class="card" style="">
+                        <div class="card" style="margin: 0px; border-radius: 0px;height: 475px;">
                             <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
 							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
                             <div class="container1" style="height:auto;">
@@ -501,12 +504,12 @@ error_reporting(E_ERROR);
                             </div>
                         </div>
                     </a>
-                    <div class="progress">
+                    <div class="progress" style="margin: 0px">
                         <div class="determinate" style="width: <?php echo $progressbar_info['percentage_completed']; ?>%"></div>
                     </div>
 					
 					
-                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B">
+                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B; border-radius: 0px 0px 5px 5px;">
                         <div class="col s4">
                             <h5><?php echo $progressbar_info['total_donators']; ?> of <?php  echo $progressbar_info['needed_backers']; ?></h5>
                             <p>Backers</p>
@@ -1084,6 +1087,28 @@ error_reporting(E_ERROR);
             
             $('#view_history').click( function () {
                 $("#view_history_popup").dialog({
+                    width:'60%',
+                    height:'auto',
+                    dialogClass: 'success-dialog',
+                    position:{my:"center top+200",at:"center top+200", of:"body"},
+                    buttons: {
+                    }
+                });
+            });
+            
+            $('#set_auto_back').click( function () {
+                $("#set_auto_back_popup").dialog({
+                    width:'60%',
+                    height:'auto',
+                    dialogClass: 'success-dialog',
+                    position:{my:"center top+200",at:"center top+200", of:"body"},
+                    buttons: {
+                    }
+                });
+            });
+            
+            $('#exchange_community_points').click( function () {
+                $("#exchange_community_points_popup").dialog({
                     width:'60%',
                     height:'auto',
                     dialogClass: 'success-dialog',
