@@ -826,7 +826,7 @@ error_reporting(E_ERROR);
                     width:'60%',
                     height:'auto',
                     dialogClass: 'success-dialog',
-                    position:{my:"center center",at:"center center-200", of:"body"},
+                    position:{my:"center top+200",at:"center top+200", of:"body"},
                     buttons: {
                     }
                 });
