@@ -16,7 +16,6 @@ error_reporting(E_ERROR);
 			
 		}
 		
-		
 		function sortArrayKeyWise( $arrray , $sort_key ){
 			
 			
@@ -458,7 +457,7 @@ error_reporting(E_ERROR);
 			
 			if( isset( $_SESSION['user_id']) ){
 			
-				$user_campaign =  $db -> getCampaignByUser(  $_SESSION['user_id'] );
+				$user_added_campaign =  $db -> getCampaignByUser(  $_SESSION['user_id'] );
 			
 				//print_r( $user_campaign );
 				
@@ -472,13 +471,13 @@ error_reporting(E_ERROR);
 				
 
 				//$len = count($campaign_list);
-				foreach( $user_campaign as $campaign ){
+				foreach( $user_added_campaign as $ua_campaign ){
                                  
                                  
-				 $donation_info = ($db->getDonationlist($campaign['campaignid']));
+				 $donation_info = ($db->getDonationlist($ua_campaign['campaignid']));
                                  $progressbar_info = $donation_info['progressbarinfo'];
 					
-				 $startTimeStamp = strtotime( $campaign['c_date']);
+				 $startTimeStamp = strtotime( $ua_campaign['c_date']);
 				 $endTimeStamp = strtotime( $date );
 
 				 $timeDiff = abs($endTimeStamp - $startTimeStamp);
@@ -487,11 +486,11 @@ error_reporting(E_ERROR);
 
 				// and you might want to convert to integer
 				 $numberDays = intval($numberDays);
-				 $numberDays = $campaign['days'] - $numberDays ; 
+				 $numberDays = $ua_campaign['days'] - $numberDays ; 
 				 if( $numberDays < 0 )
 					 $numberDays = 0;
-				 if( $campaign['amount'] != 0 )
-				 $percent = ( $campaign['total_amount']/$campaign['amount'] ) * 100;
+				 if( $ua_campaign['amount'] != 0 )
+				 $percent = ( $ua_campaign['total_amount']/$ua_campaign['amount'] ) * 100;
 				 else {
 					 
 				 }
@@ -504,16 +503,16 @@ error_reporting(E_ERROR);
 				
 				 <!--Campaign Content 1-->
 				 <div class="col s3" style="margin-top: 50px;">
-				                     <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
+				                     <a href="usercampaign.php?folio_id=<?php echo $ua_campaign['campaignid'];  ?>">
                         <div class="card" style="height: 450px;">
                             <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
-							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
+							<img src="campaign_uploads/<?php echo $ua_campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
                             <div class="container1" style="height:auto;">
-                                <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
-                                <p style="word-break: break-all; overflow-y: auto; height: 90px; color: gray;"><strong><?php  echo $campaign['description']; ?></strong></p>
+                                <h5><b><?php  echo $ua_campaign['campaignname']; ?></b></h5>
+                                <p style="word-break: break-all; overflow-y: auto; height: 90px; color: gray;"><strong><?php  echo $ua_campaign['description']; ?></strong></p>
 							
                                 <img class="col s2" src="images/location.png" style="padding: 0; height: auto; width: 20px;"/>
-                                <h6 class="col s9"><?php  echo $campaign['company_location']; ?></h6>
+                                <h6 class="col s9"><?php  echo $ua_campaign['company_location']; ?></h6>
                                 </div>                            
                         </div>
                     </a>
@@ -528,11 +527,11 @@ error_reporting(E_ERROR);
                             <p>Backers</p>
                         </div>
                         <div class="col s4">
-                            <h5> <?php echo $campaign['amount'];  ?>$ </h5>
+                            <h5> <?php echo $ua_campaign['amount'];  ?>$ </h5>
                             <p>Goal</p>
                         </div>
                         <div class="col s4">
-                            <h5> <?php  echo /* $campaign['days'] */$numberDays; ?> days</h5>
+                            <h5> <?php  echo /* $ua_campaign['days'] */$numberDays; ?> days</h5>
                             <p>open folio</p>
                         </div>
                     </div>
@@ -1149,7 +1148,6 @@ error_reporting(E_ERROR);
                     chartArea: {left: 50, top: 50, width: "100%", height: "100%"},
                     backgroundColor: { fill:'transparent' },
                     tooltip: {isHtml: true},
-                    legend: 'none'
                     //sliceVisibilityThreshold:0
                   };
                 // Instantiate and draw our chart, passing in some options.

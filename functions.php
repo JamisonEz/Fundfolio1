@@ -412,7 +412,7 @@ class DBController {
 		
 			$where  = " 1=1 ";
 
-			if( isset( $user_id ) && ( $user_id != -1) && ( $user_id < 11) ){
+			if( isset( $user_id ) && ( $user_id != -1)){
 				$where  .="and c.loginid=".$user_id; 
 			}
 			
@@ -836,6 +836,7 @@ class DBController {
     function updateFolioMatrix($folio_id, $amount, $userid)
     {
         $folio_id = (int) $folio_id;
+        $amount = (int) $amount; //in our case amount is integer
         $sql = mysqli_query( $this->conn ,"SELECT * FROM `campaign_fund` WHERE campaignid = $folio_id");
         $temp_result = mysqli_fetch_assoc($sql);
         if(!empty($temp_result))
@@ -890,6 +891,7 @@ class DBController {
                 return "InProcess";
             }
             $matrix_json = json_encode($matrix_array);
+            
             $sql = mysqli_query( $this->conn , "UPDATE `campaign_fund` SET `matrix` = '".$matrix_json."' WHERE `campaign_fund`.`campaignid` = $folio_id;");
             if($sql)
                 return "Success";

@@ -29,6 +29,7 @@
 </head>
 <?php 
     require_once('functions.php');
+    require_once('paypal/config.php');
     error_reporting(E_ERROR);
     $db = new DBController();
 	
@@ -218,12 +219,16 @@
 
     <div id="donate_to_folio" style='display:none'>
         You can choose either of below options to pay the amount.
+        <br>
+        <br>
     </div>
     <form id="stripeForm" action="" method="POST" style="display:none;">
         <input type="text" id="stripeAmount" name="stripeAmount"/>
         <input type="hidden" id="stripeToken" name="stripeToken"/>
         <input type="hidden" id="stripeEmail" name="stripeEmail"/>
     </form>
+    
+    <form id="paypalForm" method="post" action="paypal/process.php?paypal=checkout" style="display:none;"></form>
     
     <div class="container-fluid">
         <div class="row">
@@ -615,8 +620,9 @@ window.twttr = (function(d, s, id) {
   return t;
 }(document, "script", "twitter-wjs"));
 </script>
-
 <script>
+    
+    
     $(function () {
         setInterval(function () {
             var user_img = $(".user-img img");
@@ -697,9 +703,42 @@ window.twttr = (function(d, s, id) {
             });
         });
 
-        function paypalpayment()
+        function paypalpayment(amount, click_object)
         {
-            console.log('paypal payment');
+            var paypalform = $('#paypalForm');
+            var folio_name = '<?php echo $folio_info['campaignname']; ?>';
+            var folio_description = '<?php echo str_replace(array("\r", "\n"), '', $folio_info['description']);?>';
+            var folio_id = '<?php echo $folio_info['campaignid']; ?>';
+            
+            $.ajax({
+                type: "POST",
+                data: {amount:amount, folio_id:folio_id, folio_name:folio_name, folio_description:folio_description, payment_method: 'paypal'},
+                url:"payment_start.php",
+                dataType: 'json',
+                success:function(response_flag)
+                {
+                    if(response_flag.status===true)
+                    {
+                        paypalform.append("<input name='itemname' value='"+folio_name+"' type='text'/>"); 
+                        paypalform.append("<input name='itemprice' value='"+amount+"' type='text'/>"); 
+                        paypalform.append("<input name='itemnumber' value='"+folio_id+"' type='text'/>"); 
+                        paypalform.append("<input name='itemdesc' value='"+folio_description+"' type='text'/>");
+                        paypalform.append("<input name='itemQty' value='"+1+"' type='text'/>");
+
+                        paypalform.submit();
+                    }
+                    else
+                    {
+                        alert(response_flag.message);
+                    }
+                },
+                failure:function(response_flag)
+                {
+                    alert("Some error occured, try again.");
+                }
+            });
+            
+            
         }
         
         $(document.body).on('click', '#add_update', function (e)
@@ -783,7 +822,7 @@ window.twttr = (function(d, s, id) {
             //to prevent simultaneous payments
             $.ajax({
                 type: "POST",
-                data: {amount:amount, folio_id:folio_id, folio_name:folio_name, folio_description:folio_description},
+                data: {amount:amount, folio_id:folio_id, folio_name:folio_name, folio_description:folio_description, payment_method: 'stripe'},
                 url:"payment_start.php",
                 dataType: 'json',
                 success:function(response_flag)

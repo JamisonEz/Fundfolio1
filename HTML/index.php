@@ -415,7 +415,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 					<p><strong>Work at a large company?</strong> You might want to name your slack after your division, or working group.</p>
 					<p style="margin: 10px 0px;"><strong>Company or team name</strong> (You can Change this later)</p>
 					<input type="text" onkeyup="companyheader();" class="getdatainput" id="company_team_name" name="company_team_name" value="" placeholder="Ex. Acme or Acms Marketing"/>
-					<p style="margin: 25px 0 10px;"><strong>Tag Line</strong> (You can Change this later)</p>
+					<p style="margin: 25px 0 10px;"><strong>Tag Line</strong></p>
 					<input type="text" onkeyup="companytag();" class="getdatainput" id="company_tag_line" name="company_tag_line" value="" placeholder="Working together to end homelessness"/>
 					<div class="sub_but_class"><button style="color:grey;" class="btn next_step" onclick="showseconddiv();" id="next_form" >Next<i class="fa fa-arrow-right" aria-hidden="true" style="padding: 0px 0px 0px 10px;"></i></button> </div>
 					</div>
