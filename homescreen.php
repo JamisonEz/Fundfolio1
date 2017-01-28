@@ -429,7 +429,7 @@ error_reporting(E_ERROR);
             </div>
         </div>
 
-        <div id="fundfolio_panel"   <?php  if( isset( $_REQUEST['user_id']) )  { ?>s tyle="visibility: visible;"   <?php } ?>  >
+        <div id="fundfolio_panel" style="visibility: <?php echo isset( $_REQUEST['user_id']) ? 'visible' : 'none';?>">
             <div class="red-x big-x close" style="float: right; margin: 30px">&#10006;</div>
 			
 			
@@ -945,21 +945,21 @@ error_reporting(E_ERROR);
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 	
  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyCgwupCCqrpms0vsY6k4ijoVEeGgNZQnZs&language=en-AU"></script>
-        <script>
-            var autocomplete = new google.maps.places.Autocomplete($("#loc_name")[0], {});
+    <script>
+        var autocomplete = new google.maps.places.Autocomplete($("#loc_name")[0], {});
 
-            google.maps.event.addListener(autocomplete, 'place_changed', function() {
-                var place = autocomplete.getPlace();
-				
-				
-				var loc_n = document.getElementById("loc_name");
-				//alert("its call"+loc_n.value);
-				
-				document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=16&location='+loc_n.value;
-				
-                console.log(place.address_components);
-            });
-        </script>
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            var place = autocomplete.getPlace();
+
+
+                            var loc_n = document.getElementById("loc_name");
+                            //alert("its call"+loc_n.value);
+
+                            document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=16&location='+loc_n.value;
+
+            console.log(place.address_components);
+        });
+    </script>
 
     <script type="text/javascript">
         $(function () {
@@ -1017,19 +1017,19 @@ error_reporting(E_ERROR);
                 WidthChange(mq);
             }
 			
-			var el = document.getElementById("div_show");
-				el.onclick = showSearchBox;
-			
-			function showSearchBox(){
-				//alert("test");
-				
-				 //$('#loc_name').show();
-				  var loc_name = document.getElementById("loc_name");
-				  if( loc_name.style.visibility == "visible" )
-					loc_name.style.visibility = "hidden"
-				  else
-					loc_name.style.visibility = "visible"
-			}
+            var el = document.getElementById("div_show");
+                    el.onclick = showSearchBox;
+
+            function showSearchBox(){
+                    //alert("test");
+
+                     //$('#loc_name').show();
+                      var loc_name = document.getElementById("loc_name");
+                      if( loc_name.style.visibility == "visible" )
+                            loc_name.style.visibility = "hidden"
+                      else
+                            loc_name.style.visibility = "visible"
+            }
 
             // media query change
             function WidthChange(mq) {
@@ -1092,35 +1092,34 @@ error_reporting(E_ERROR);
                     }
                 });
             });
+            
+            $(window).load(function (){
+                // Load the Visualization API and the corechart package.
+                google.charts.load('current', {'packages':['corechart']});
+
+                // Set a callback to run when the Google Visualization API is loaded.
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+
+                    // Create our data table out of JSON data loaded from server.
+                    var data = new google.visualization.DataTable(<?php echo $profilepage_info['jsonTable']; ?>);
+                    var options = {
+                        title: 'Interested Fund Categorized',
+                        is3D: true,
+                        'width': $(window).width()/2,
+                        'height': 500,
+                        chartArea: {left: 50, top: 50, width: "100%", height: "100%"},
+                        backgroundColor: { fill:'transparent' },
+                        //sliceVisibilityThreshold:0
+                      };
+                    // Instantiate and draw our chart, passing in some options.
+                    // Do not forget to check your div ID
+                    var chart = new google.visualization.PieChart($('#chart_div')[0]);
+                    chart.draw(data, options);
+                } 
+            });
         });
-        
-        $(window).on('load', function (){
-            // Load the Visualization API and the corechart package.
-            google.charts.load('current', {'packages':['corechart']});
-
-            // Set a callback to run when the Google Visualization API is loaded.
-            google.charts.setOnLoadCallback(drawChart);
-
-            function drawChart() {
-
-                // Create our data table out of JSON data loaded from server.
-                var data = new google.visualization.DataTable(<?php echo $profilepage_info['jsonTable']; ?>);
-                var options = {
-                    title: 'Interested Fund Categorized',
-                    is3D: true,
-                    'width': $(window).width()/2,
-                    'height': 500,
-                    chartArea: {left: 50, top: 50, width: "100%", height: "100%"},
-                    backgroundColor: { fill:'transparent' },
-                    //sliceVisibilityThreshold:0
-                  };
-                // Instantiate and draw our chart, passing in some options.
-                // Do not forget to check your div ID
-                var chart = new google.visualization.PieChart($('#chart_div')[0]);
-                chart.draw(data, options);
-            } 
-        });
-
         function togglenav() {
 //            alert('here');
             var toggle = $('#site-menu');
@@ -1128,8 +1127,5 @@ error_reporting(E_ERROR);
             toggle.toggleClass('open');
         }
     </script>
-
-
-        
 </body>
 </html>
