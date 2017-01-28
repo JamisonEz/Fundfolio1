@@ -1121,13 +1121,16 @@ error_reporting(E_ERROR);
                 });
             });
             
-            $(window).load(function (){
-            // Load the Visualization API and the corechart package.
-            google.charts.load('current', {'packages':['corechart']});
+            //$(window).load(function (){
+                // Load the Visualization API and the corechart package.
+                google.charts.load('current', {'packages':['corechart']});
 
-            // Set a callback to run when the Google Visualization API is loaded.
-            google.charts.setOnLoadCallback(drawChart);
+                // Set a callback to run when the Google Visualization API is loaded.
+                google.charts.setOnLoadCallback(drawChart);
 
+                
+            //});
+            
             function drawChart() {
 
                 // Create our data table out of JSON data loaded from server.
@@ -1146,7 +1149,6 @@ error_reporting(E_ERROR);
                 var chart = new google.visualization.PieChart($('#chart_div')[0]);
                 chart.draw(data, options);
             } 
-        });
         });
         function togglenav() {
 //            alert('here');

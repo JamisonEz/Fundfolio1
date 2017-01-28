@@ -340,7 +340,7 @@
                 <div class="container">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#summary" data-toggle="tab">Short Summary</a></li>
-                        <li><a href="#updates" data-toggle="tab">Updates</a></li>
+                        <li><a href="#updates" data-toggle="tab">Updates (<?php echo count($campaign_updates)?>)</a></li>
                     </ul>
                 
                     <div class="tab-content col-md-10">
@@ -360,7 +360,7 @@
                                 {
                                     ?>
                                     <button type="button" id="add_update" class="btn btn-primary">Add Update</button>
-                               <form  method="post" name="updates_form" id="updates_form" style="display: none" action = "" enctype="multipart/form-data" >
+                                <form  method="post" name="updates_form" id="updates_form" style="display: none" action = "" enctype="multipart/form-data" >
                                    <h5><i>(You can post updates for the campaign below): </i></h5>
                                    <span style="font-size: 100%" class="label label-primary">Upload some text</span><br>
                                    <textarea rows="4" cols="50" id="update_text"  name="update_text"  placeholder="Add some text for updates" style="margin-top:5px;margin-bottom: 20px"></textarea><br>
@@ -369,10 +369,22 @@
                                     <span style="font-size: 100%"class="label label-primary">Upload Video</span><br>
                                     <input type="file" id="update_video" name="update_video" value="" style="margin-top:5px"/>
                                     <div style="clear:both"></div>
-                                    <div class="sub_but_class" style="margin-top:10px"><button class="btn next_step" onclick="showseconddiv1();" id="submit_form" >Submit</button> 
+                                    <div class="sub_but_class" style="margin-top:10px"><button class="btn next_step" id="submit_updates_form" >Submit</button> 
                                     </div>
                                     <div style="clear:both"></div>
-                               </form>
+                                </form>
+                                <script>
+                                    $(document.body).on('click', '#submit_updates_form', function(e){
+                                        e.preventDefault();
+                                        if (updates_form.update_text.value == '' || updates_form.update_image.value == '' || updates_form.update_video.value == '') {
+                                            alert('Please enter some text or upload image/video.');
+                                            return false;
+                                        }
+                                        else {
+                                            updates_form.submit();
+                                        }
+                                    });
+                                </script>
                                     <?php
                                 }
                                ?>

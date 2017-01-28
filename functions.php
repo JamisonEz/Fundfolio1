@@ -935,9 +935,10 @@ class DBController {
     
     function addCampaignupdate($data)
     {
-        if(($data['update_text']!="" || $data['update_file']!="") && isset($_SESSION['user_id']))
+        if(($data['update_text']!="" || $data['update_iamge']!="" || $data['update_video']!="") && isset($_SESSION['user_id']))
         {
-            $query = "INSERT INTO `campaign_updates` (`id`, `userid`, `campaignid`, `update_text`, `update_image`, `update_video`, `created_on`) VALUES (NULL, '{$_SESSION['user_id']}', '{$data['campaignid']}', '{$data['update_text']}', '{$data['update_image']}', '{$data['update_video']}', NOW());";
+            $date = date('Y-m-d H:i:s');
+            $query = "INSERT INTO `campaign_updates` (`id`, `userid`, `campaignid`, `update_text`, `update_image`, `update_video`, `created_on`) VALUES (NULL, '{$_SESSION['user_id']}', '{$data['campaignid']}', '{$data['update_text']}', '{$data['update_image']}', '{$data['update_video']}', '$date');";
             
             $sql = mysqli_query($this->conn, $query);
             $id = mysqli_insert_id( $this->conn);
