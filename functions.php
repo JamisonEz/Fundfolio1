@@ -932,4 +932,51 @@ class DBController {
             return false;
         }
     }
+    
+    function addCampaignupdate($data)
+    {
+        if(($data['update_text']!="" || $data['update_file']!="") && isset($_SESSION['user_id']))
+        {
+            $query = "INSERT INTO `campaign_updates` (`id`, `userid`, `campaignid`, `update_text`, `update_image`, `update_video`, `created_on`) VALUES (NULL, '{$_SESSION['user_id']}', '{$data['campaignid']}', '{$data['update_text']}', '{$data['update_image']}', '{$data['update_video']}', NOW());";
+            
+            $sql = mysqli_query($this->conn, $query);
+            $id = mysqli_insert_id( $this->conn);
+            return $id;
+        }
+    }
+    
+    function getCampaignupdates($campaignid)
+    {
+        $campaign_result = array();
+        $campaignid = (int) $campaignid;
+        if($campaignid > 0 )
+        {
+            $query = "SELECT * FROM `campaign_updates` WHERE campaignid = ".(int)$campaignid;
+            $sql = mysqli_query( $this->conn, $query ) or die(mysqli_error($this->conn));
+
+            while($row = mysqli_fetch_assoc($sql)) {
+                $campaign_result[$row['id']] = $row;
+                $current_time = date('Y-m-d H:i:s');
+                //calculation
+                $elapsed_strtotime = strtotime($current_time) - strtotime($row['created_on']);
+                $datetime1 = new DateTime($current_time);
+                $datetime2 = new DateTime($row['created_on']);
+                $interval = $datetime1->diff($datetime2);
+                $elapsed_time = array();
+                $elapsed_time['seconds'] = $interval->format('%S');
+                $elapsed_time['minutes'] = $interval->format('%i');
+                $elapsed_time['hours'] = $interval->format('%h');
+                $elapsed_time['days'] = $interval->format('%a');
+                $elapsed_time['months'] = $interval->format('%m');
+                $elapsed_time_string = $elapsed_time['months']>0 ? $elapsed_time['months'].' months ago' : ($elapsed_time['days']>0 ? $elapsed_time['days'].' days ago' : ($elapsed_time['hours']>0 ? $elapsed_time['hours'].' hours ago' : ($elapsed_time['minutes']>0 ? $elapsed_time['minutes'].' minutes ago' : $elapsed_time['seconds'].' seconds ago')));
+                
+                $campaign_result[$row['id']]['time_elapsed_string'] = $elapsed_time_string;
+                $campaign_result[$row['id']]['time_elapsed'] = $elapsed_strtotime;
+            }
+
+            arsort($campaign_result);
+
+            return $campaign_result;
+        }
+    }
 }

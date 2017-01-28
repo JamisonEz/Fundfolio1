@@ -173,7 +173,7 @@ error_reporting(E_ERROR);
 
     <!-- Compiled and minified JavaScript -->
     <script type="text/javascript" src="js/materialize.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     
@@ -219,7 +219,7 @@ error_reporting(E_ERROR);
         </table>
     </div>
     <div id="set_auto_back_popup" style='display:none;' title="Set Auto Back">
-        <h3>Coming soon in beta release.</h3>
+        <h5>Coming soon in beta release.</h5>
     </div>
     <div id="exchange_community_points_popup" style='display:none;' title="Exchange Community Points">
         <h3><?php echo !empty($user_info['community_points']) ? number_format($user_info['community_points']) : 0; ?></h3>
@@ -231,19 +231,16 @@ error_reporting(E_ERROR);
             <div class="col s3" style="margin-top: 40px; margin-bottom: 20px; margin-left: 70px">
                 <img src="images/logo1.png" style="width: 70%;">
             </div>
-            <div class="row col s3" style="float: right; margin-top: 40px; height: 50px; line-height: 50px; text-align: center">
-			
-			
-			
-				
-			
-                <div class="col" style="text-align: center; border: 2px solid black;" >
-                    <!--<img src="images/background.png" style="border-radius: 50%; height: 50px; width: 50px"-->
-					 <a href="?action_logout=logout" class="button">LogOut </a> 
-					 <img onerror="this.src='images/userimagenotfound.png'" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" style="border-radius: 50%; height: 50px; width: 50px">
-					
+            <div class="row col s5" style="float: right; margin-top: 40px; height: 50px; line-height: 50px; text-align: center">
+													
+                <div class="col s3" style="text-align: center;" >
+                    <!--<img src="images/background.png" style="border-radius: 50%; height: 50px; width: 50px"-->					  
+					 <img onerror="this.src='images/userimagenotfound.png'" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" style="border-radius: 50%; height: 50px; width: 50px"/>					
                 </div>
-                <div class="col" style="text-align: center;">
+				<div class="col s3" style="text-align: center;" >
+				     <a href="?action_logout=logout" class="button user-name text-center text-uppercase" style="border: 2px solid black;">LogOut </a>
+				</div>
+                <div class="col s5" style="text-align: center;">
                     WELCOME, <b><?php 
 				/* if(  $db ->  UserType() == 0){
 					echo $db ->  UserEmail() ;
@@ -268,7 +265,7 @@ error_reporting(E_ERROR);
                     </div>
                 <!--</a>-->
 
-                <a href="#">
+                <!--<a href="#">-->
                     <div id="card2" class="col s4">
                         <div style="margin-top: 25%; position: relative">
                             <div class="row" style="font-size: 25px; font-weight: bolder; color: white; height: 25px;">
@@ -293,12 +290,13 @@ error_reporting(E_ERROR);
                         </div>
                         <!--<img src="images/card2.png" style="height: 100%; width: 100%">-->
                     </div>
-                </a>
+                <!--</a>-->
             </div>
+			
             <div class="row" style="margin-top: 40px; margin-left: 50px; margin-bottom: 0px">
-                <div id="myDiv" class="row col s7" style="padding: 0; margin-bottom: 0px;">
-                    <a href="#">
-                        <div id="card3" class="col s5" style="position: relative">
+                				
+                    <!--<a href="#">-->
+                        <div id="card3" class="col s4" style="position: relative; width: 28%;">
                             <div style="font-size: 20px; font-weight: bolder; color: white; top: 40%; position: absolute; left: 15%">
                                 <div class="row" style="margin-bottom: 0px">
                                     <div class="col s12" style="text-align: right; padding: 0px">
@@ -313,22 +311,23 @@ error_reporting(E_ERROR);
                             </div>
                             <!--<img src="images/card3.png" style="width: 100%; height: 100%">-->
                         </div>
-                    </a>
+                    <!--</a>-->				
+																			
                     <!--<a href="#">-->
-                        <div id="card4" class="col s5">
+                        <div id="card4" class="col s4"  style="width: 28%; height: 100%;">
                             <!--<div style="color: white; font-weight: bolder; font-size: 35px; position: absolute; top: 45%; left: 30%">-->
                                 <!--My Fundfolio-->
                             <!--</div>-->
-                            <img src="images/card4.png" style="height: 100%; width: 100%">
+                            <img src="images/card4.png" style="height: 100%; width: 100%"/>
                         </div>
                     <!--</a>-->
-                </div>
-                <!--<a href="#">-->
-                    <div id="card5" class="col s4">
+                					
+                    <!--<a href="#">-->
+                    <div id="card5" class="col s4" style="width: 29%; height: 100%;">
                         <!--<div style="color: white; font-weight: bolder; font-size: 35px; position: absolute; top: 45%; left: 35%">-->
                             <!--Help Center-->
                         <!--</div>-->
-                        <img src="images/card5.png" style="height: 100%; width: 100%">
+                        <img src="images/card5.png" style="height: 100%; width: 100%"/>
                     </div>
                 <!--</a>-->
             </div>
@@ -444,7 +443,7 @@ error_reporting(E_ERROR);
 			if( isset( $_SESSION['user_id']) ){
 			
 				$user_campaign =  $db -> getCampaignByUser(  $_SESSION['user_id'] );
-				
+			
 				//print_r( $user_campaign );
 				
 				
@@ -609,18 +608,17 @@ error_reporting(E_ERROR);
 
             <div id="site-menu">
                 <!--<a class="btn btn-lg btn-success" onclick="togglenav()" style="color: pink; font-size: 20px;"><i class="fa fa-times"></i></a>-->
-                <ul>
-				
+                <ul>				
 				    <li class="active"><a href="?cat_id =-1">OVERVIEW</a></li>
-                    <li><a href="?cat_id =1">Business</a></li>
-                    <li><a href="?cat_id =2">Travel</a></li>
-                    <li><a href="?cat_id =3">Sports</a></li>
-                    <li><a href="?cat_id =4">Health</a></li>
-                    <li><a href="?cat_id =5">Philanthropy</a></li>
-                    <li><a href="?cat_id =6">Arts</a></li>
-					<li><a href="?cat_id =7">Journalism</a></li>
-                    <li><a href="?cat_id =8">Pets & Animals</a></li>
-					<li><a href="?cat_id =9">Education</a></li>
+                    <li style="font-size: large;"><a href="?cat_id =1" style="font-size: large;">Business</a></li>
+                    <li><a href="?cat_id =2" style="font-size: large;">Travel</a></li>
+                    <li><a href="?cat_id =3" style="font-size: large;">Sports</a></li>
+                    <li><a href="?cat_id =4" style="font-size: large;">Health</a></li>
+                    <li><a href="?cat_id =5" style="font-size: large;">Philanthropy</a></li>
+                    <li><a href="?cat_id =6" style="font-size: large;">Arts</a></li>
+					<li><a href="?cat_id =7" style="font-size: large;">Journalism</a></li>
+                    <li><a href="?cat_id =8" style="font-size: large;">Pets & Animals</a></li>
+					<li><a href="?cat_id =9" style="font-size: large;">Education</a></li>
 					
                 </ul>
             </div>
@@ -631,7 +629,7 @@ error_reporting(E_ERROR);
             <div class="row">
 
                 <!--Side Navigation Bar-->
-                <div class="col s2" style="width: 375px">
+                <div class="col s3">
                     <div id="sidenavbar" style="margin-top: 50px; margin-left: 20px; background-color: #F9F9F9">
                         <ul style="margin-left: 20px">
                             <li <?php  if ( $cat_id_le == 10 ) { ?> class="active" <?php  } ?> onclick = "document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=10'" >
@@ -678,7 +676,7 @@ error_reporting(E_ERROR);
                     </div>
                 </div>
 				
-				
+				<div class="col s9">
 				<?php 
 				
 				$date = date('Y-m-d H:i:s');
@@ -720,20 +718,18 @@ error_reporting(E_ERROR);
 				
 				
 				  <!--Campaign Content 1-->
-				 <div class="col s3" style="margin-left: 0px; margin-top: 50px;">
-                    <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
-                        <div class="card" style="">
+				 <div class="col s4" style="margin-left: 0px; margin-top: 50px;">
+				                     <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
+                        <div class="card" style="height: 380px;">
                             <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
 							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
                             <div class="container1" style="height:auto;">
                                 <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
-                                <p style="overflow: hidden; word-break: break-all;"><?php  echo $campaign['description']; ?></p>
-								<p><a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>" style="color:orange;">Read more</a></p>
-                                <div class="row">
-                                    <img class="col s2" src="images/location.png" style="padding: 0; height: auto; width: 20px;">
-                                    <h5 class="col s9"><?php  echo $campaign['company_location']; ?></h5>
-                                </div>
-                            </div>
+                                <p style="word-break: break-all; overflow-y: auto; height: 70px; color: gray;"><strong><?php  echo $campaign['description']; ?></strong></p>
+							
+                                <img class="col s2" src="images/location.png" style="padding: 0; height: auto; width: 20px;"/>
+                                <h5 class="col s9"><?php  echo $campaign['company_location']; ?></h5>
+                                </div>                            
                         </div>
                     </a>
                     <div class="progress">
@@ -758,7 +754,7 @@ error_reporting(E_ERROR);
                 </div>
 				
 				<?php } ?>
-		
+				</div>
 
                 <!--Campaign Content 1-->
                <!-- <div class="col s3" style="margin-left: 0px; margin-top: 50px">
@@ -945,24 +941,23 @@ error_reporting(E_ERROR);
         </div>
     </div>
 	
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 	
  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyCgwupCCqrpms0vsY6k4ijoVEeGgNZQnZs&language=en-AU"></script>
-    <script>
-        var autocomplete = new google.maps.places.Autocomplete($("#loc_name")[0], {});
+        <script>
+            var autocomplete = new google.maps.places.Autocomplete($("#loc_name")[0], {});
 
-        google.maps.event.addListener(autocomplete, 'place_changed', function() {
-            var place = autocomplete.getPlace();
-
-
-                            var loc_n = document.getElementById("loc_name");
-                            //alert("its call"+loc_n.value);
-
-                            document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=16&location='+loc_n.value;
-
-            console.log(place.address_components);
-        });
-    </script>
+            google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                var place = autocomplete.getPlace();
+				
+				
+				var loc_n = document.getElementById("loc_name");
+				//alert("its call"+loc_n.value);
+				
+				document.location.href='?cat_id=<?php echo $cat_id; ?>&cat_id_le=16&location='+loc_n.value;
+				
+                console.log(place.address_components);
+            });
+        </script>
 
     <script type="text/javascript">
         $(function () {
@@ -1020,19 +1015,19 @@ error_reporting(E_ERROR);
                 WidthChange(mq);
             }
 			
-            var el = document.getElementById("div_show");
-                    el.onclick = showSearchBox;
-
-            function showSearchBox(){
-                    //alert("test");
-
-                     //$('#loc_name').show();
-                      var loc_name = document.getElementById("loc_name");
-                      if( loc_name.style.visibility == "visible" )
-                            loc_name.style.visibility = "hidden"
-                      else
-                            loc_name.style.visibility = "visible"
-            }
+			var el = document.getElementById("div_show");
+				el.onclick = showSearchBox;
+			
+			function showSearchBox(){
+				//alert("test");
+				
+				 //$('#loc_name').show();
+				  var loc_name = document.getElementById("loc_name");
+				  if( loc_name.style.visibility == "visible" )
+					loc_name.style.visibility = "hidden"
+				  else
+					loc_name.style.visibility = "visible"
+			}
 
             // media query change
             function WidthChange(mq) {
@@ -1061,7 +1056,7 @@ error_reporting(E_ERROR);
                 h = $('#main_content').height();
                 $('#main_content').hide();
                 $('#backed_panel').hide();
-//                $('#fundfolio_panel').show();
+             //   $('#fundfolio_panel').show();
                 $('#fundfolio_panel').fadeIn(1000);
                 $('#help_center_panel').hide();
                 window.scrollTo(0, 0);
@@ -1104,9 +1099,9 @@ error_reporting(E_ERROR);
                     position:{my:"center top+200",at:"center top+200", of:"body"},
                     buttons: {
                     }
-                });
+        });
             });
-            
+        
             $('#exchange_community_points').click( function () {
                 $("#exchange_community_points_popup").dialog({
                     width:'60%',
@@ -1119,31 +1114,31 @@ error_reporting(E_ERROR);
             });
             
             $(window).load(function (){
-                // Load the Visualization API and the corechart package.
-                google.charts.load('current', {'packages':['corechart']});
+            // Load the Visualization API and the corechart package.
+            google.charts.load('current', {'packages':['corechart']});
 
-                // Set a callback to run when the Google Visualization API is loaded.
-                google.charts.setOnLoadCallback(drawChart);
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(drawChart);
 
-                function drawChart() {
+            function drawChart() {
 
-                    // Create our data table out of JSON data loaded from server.
-                    var data = new google.visualization.DataTable(<?php echo $profilepage_info['jsonTable']; ?>);
-                    var options = {
-                        title: 'Interested Fund Categorized',
-                        is3D: true,
-                        'width': $(window).width()/2,
-                        'height': 500,
-                        chartArea: {left: 50, top: 50, width: "100%", height: "100%"},
-                        backgroundColor: { fill:'transparent' },
-                        //sliceVisibilityThreshold:0
-                      };
-                    // Instantiate and draw our chart, passing in some options.
-                    // Do not forget to check your div ID
-                    var chart = new google.visualization.PieChart($('#chart_div')[0]);
-                    chart.draw(data, options);
-                } 
-            });
+                // Create our data table out of JSON data loaded from server.
+                var data = new google.visualization.DataTable(<?php echo $profilepage_info['jsonTable']; ?>);
+                var options = {
+                    title: 'Interested Fund Categorized',
+                    is3D: true,
+                    'width': $(window).width()/2,
+                    'height': 500,
+                    chartArea: {left: 50, top: 50, width: "100%", height: "100%"},
+                    backgroundColor: { fill:'transparent' },
+                    //sliceVisibilityThreshold:0
+                  };
+                // Instantiate and draw our chart, passing in some options.
+                // Do not forget to check your div ID
+                var chart = new google.visualization.PieChart($('#chart_div')[0]);
+                chart.draw(data, options);
+            } 
+        });
         });
         function togglenav() {
 //            alert('here');
@@ -1152,5 +1147,8 @@ error_reporting(E_ERROR);
             toggle.toggleClass('open');
         }
     </script>
+
+
+        
 </body>
 </html>

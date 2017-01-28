@@ -50,8 +50,85 @@
     $user_info = ($db->getAllUserInfo());
     $donation_info = ($db->getDonationlist($folio_id));
     $folio_info = ($db->getCampaignById($folio_id));
+    $campaign_updates = ($db->getCampaignupdates($folio_id));
 	
-	
+   if(!empty($_POST))
+   {
+        $target_file_image = '';
+        $target_file_video = '';
+        
+        if(!empty($_FILES['update_image']["name"]))
+        {
+            $temp = explode(".", $_FILES["update_image"]["name"]);
+
+            $file_name = "imagefor_$folio_id_".round(microtime(true)) . '.' . end($temp);
+            $target_dir = "campaign_updates/";
+            $target_file_image = $target_dir . basename($file_name);
+
+            $uploadOk = 1;
+            $allowedImgExts = array("jpg", "png", "jpeg", "gif");
+            //$extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+            $imageFileType = pathinfo($target_file_image,PATHINFO_EXTENSION);
+            
+            
+            // Allow certain file formats
+            if(!in_array($imageFileType, $allowedImgExts)) {
+                $uploadOk = 0;
+            }
+            
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+            } else {
+                if( move_uploaded_file($_FILES["update_image"]["tmp_name"], realpath(dirname(__FILE__)).'/'.$target_file_image)) {
+                } else {
+                    $target_file_image ="";
+                    echo "Sorry, there was an error uploading your image file.";
+                }
+            }
+        }
+        
+        if(!empty($_FILES['update_video']["name"]))
+        {
+            $temp = explode(".", $_FILES["update_video"]["name"]);
+
+            $file_name = "videofor_$folio_id_".round(microtime(true)) . '.' . end($temp);
+            $target_dir = "campaign_updates/";
+            $target_file_video = $target_dir . basename($file_name);
+
+            $uploadOk = 1;
+            $allowedVideoExts = array("mp3", "mp4", "wmv", "wma");
+            //$extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+            $videoFileType = pathinfo($target_file_video,PATHINFO_EXTENSION);
+            
+            
+            // Allow certain file formats
+            if(!in_array($videoFileType, $allowedVideoExts)) {
+                $uploadOk = 0;
+            }
+            
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+            } else {
+                if( move_uploaded_file($_FILES["update_video"]["tmp_name"], realpath(dirname(__FILE__)).'/'.$target_file_video)) {
+                } else {
+                    $target_file_video ="";
+                    echo "Sorry, there was an error uploading your image file.";
+                }
+            }
+        }
+        
+        $data_to_post = $_POST;
+        $data_to_post['campaignid'] = $folio_id;
+        $data_to_post['update_image'] = $target_file_image;
+        $data_to_post['update_video'] = $target_file_video;
+        
+        $res = $db->addCampaignupdate (	
+                        $data_to_post
+                    );
+        if( $res > 0){
+            header("Refresh:0");
+        }
+   }
 	
 	
     //print_r($folio_info);
@@ -60,7 +137,6 @@
     //var_dump($folio_info);
     //exit;
 ?>
-
 
 <body>
     <header>
@@ -246,18 +322,87 @@
                         </p>
                     </div>
                 </div>
-                <nav class="navbar navbar-inverse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#">STORY</a></li>
-                        <li><a href="#">UPDATES(6)</a></li>
-                        <li><a href="#">COMMENTS</a></li>
+                <div class="container">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#summary" data-toggle="tab">Short Summary</a></li>
+                        <li><a href="#updates" data-toggle="tab">Updates</a></li>
+                        <li><a href="#comments" data-toggle="tab">Comments</a></li>
                     </ul>
-                </nav>
-                <h1><b>Short Summary</b></h1>
-                <div>
-                    <p style="color: rgb(67,67,67); font-size: large; text-align: justify; overflow: hidden; word-break: break-all;">
-                        <?php echo $folio_info['description'] ; ?>
-                    </p>
+                
+                    <div class="tab-content col-md-10">
+                        <div class="tab-pane active" id="summary">
+                            <h4>Short Summary</h4>
+                           <div>
+                               <p style="color: rgb(67,67,67); font-size: large; text-align: justify; overflow: hidden; word-break: break-all;">
+                                   <?php echo $folio_info['description'] ; ?>
+                               </p>
+                           </div>
+                       </div>
+                        <div class="tab-pane" id="updates">
+                            <h4>Updates</h4>
+                           <div>
+                               <?php 
+                                if($folio_info['loginid'] == $_SESSION['user_id'])
+                                {
+                                    ?>
+                                    <button type="button" id="add_update" class="btn btn-primary">Add Update</button>
+                               <form  method="post" name="updates_form" id="updates_form" style="display: none" action = "" enctype="multipart/form-data" >
+                                   <h5><i>(You can post updates for the campaign below): </i></h5>
+                                   <span style="font-size: 100%" class="label label-primary">Upload some text</span><br>
+                                   <textarea rows="4" cols="50" id="update_text"  name="update_text"  placeholder="Add some text for updates" style="margin-top:5px;margin-bottom: 20px"></textarea><br>
+                                   <span style="font-size: 100%"class="label label-primary">Upload Photo</span><br>
+                                    <input type="file" id="update_image" name="update_image" value="" style="margin-top:5px;margin-bottom: 20px"/>
+                                    <span style="font-size: 100%"class="label label-primary">Upload Video</span><br>
+                                    <input type="file" id="update_video" name="update_video" value="" style="margin-top:5px"/>
+                                    <div style="clear:both"></div>
+                                    <div class="sub_but_class" style="margin-top:10px"><button class="btn next_step" onclick="showseconddiv1();" id="submit_form" >Submit</button> 
+                                    </div>
+                                    <div style="clear:both"></div>
+                               </form>
+                                    <?php
+                                }
+                               ?>
+                           </div>
+                            <div id="campaign_updates_feed">
+                                <?php 
+                                
+                                foreach($campaign_updates as $camp_update)
+                                {
+                                    ?>
+                                    <div class="campaign_updates" style="margin-top: 20px; padding: 20px; background-color: #c2c0c2; border-radius: 5px; border-color: #c1c1c1" id="<?php echo $camp_update['id'] ?>">
+                                        <div style="float:right"><?php echo $camp_update['time_elapsed_string'];?></div>
+                                        <?php if($camp_update['update_video'] != "" && file_exists($camp_update['update_video'])) { ?>
+                                        <div id="port_video_container" class="col-xs-6">
+                                            <video width="450" height="350" src="<?php echo $camp_update['update_video']; ?>" controls>
+                                                
+                                            </video>
+                                        </div>
+                                        <div style="clear:both"></div>
+                                        <?php } ?>
+                                        <?php if($camp_update['update_image'] != "" && file_exists($camp_update['update_image'])) { ?>
+                                        <div class="col-xs-6">
+                                            <img onerror="this.src='campaign_uploads/imagenotfound.jpg'" src="<?php echo $camp_update['update_image'];?>" width="100%">
+                                        </div>
+                                        <?php } ?>
+                                        <div style="clear:both"></div>
+                                        <?php if($camp_update['update_text'] != "") { ?>
+                                        <div class="col-xs-6" style="margin-top: 5px;">
+                                            <span style="padding: 10px; margin: 10px;"><?php echo $camp_update['update_text'] ; ?></span>
+                                        </div>
+                                        <?php } ?>
+                                        <div style="clear:both"></div>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="comments">
+                            <h4>Comments</h4>
+                           <div>
+                           </div>
+                        </div>
+                    </div><!-- tab content -->
                 </div>
             </div>
             <div class="col-xs-4 common-margin wrap-full-sm middle-content-2">
@@ -535,6 +680,12 @@ window.twttr = (function(d, s, id) {
         {
             console.log('paypal payment');
         }
+        
+        $(document.body).on('click', '#add_update', function (e)
+        {
+            e.preventDefault();
+            $('#updates_form').toggle();
+        })
 
         $(document.body).on('click', '#facebook_share_button',function (e)
         {
@@ -673,7 +824,8 @@ window.twttr = (function(d, s, id) {
 
         window.setInterval(function(){
             refreshDonations();
-        }, 15000);
+            campaign_updates_feed();
+        }, 5000);
 
     });
 
