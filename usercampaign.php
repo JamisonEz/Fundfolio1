@@ -38,6 +38,13 @@
 							die();
 			
 		}
+                
+        if( isset( $_REQUEST [ 'action_logout' ] )){
+
+            $db -> LogOut();
+            //Redirect to homepage
+            header("Location:index.php");
+        }
 		
 		$folio_id = 1;
     if(isset($_REQUEST['folio_id'])){
@@ -334,7 +341,6 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#summary" data-toggle="tab">Short Summary</a></li>
                         <li><a href="#updates" data-toggle="tab">Updates</a></li>
-                        <li><a href="#comments" data-toggle="tab">Comments</a></li>
                     </ul>
                 
                     <div class="tab-content col-md-10">
@@ -404,11 +410,6 @@
                                 }
                                 ?>
                             </div>
-                        </div>
-                        <div class="tab-pane" id="comments">
-                            <h4>Comments</h4>
-                           <div>
-                           </div>
                         </div>
                     </div><!-- tab content -->
                 </div>
@@ -833,7 +834,7 @@ window.twttr = (function(d, s, id) {
         window.setInterval(function(){
             refreshDonations();
             campaign_updates_feed();
-        }, 5000);
+        }, 50000);
 
     });
 

@@ -49,4 +49,4 @@ CREATE TABLE IF NOT EXISTS `campaign_updates` (
   `update_video` varchar(500) NOT NULL,
   `created_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT
+) ENGINE=InnoDB 
