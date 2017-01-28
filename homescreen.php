@@ -1,5 +1,4 @@
 
-
 <?php
 error_reporting(E_ERROR);
 	
@@ -180,8 +179,9 @@ error_reporting(E_ERROR);
     <script type="text/javascript" src="jquery-ui-1.12.0/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     
-
-    <link rel="stylesheet" href="homescreen.css">
+	<link type="text/css" rel="stylesheet" href="usercampaign.css"/>
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="homescreen.css"/>
     <link rel="stylesheet" href="homescreen1.css">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="jquery-ui-1.12.0/jquery-ui.min.css">
@@ -219,7 +219,7 @@ error_reporting(E_ERROR);
         </table>
     </div>
     <div id="set_auto_back_popup" style='display:none;' title="Set Auto Back">
-        <h5>Coming soon in beta release.</h5>
+        <h3>Coming soon in beta release.</h3>
     </div>
     <div id="exchange_community_points_popup" style='display:none;' title="Exchange Community Points">
         <h3><?php echo !empty($user_info['community_points']) ? number_format($user_info['community_points']) : 0; ?></h3>
@@ -228,34 +228,46 @@ error_reporting(E_ERROR);
         
         <!--Top menu-->
         <header class="row" style="margin: 0">
-            <div class="col s3" style="margin-top: 40px; margin-bottom: 20px; margin-left: 70px">
-                <img src="images/logo1.png" style="width: 70%;">
-            </div>
-            <div class="row col s5" style="float: right; margin-top: 40px; height: 50px; line-height: 50px; text-align: center">
-													
-                <div class="col s3" style="text-align: center;" >
-                    <!--<img src="images/background.png" style="border-radius: 50%; height: 50px; width: 50px"-->					  
-					 <img onerror="this.src='images/userimagenotfound.png'" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" style="border-radius: 50%; height: 50px; width: 50px"/>					
+            <nav class="navbar navbar-default" style="min-height: 83px; margin-bottom: 0px;">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand wrap-auto" href="homescreen.php"><img src="images/logo1.png" class="logo" style="height: 60px; margin-top: -20px;"/></a>
                 </div>
-				<div class="col s3" style="text-align: center;" >
-				     <a href="?action_logout=logout" class="button user-name text-center text-uppercase" style="border: 2px solid black;">LogOut </a>
-				</div>
-                <div class="col s5" style="text-align: center;">
-                    WELCOME, <b><?php 
-				/* if(  $db ->  UserType() == 0){
-					echo $db ->  UserEmail() ;
-				}
-				else if(  $db ->  UserType() == 1 ) */ {
-					echo $db ->  UserName() ;
-				}
-				
-				?></b>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav middle">
+                        <li><a href="#"></a></li>
+                        <li><a href="HTML/"></a></li>
+                        <li><a href="#"></a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right" style="margin-right: -80px;">
+						<li><a href="?action_logout=logout">
+                            <div class="user-name text-center text-uppercase">
+                                <p style="font-size:large;"><b>Logout</b></p>
+                            </div>
+                        </a></li>
+                        <li><a href="#">
+                            <div class="user-img wrap-auto">
+                                <img class="img-circle" onerror="this.src='images/userimagenotfound.png'" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" alt="Profile Pic" width="50px">
+                            </div>
+                        </a></li>
+                        <li><a href="#">
+                            <div class="user-name text-center text-uppercase">
+                                <p style="font-size:large;">Welcome, <b><?php echo $db -> UserName() ; ?></b></p>
+                            </div>
+                        </a></li>
+                    </ul>
                 </div>
             </div>
+        </nav>
         </header>
 
         <div id="main_content">
-            <div class="row" style="margin-left: 50px;">
+            <div class="row" style="margin-left: 50px; margin-top: 20px;">
                 <!--<a href="#">-->
                     <div id="card1" class="col s7" style="position: relative">
                         <!--<div style="font-size: 6vh; font-weight: bolder; color: white; position: absolute; top: 40%; left: 35%">-->
@@ -269,9 +281,7 @@ error_reporting(E_ERROR);
                     <div id="card2" class="col s4">
                         <div style="margin-top: 25%; position: relative">
                             <div class="row" style="font-size: 25px; font-weight: bolder; color: white; height: 25px;">
-                                <?php echo !empty($user_info['community_points']) ? number_format($user_info['community_points']) : 0; ?>
-                            
-                                Community Points
+                                Community Points</br><?php echo !empty($user_info['community_points']) ? number_format($user_info['community_points']) : 0; ?>                                                           
                             </div>
                             <div style="font-size: 25px; font-weight: bolder; color: white; text-align: left; position: absolute; left: 30%">
                                 <div class="row" style="margin-top: 30%; margin-bottom: 0; position: relative">
@@ -300,7 +310,7 @@ error_reporting(E_ERROR);
                             <div style="font-size: 20px; font-weight: bolder; color: white; top: 40%; position: absolute; left: 15%">
                                 <div class="row" style="margin-bottom: 0px">
                                     <div class="col s12" style="text-align: right; padding: 0px">
-                                        <?php echo !empty($profilepage_info['total_donate']) ? $profilepage_info['total_donate'] : 0; ?> Total Donated
+                                        <?php echo !empty($profilepage_info['total_donate']) ? $profilepage_info['total_donate'] : 0; ?>$ Total Donated
                                     </div>
                                 </div>
                                 <div class="row">
@@ -314,7 +324,7 @@ error_reporting(E_ERROR);
                     <!--</a>-->				
 																			
                     <!--<a href="#">-->
-                        <div id="card4" class="col s4"  style="width: 28%; height: 100%;">
+                        <div id="card4" class="col s4"  style="width: 28%; height: 100%; margin-left: 30px;">
                             <!--<div style="color: white; font-weight: bolder; font-size: 35px; position: absolute; top: 45%; left: 30%">-->
                                 <!--My Fundfolio-->
                             <!--</div>-->
@@ -323,7 +333,7 @@ error_reporting(E_ERROR);
                     <!--</a>-->
                 					
                     <!--<a href="#">-->
-                    <div id="card5" class="col s4" style="width: 29%; height: 100%;">
+                    <div id="card5" class="col s4" style="width: 33%; height: 100%;">
                         <!--<div style="color: white; font-weight: bolder; font-size: 35px; position: absolute; top: 45%; left: 35%">-->
                             <!--Help Center-->
                         <!--</div>-->
@@ -345,7 +355,7 @@ error_reporting(E_ERROR);
                             Total Donated $<?php echo !empty($profilepage_info['total_donate']) ? number_format($profilepage_info['total_donate']) : 0; ?>
                         </div>
                     </div>
-                    <div id="exchange_community_points" class="col s3 offset-s4 left-align small-font" style="cursor: pointer">
+                    <div id="exchange_community_points" class="col s4 offset-s4 left-align small-font" style="cursor: pointer">
                         <span><img src="images/exchange_icon.png" width="30px" height="30px"></span>
                         <span class="top-align">Exchange Community Points</span>
                     </div>
@@ -487,28 +497,26 @@ error_reporting(E_ERROR);
 				
 				
 				 <!--Campaign Content 1-->
-				 <div class="col s3" style="margin-left: 0px; margin-top: 50px;">
-                    <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
-                        <div class="card" style="margin: 0px; border-radius: 0px;height: 475px;">
+				 <div class="col s3" style="margin-top: 50px;">
+				                     <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
+                        <div class="card" style="height: 450px;">
                             <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
 							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
                             <div class="container1" style="height:auto;">
                                 <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
-                                <p style="overflow: hidden; word-break: break-all;"><?php  echo $campaign['description']; ?></p>
-								<p><a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>" style="color:orange;">Read more</a></p>
-                                <div class="row">
-                                    <img class="col s2" src="images/location.png" style="padding: 0; height: auto; width: 20px;">
-                                    <h5 class="col s9"><?php  echo $campaign['company_location']; ?></h5>
-                                </div>
-                            </div>
+                                <p style="word-break: break-all; overflow-y: auto; height: 90px; color: gray;"><strong><?php  echo $campaign['description']; ?></strong></p>
+							
+                                <img class="col s2" src="images/location.png" style="padding: 0; height: auto; width: 20px;"/>
+                                <h6 class="col s9"><?php  echo $campaign['company_location']; ?></h6>
+                                </div>                            
                         </div>
                     </a>
-                    <div class="progress" style="margin: 0px">
+                    <div class="progress">
                         <div class="determinate" style="width: <?php echo $progressbar_info['percentage_completed']; ?>%"></div>
                     </div>
 					
 					
-                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B; border-radius: 0px 0px 5px 5px;">
+                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B; margin-left: 5px; width:97%;">
                         <div class="col s4">
                             <h5><?php echo $progressbar_info['total_donators']; ?> of <?php  echo $progressbar_info['needed_backers']; ?></h5>
                             <p>Backers</p>
@@ -720,15 +728,15 @@ error_reporting(E_ERROR);
 				  <!--Campaign Content 1-->
 				 <div class="col s4" style="margin-left: 0px; margin-top: 50px;">
 				                     <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
-                        <div class="card" style="height: 380px;">
+                        <div class="card" style="height: 450px;">
                             <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
 							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
                             <div class="container1" style="height:auto;">
                                 <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
-                                <p style="word-break: break-all; overflow-y: auto; height: 70px; color: gray;"><strong><?php  echo $campaign['description']; ?></strong></p>
+                                <p style="word-break: break-all; overflow-y: auto; height: 90px; color: gray;"><strong><?php  echo $campaign['description']; ?></strong></p>
 							
                                 <img class="col s2" src="images/location.png" style="padding: 0; height: auto; width: 20px;"/>
-                                <h5 class="col s9"><?php  echo $campaign['company_location']; ?></h5>
+                                <h6 class="col s10" style="font-size: medium; color: gray;"><?php  echo $campaign['company_location']; ?></h6>
                                 </div>                            
                         </div>
                     </a>
@@ -737,7 +745,7 @@ error_reporting(E_ERROR);
                     </div>
 					
 					
-                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B">
+                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B; width: 96%; margin-left: 5px;">
                         <div class="col s4">
                             <h5><?php echo $progressbar_info['total_donators']; ?> of <?php  echo $progressbar_info['needed_backers']; ?></h5>
                             <p>Backers</p>
@@ -887,7 +895,7 @@ error_reporting(E_ERROR);
                         <a>Handbook</a>
                     </div>
                     <div class="col s2" style="margin-left: 5%">
-                        <input type="text" placeholder="Email Address" style="background-color: white; padding-left: 15px; border: 0;height: 40px; width: 300px; ">
+                        <input type="text" placeholder="Email Address" style="background-color: white; padding-left: 15px; border: 0;height: 40px; width: 300px; font-size: medium; ">
                     </div>
                     <div class="col s2">
                         <button style="background-color: #4276E2; width: 150px; height: 40px; color: white; font-size: large; border-radius: 2px; padding: 0; border: 0; margin-left: 30px">Stay Connected</button>

@@ -378,19 +378,15 @@
                     </div>
 
                     <div class="row" style="margin-top: 10px; margin-bottom: 0px">
-                        <form class="col s12" method="post" name = "register" id = "register" action = "" enctype="multipart/form-data" style="padding: 0; margin-top: 20px">
-						
-							<input type = "hidden" " id = "btn_action" name = "btn_action"  value = "" />
-							
-							
+                        <form class="col s12" method="post" name = "register" id = "register" action = "" enctype="multipart/form-data" style="padding: 0; margin-top: 10px">						
+							<input type = "hidden" " id = "btn_action" name = "btn_action"  value = "" />													
 							<div  id = "lname" class="row" style="margin-left: 5%">
                                 <div class="input-field col s12">
                                     <!--<label for="password">Password</label>-->
                                     <input placeholder="Name" name="name" id="name" type ="text" class="validate">
                                     <label id="name_lbl" for="name" style="font-weight: bolder; color: black;">Full Name</label>
                                 </div>
-                            </div>
-						
+                            </div>					
                             <div class="row" style="margin-left: 5%">
                                 <div class="input-field col s12">
                                     <input placeholder="Email" type="email" name = "lemail"  id="lemail" class="validate">
@@ -398,11 +394,6 @@
                                     <!--<label for="name">Username</label>-->
                                 </div>
                             </div>
-                            
-							
-							
-							
-							
 							<div class="row" style="margin-left: 5%">
                                 <div class="input-field col s12">
                                     <!--<label for="password">Password</label>-->
@@ -418,10 +409,8 @@
                                     <label id="location_lbl" for="location" style="font-weight: bolder; color: black;">Location</label>
                                 </div>
                             </div>
-							
-							
-							
-                            <div class="row" style="margin-bottom: 30px">
+
+                            <div class="row" style="margin-bottom: 15px">
                                 <div class="col s6 offset-s1" style="height: 50px; line-height: 50px; text-align: left; margin: 0 auto">
                                     <!--img id="upload_img" src="images/upload.png" height="50" width="100%" style="visibility: hidden;"-->
 									 <input type="file" name ="upload_img" id="upload_img" src="images/upload.png" height="50" width="100%" style="visibility: hidden;">
@@ -521,7 +510,7 @@
             <div class="row">
 
                 <!--Side Navigation Bar-->
-                <div class="col s2" style="width: 375px">
+                <div class="col s3">
                     <div id="sidenavbar" style="margin-top: 50px; margin-left: 20px; background-color: #F9F9F9">
                         <ul style="margin-left: 20px">
                             <li>
@@ -564,7 +553,7 @@
                     </div>
                 </div>
 				
-				
+				<div class="col s9">
 				<?php 
 				
 				$date = date('Y-m-d H:i:s');
@@ -597,43 +586,9 @@
 					
 				?>
 				 <!--Campaign Content -->
-               <div class="col s3" style="margin-left: 0px; margin-top: 50px">
-                    <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">
-                        <div class="card" style="">
-                            <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
-							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
-                            <div class="container1">
-                                <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>
-                                <p><?php  echo $campaign['description']; ?></p>
-                                <div class="row">
-                                    <img class="col s2" src="images/location.png" style="padding: 0; height: 30px; width: 20px;">
-                                    <h5 class="col s9"><?php  echo $campaign['company_location']; ?></h5>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="progress">
-                        <div class="determinate" style="width: <?php echo $progressbar_info['percentage_completed']; ?>%"></div>
-                    </div>
-					
-					
-                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B">
-                        <div class="col s4">
-                            <h5><?php echo $progressbar_info['total_donators']; ?> of <?php  echo $progressbar_info['needed_backers']; ?></h5>
-                            <p>Backers</p>
-                        </div>
-                        <div class="col s4">
-                            <h5> <?php echo $campaign['amount'];  ?>$ </h5>
-                            <p>Goal</p>
-                        </div>
-                        <div class="col s4">
-                            <h5> <?php  echo /* $campaign['days'] */$numberDays; ?> days</h5>
-                            <p>open folio</p>
-                        </div>
-                    </div>
-                </div>
+               <div class="col s4" style="margin-left: 0px; margin-top: 50px;">				                     <a href="usercampaign.php?folio_id=<?php echo $campaign['campaignid'];  ?>">                        <div class="card" style="height: 480px;">                            <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->							<img src="campaign_uploads/<?php echo $campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">                            <div class="container1" style="height:auto;">                                <h5><b><?php  echo $campaign['campaignname']; ?></b></h5>                                <p style="word-break: break-all; overflow-y: auto; height: 90px; color: gray;"><strong><?php  echo $campaign['description']; ?></strong></p>							                                <img class="col s2" src="images/location.png" style="padding: 0; height: auto; width: 20px;"/>                                <h5 class="col s10" style="width: 90%; font-size: medium;"><?php  echo $campaign['company_location']; ?></h5>                                </div>                                                    </div>                    </a>                    <div class="progress">                        <div class="determinate" style="width: <?php echo $progressbar_info['percentage_completed']; ?>%"></div>                    </div>										                    <div class="row campaign_details" style="background-color: #F9F9F9; color: #76777B; width: 96%; margin-left: 5px; font-size:small;">                        <div class="col s4">                            <h6><strong><?php echo $progressbar_info['total_donators']; ?> of <?php  echo $progressbar_info['needed_backers']; ?></strong></h6>                            <p>Backers</p>                        </div>                        <div class="col s4">                            <h6><strong> <?php echo $campaign['amount'];  ?>$ </strong></h6>                            <p>Goal</p>                        </div>                        <div class="col s4">                            <h6><strong> <?php  echo /* $campaign['days'] */$numberDays; ?> days</strong></h6>                            <p>open folio</p>                        </div>                    </div>                </div>
 				
-				<?php } ?>
+				<?php } ?></div>
 				
 				<!--end campaign -->
 				
@@ -755,7 +710,7 @@
 
         <!--Footer-->
         <footer class="page-footer" style="background-color: #F9F9F9">
-            <div class="container">
+            <div class="container" style="width: 85%;">
                 <div id="footer_links" class="row">
                     <div class="col s1">
                         <a href="#">About</a>

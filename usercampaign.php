@@ -14,7 +14,7 @@
     <!-- Latest compiled JavaScript -->
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
-    <link type="text/css" rel="stylesheet" href="usercampaign.css">
+    <link type="text/css" rel="stylesheet" href="usercampaign.css"/>
     
     <script type="text/javascript" src="jquery-ui-1.12.0/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="jquery-ui-1.12.0/jquery-ui.min.css">
@@ -138,6 +138,7 @@
     //exit;
 ?>
 
+
 <body>
     <header>
         <!--<div class="container-fluid">-->
@@ -187,6 +188,11 @@
                         <li><a href="#">About us</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+						<li><a href="?action_logout=logout">
+                            <div class="user-name text-center text-uppercase">
+                                <p><b>Logout</b></p>
+                            </div>
+                        </a></li>
                         <li><a href="#">
                             <div class="user-img wrap-auto">
                                 <img class="img-circle" onerror="this.src='images/userimagenotfound.png'" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" alt="Profile Pic" width="50px">
@@ -214,7 +220,7 @@
     
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-7 wrap-full-sm">
+            <div class="col-xs-6 wrap-full-sm">
                 <?php
 				if( $folio_info['campaignvidio'] != ""){?>
                 <iframe width="100%" src="campaign_uploads/<?php echo $folio_info['campaignvidio']?>" frameborder="0" allowfullscreen></iframe>; 
@@ -232,7 +238,7 @@
                         <p style="margin: 5px 5px; font-size: large">
 						<a href="homescreen.php?user_id=<?php echo $folio_info['loginid']; ?>"> <b> <?php echo $folio_info['name']; ?></a></b> <?php echo $folio_info['company_location'] ; ?></p>
                     </div>
-                    <div style="float: right;" id="share_div">
+                    <div style="float: right; margin-right: -10px;" id="share_div">
                         <div class="col-xs-1 wrap-auto no-l-padding">
                             <a href="#" id='campaign_like_button' rel="<?php echo $folio_info['has_liked']==1 ? 1 : 0?>"><img src="<?php echo $folio_info['has_liked']==1 ? 'images/heart-filled.png' : 'images/heart-holo.png'?>" width="50" height="50"></a>
                         </div>
@@ -242,16 +248,17 @@
                         <div class="col-xs-1 wrap-auto no-l-padding">
                             <a href="http://twitter.com/intent/tweet?text=Just donated to this folio, its for good cause - try it here - ;url=<?php echo "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>;via=fundfolio" id='twitter_share_button'><img src="images/twitter-holo.png" width="50" height="50"></a>
                         </div>
-                        <div class="col-xs-1 wrap-auto no-l-padding">
+                        <!--<div class="col-xs-1 wrap-auto no-l-padding">
                             <a href="#"><img src="images/link-holo.png" width="50" height="50"></a>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
-            <div class="col-xs-4 common-margin font-bolder wrap-auto" id="donation_matrix">
+			<div class="col-xs-1"></div>
+            <div class="col-xs-4 common-margin font-bolder" id="donation_matrix">
                 <div id="table-div">
                     <h1><?php echo $folio_info['campaignname']; ?></h1>
-                    <h4><?php echo $folio_info['tag_line']; ?></h4>
+                    <h4 style="word-break: break-all;"><?php echo $folio_info['tag_line']; ?></h4>
                     <table>
                         <tbody>
                         <?php
@@ -305,6 +312,7 @@
 				
 				         <h1>Goal:$<?php echo $folio_info['amount']; ?></h1>
 				</div>
+				
             </div>
         </div>
     </div>
@@ -332,12 +340,12 @@
                     <div class="tab-content col-md-10">
                         <div class="tab-pane active" id="summary">
                             <h4>Short Summary</h4>
-                           <div>
-                               <p style="color: rgb(67,67,67); font-size: large; text-align: justify; overflow: hidden; word-break: break-all;">
-                                   <?php echo $folio_info['description'] ; ?>
-                               </p>
-                           </div>
-                       </div>
+                <div>
+                    <p style="color: rgb(67,67,67); font-size: large; text-align: justify; overflow: hidden; word-break: break-all;">
+                        <?php echo $folio_info['description'] ; ?>
+                    </p>
+                </div>
+            </div>
                         <div class="tab-pane" id="updates">
                             <h4>Updates</h4>
                            <div>
@@ -425,7 +433,7 @@
                                         <h4 class="media-heading"><?php echo $donar_details['name'];?></h4>
                                         <p><?php echo $donar_details['elapsed_time_string']; ?></p>
                                     </div>
-                                    <div class="media-right">
+                                    <!--<div class="media-right">
                                         <div class="row wrap-auto" style="width: 130px; margin: 0">
                                             <a href="">
                                                 <div class="col-xs-6 no-l-padding wrap-auto">
@@ -438,7 +446,7 @@
                                                 </div>
                                             </a>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                             <?php

@@ -417,7 +417,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 					<input type="text" onkeyup="companyheader();" class="getdatainput" id="company_team_name" name="company_team_name" value="" placeholder="Ex. Acme or Acms Marketing"/>
 					<p style="margin: 25px 0 10px;"><strong>Tag Line</strong> (You can Change this later)</p>
 					<input type="text" onkeyup="companytag();" class="getdatainput" id="company_tag_line" name="company_tag_line" value="" placeholder="Working together to end homelessness"/>
-					<div class="sub_but_class"><button class="btn next_step" onclick="showseconddiv();" id="next_form" >Next<i class="fa fa-arrow-right" aria-hidden="true" style="padding: 0px 0px 0px 10px;"></i></button> </div>
+					<div class="sub_but_class"><button style="color:grey;" class="btn next_step" onclick="showseconddiv();" id="next_form" >Next<i class="fa fa-arrow-right" aria-hidden="true" style="padding: 0px 0px 0px 10px;"></i></button> </div>
 					</div>
 
 					
@@ -433,7 +433,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			<li><a data-toggle="tab" href="#sectionE"><i class="fa fa-youtube-play" aria-hidden="true" style="color: #4578cb;"></i><br>Video</a></li>
 			<li><a data-toggle="tab" href="#sectionF"><i class="fa fa-quote-left " aria-hidden="true" style="color: #f4a445;"></i><br>Quote</a></li>
 			<li><a data-toggle="tab" href="#sectionG"><i class="fa fa-link " aria-hidden="true" style="color: #a9a9a9;"></i><br>Link</a></li>
-			<li><a data-toggle="tab" href="#sectionH"><i class="fa fa-share-alt " aria-hidden="true" style="color: #8febe8;"></i><br>Share</a></li>
+			<!--<li><a data-toggle="tab" href="#sectionH"><i class="fa fa-share-alt " aria-hidden="true" style="color: #8febe8;"></i><br>Share</a></li>-->
 			
 		</ul>
 		
@@ -445,15 +445,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		
 		<div class="tab-content">
 			<div id="sectionA" class="tab-pane fade in active">
-				<div style="margin-top:40px;"> <input type="text" onkeyup="companygoal();" class="getdatainput" id="company_goal"     name="company_goal"  value="" placeholder="Ex. $459 USD raised by 18 of 100 Backers"/>
+				<div style="margin-top:40px;"> <input type="text" onkeyup="companygoal();" class="getdatainput" id="company_goal"     name="company_goal"  value="" placeholder="Ex. $600 USD"/>
 				
 				  <!--onchange="printValue('no_of_days','no_of_days_label')"-->
 				</div>
 				
 				<div style="margin-top:40px;"> 
 				<input id="no_of_days" name="no_of_days" type="range"  value = "1" min="1" max="30" step="1"    />
-				 <label id="no_of_days_label">1</label>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-				 <label id="total_no_of_days_label"     >30</label>
+				 <label id="no_of_days_label">1</label>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;				 
+				 <label id="total_no_of_days_label">30 <strong>Days</strong></label>
 				 </div>
 				 
 				 
@@ -490,7 +490,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				</div>
 			</div>
 			
-			<div class="sub_but_class"><button class="btn next_step" onclick="showseconddiv1();" id="submit_form" >Submit<i class="fa fa-arrow-right" aria-hidden="true" style="padding: 0px 0px 0px 10px;"></i></button> </div>
+			<div class="sub_but_class"><button style="color:grey;" class="btn next_step" onclick="showseconddiv1();" id="submit_form" >Submit<i class="fa fa-arrow-right" aria-hidden="true" style="padding: 0px 0px 0px 10px;"></i></button> </div>
 			
 			</div>
 			</form>

@@ -37,3 +37,16 @@ CREATE TABLE IF NOT EXISTS `user_campaign_rel` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 ALTER TABLE `register` ADD `community_points` INT NOT NULL AFTER `interested_category`;
+
+=== 28/Jan/2017
+
+CREATE TABLE IF NOT EXISTS `campaign_updates` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `campaignid` int(11) NOT NULL,
+  `update_text` varchar(500) NOT NULL,
+  `update_image` varchar(500) NOT NULL,
+  `update_video` varchar(500) NOT NULL,
+  `created_on` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT
