@@ -193,6 +193,12 @@ error_reporting(E_ERROR);
     .row .col.s3 {
         width: 24% !important;
     }
+    
+    #loc_name,
+    input::-webkit-input-placeholder {
+        font-size: 20px;
+        line-height: 3;
+    }
 </style>
 
 <body>
@@ -674,7 +680,7 @@ error_reporting(E_ERROR);
                         </button>
                     </div>
 					
-					<div class="row">
+					<div class="row" style="margin-left: 20px;">
                        <input type = "text" placeholder="Ex. Indianapolis, United States" id = "loc_name" name = "loc_name" style="visibility: hidden;" />
                     </div>
 
@@ -1136,12 +1142,14 @@ error_reporting(E_ERROR);
                 // Create our data table out of JSON data loaded from server.
                 var data = new google.visualization.DataTable(<?php echo $profilepage_info['jsonTable']; ?>);
                 var options = {
-                    title: 'Interested Fund Categorized',
+                    title: '',
                     is3D: true,
                     'width': $(window).width()/2,
                     'height': 500,
                     chartArea: {left: 50, top: 50, width: "100%", height: "100%"},
                     backgroundColor: { fill:'transparent' },
+                    tooltip: {isHtml: true},
+                    legend: 'none'
                     //sliceVisibilityThreshold:0
                   };
                 // Instantiate and draw our chart, passing in some options.
