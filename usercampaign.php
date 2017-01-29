@@ -264,9 +264,7 @@
                     </div>
                     <div class="col-xs-1 wrap-auto no-l-padding text-center">
                         <p style="margin: 5px 5px; font-size: large">
-						<b> <?php echo $folio_info['name']; ?></b> <?php echo $folio_info['company_location'] ; ?>
-						</p>
-						<!--<a href="homescreen.php?user_id=<?php echo $folio_info['loginid']; ?>"> <b> <?php echo $folio_info['name']; ?></a></b> <?php echo $folio_info['company_location'] ; ?></p>-->
+						<b> <?php echo $folio_info['name']; ?></b> <?php echo $folio_info['company_location'] ; ?></p>
                     </div>
                     <div style="float: right; margin-right: -10px;" id="share_div">
                         <div class="col-xs-1 wrap-auto no-l-padding">
@@ -368,20 +366,27 @@
                 
                     <div class="tab-content col-md-10">
                         <div class="tab-pane active" id="summary">
-                            <h4>Short Summary</h4>
+                            
                 <div>
                     <p style="color: rgb(67,67,67); font-size: large; text-align: justify; overflow: hidden; word-break: break-all;">
                         <?php echo $folio_info['description'] ; ?>
                     </p>
                 </div>
+				
+				<div>
+                    <p style="color: rgb(67,67,67); font-size: large; text-align: justify; overflow: hidden; word-break: break-all;">
+                        <b>Links:</b><?php echo $folio_info['link'] ; ?>
+                    </p>
+            </div>
             </div>
                         <div class="tab-pane" id="updates">
-                            <h4>Updates</h4>
+                            
                            <div>
                                <?php 
                                 if($folio_info['loginid'] == $_SESSION['user_id'])
                                 {
                                     ?>
+									<br />
                                     <button type="button" id="add_update" class="btn btn-primary">Add Update</button>
                                <form  method="post" name="updates_form" id="updates_form" style="display: none" action = "" enctype="multipart/form-data" >
                                    <h5><i>(You can post updates for the campaign below): </i></h5>
@@ -567,6 +572,23 @@
     </footer>
 </body>
 <script>
+
+
+
+
+
+
+function scrollToElement(ele) {
+	
+    $(window).scrollTop(ele.offset().top).scrollLeft(ele.offset().left);
+}
+
+function scroll_to()
+{
+//alert("Scrolling to bottom ...");
+window.scrollTo(0, document.body.scrollHeight);
+}
+
   window.fbAsyncInit = function() {
     FB.init({
       appId      : '1187463224685176',
