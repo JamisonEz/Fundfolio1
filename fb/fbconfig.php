@@ -18,7 +18,7 @@ FacebookSession::setDefaultApplication('191869641282457','f9ca96e7b7630837a7ca77
 // login helper with redirect_uri
     //$helper = new FacebookRedirectLoginHelper('http://demos.krizna.com/1353/fbconfig.php' );
 	 
-$helper = new FacebookRedirectLoginHelper('http://localhost/yfcreative/Fundfolio/fb/fbconfig.php' );
+$helper = new FacebookRedirectLoginHelper('http://launchafolio.com/Fundfolio1-master/fb/fbconfig.php' );
 
 		
 
@@ -51,8 +51,8 @@ if ( isset( $session ) ) {
 		
 	
 	$_SESSION['rana'] =  $response;           
-		    $_SESSION['GRAPH'] = $graphObject;           
-					$_SESSION['USERNAME'] = $username;           
+	$_SESSION['GRAPH'] = $graphObject;           
+	$_SESSION['USERNAME'] = $username;           
 
 	    $_SESSION['FBID'] = $fbid;           
         $_SESSION['FULLNAME'] = $fbfullname;
