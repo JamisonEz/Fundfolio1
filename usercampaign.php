@@ -576,12 +576,10 @@
 
 
 
-//window.onload=scroll_to;
 
-window.onload=scrollToElement($('#updates'));
 
 function scrollToElement(ele) {
-	alert("work");
+	
     $(window).scrollTop(ele.offset().top).scrollLeft(ele.offset().left);
 }
 
@@ -589,15 +587,6 @@ function scroll_to()
 {
 //alert("Scrolling to bottom ...");
 window.scrollTo(0, document.body.scrollHeight);
-}
-
-function scroll_to1(div){
-	
-	//alert("here");
-	document.body.scrollTop = document.body.scrollHeight - document.body.clientHeight;
-  /*  if (div.scrollTop < div.scrollHeight - div.clientHeight)
-        div.scrollTop += 10; */ // move down
-
 }
 
   window.fbAsyncInit = function() {
