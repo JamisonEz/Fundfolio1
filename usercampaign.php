@@ -198,7 +198,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav middle">
-                        <li><a href="#">Explore</a></li>
+                        <li><a href="homescreen.php#site">Explore</a></li>
                         <li><a href="HTML/">Start a project</a></li>
                         <li><a href="#">About us</a></li>
                     </ul>

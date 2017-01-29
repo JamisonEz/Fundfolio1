@@ -437,7 +437,7 @@ error_reporting(E_ERROR);
                     <div id='set_auto_back' class="col s4 button-style" style='cursor:pointer'>
                         <img class="img-center" src="images/set_auto.png" width="40px" height="auto"><span>Set Auto Back</span>
                     </div>
-                    <div class="col s4 button-style">
+                    <div id='browse_projects_btn' class="col s4 button-style" style='cursor:pointer'>
                         <img src="images/browser.png" width="40px" height="auto" style="margin: -5px 10px;"><span>Browse Projects</span>
                     </div>
                     <div id='view_history' class="col s4 button-style" style='cursor:pointer'>
@@ -1018,6 +1018,19 @@ error_reporting(E_ERROR);
                 $('#help_center_panel').height(h);
 
             }, 500);
+            
+            
+            if (window.location.hash != null && window.location.hash != '')
+            {
+                // smooth scroll to the anchor id
+                $('html, body').animate({
+                    scrollTop: $(window.location.hash).top
+                }, 1000, 'swing');
+            }
+            
+            $("#browse_projects_btn").click(function() {
+                $("html, body").scrollTop($("#site").offset().top);
+            });
 
             // media query event handler
             if (matchMedia) {
