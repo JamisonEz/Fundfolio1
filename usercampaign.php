@@ -361,9 +361,9 @@
                     </div>
                 </div>
                 <div class="container" style="width: 800px; margin-left: -17px;">
-                    <ul class="nav nav-tabs" id="the_tabs">
+                    <ul class="nav nav-tabs">
                         <li class="active"><a href="#summary" data-toggle="tab">Short Summary</a></li>
-                        <li><a href="#updates" data-toggle="tab">Updates (<?php echo count($campaign_updates)?>)</a></li>
+                        <li id="update_count"><a href="#updates" data-toggle="tab">Updates (<?php echo count($campaign_updates)?>)</a></li>
                     </ul>
                 
                     <div class="tab-content col-md-10">
@@ -952,7 +952,7 @@ window.twttr = (function(d, s, id) {
     function campaign_updates_feed()
     {
         $("#campaign_updates_feed").load(location.href+" #campaign_updates_feed>*","");
-        $("#the_tabs").load(location.href+ " #the_tabs>*", "");
+        $("#update_count").load(location.href+ " #update_count>*", "");
     }
 </script>
 </html>
