@@ -1,32 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Usercampaign</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Latest compiled and minified CSS -->
-    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
-
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-
-    <link type="text/css" rel="stylesheet" href="usercampaign.css"/>
-    
-    <script type="text/javascript" src="jquery-ui-1.12.0/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="jquery-ui-1.12.0/jquery-ui.min.css">
-    
-    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-    <script type="text/javascript">
-        Stripe.setPublishableKey('pk_test_ALLXQ4toDK0RVyF6c3hTtSha');
-    </script>
-    <script src="https://checkout.stripe.com/checkout.js"></script>
-    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-
-</head>
 <?php 
     require_once('functions.php');
     require_once('paypal/config.php');
@@ -60,16 +31,18 @@
     $folio_info = ($db->getCampaignById($folio_id));
     $campaign_updates = ($db->getCampaignupdates($folio_id));
 	
-   if(!empty($_POST))
+   if(!empty($_POST) && isset($_POST['add_updates']) && $_POST['add_updates']==1)
    {
         $target_file_image = '';
         $target_file_video = '';
+        $message = '';
+        $campaignid = $_POST['campaignid'];
         
         if(!empty($_FILES['update_image']["name"]))
         {
             $temp = explode(".", $_FILES["update_image"]["name"]);
 
-            $file_name = "imagefor_$folio_id_".round(microtime(true)) . '.' . end($temp);
+            $file_name = "imagefor_$campaignid"."_".round(microtime(true)) . '.' . end($temp);
             $target_dir = "campaign_updates/";
             $target_file_image = $target_dir . basename($file_name);
 
@@ -90,7 +63,7 @@
                 if( move_uploaded_file($_FILES["update_image"]["tmp_name"], realpath(dirname(__FILE__)).'/'.$target_file_image)) {
                 } else {
                     $target_file_image ="";
-                    echo "Sorry, there was an error uploading your image file.";
+                    $message .= "Sorry, there was an error uploading your image file.";
                 }
             }
         }
@@ -99,7 +72,7 @@
         {
             $temp = explode(".", $_FILES["update_video"]["name"]);
 
-            $file_name = "videofor_$folio_id_".round(microtime(true)) . '.' . end($temp);
+            $file_name = "videofor_$campaignid"."_".round(microtime(true)) . '.' . end($temp);
             $target_dir = "campaign_updates/";
             $target_file_video = $target_dir . basename($file_name);
 
@@ -120,13 +93,13 @@
                 if( move_uploaded_file($_FILES["update_video"]["tmp_name"], realpath(dirname(__FILE__)).'/'.$target_file_video)) {
                 } else {
                     $target_file_video ="";
-                    echo "Sorry, there was an error uploading your image file.";
+                    $message .= " Sorry, there was an error uploading your image file.";
                 }
             }
         }
         
         $data_to_post = $_POST;
-        $data_to_post['campaignid'] = $folio_id;
+        $data_to_post['campaignid'] = $campaignid;
         $data_to_post['update_image'] = $target_file_image;
         $data_to_post['update_video'] = $target_file_video;
         
@@ -134,8 +107,13 @@
                         $data_to_post
                     );
         if( $res > 0){
-            header("Refresh:0");
+            echo json_encode(array("status" => true, "message"=>'success'));
         }
+        else
+        {
+            echo json_encode(array("status" => false, "message"=>$message));
+        }
+        exit();
    }
 	
 	
@@ -146,7 +124,36 @@
     //exit;
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Usercampaign</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Latest compiled and minified CSS -->
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="usercampaign.css"/>
+    
+    <script type="text/javascript" src="jquery-ui-1.12.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="jquery-ui-1.12.0/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/loader.css">
+    
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+        Stripe.setPublishableKey('pk_test_ALLXQ4toDK0RVyF6c3hTtSha');
+    </script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+
+</head>
 <body>
     <header>
         <!--<div class="container-fluid">-->
@@ -216,7 +223,16 @@
             </div>
         </nav>
     </header>
-
+    <div id="loadingDiv">
+        <div class="bubblingG">
+            <span id="bubblingG_1">
+            </span>
+            <span id="bubblingG_2">
+            </span>
+            <span id="bubblingG_3">
+            </span>
+        </div>
+    </div>
     <div id="donate_to_folio" style='display:none'>
         You can choose either of below options to pay the amount.
         <br>
@@ -343,7 +359,7 @@
                     </div>
                 </div>
                 <div class="container" style="width: 800px; margin-left: -17px;">
-                    <ul class="nav nav-tabs">
+                    <ul class="nav nav-tabs" id="the_tabs">
                         <li class="active"><a href="#summary" data-toggle="tab">Short Summary</a></li>
                         <li><a href="#updates" data-toggle="tab">Updates (<?php echo count($campaign_updates)?>)</a></li>
                     </ul>
@@ -374,22 +390,13 @@
                                     <span style="font-size: 100%"class="label label-primary">Upload Video</span><br>
                                     <input type="file" id="update_video" name="update_video" value="" style="margin-top:5px"/>
                                     <div style="clear:both"></div>
+                                    <input type="hidden" name="add_updates" value="1"/>
+                                    <input type="hidden" name="campaignid" value="<?php echo $folio_id; ?>"/>
+                                    
                                     <div class="sub_but_class" style="margin-top:10px"><button class="btn next_step" id="submit_updates_form" >Submit</button> 
                                     </div>
                                     <div style="clear:both"></div>
                                </form>
-                                <script>
-                                    $(document.body).on('click', '#submit_updates_form', function(e){
-                                        e.preventDefault();
-                                        if (updates_form.update_text.value == '' || updates_form.update_image.value == '' || updates_form.update_video.value == '') {
-                                            alert('Please enter some text or upload image/video.');
-                                            return false;
-                                        }
-                                        else {
-                                            updates_form.submit();
-                                        }
-                                    });
-                                </script>
                                     <?php
                                 }
                                ?>
@@ -621,8 +628,6 @@ window.twttr = (function(d, s, id) {
 }(document, "script", "twitter-wjs"));
 </script>
 <script>
-    
-    
     $(function () {
         setInterval(function () {
             var user_img = $(".user-img img");
@@ -630,7 +635,6 @@ window.twttr = (function(d, s, id) {
 //                var image = $('.middle-content-1 img');
 //                image.height(image.width() * 0.82);
             user_img.height(user_img.width());
-
             // media query event handler
             if (matchMedia) {
                 var mq = window.matchMedia("screen and (min-width: 1210px)");
@@ -647,6 +651,54 @@ window.twttr = (function(d, s, id) {
                 }
             }
         }, 500);
+        
+        var $loading = $('#loadingDiv').hide();
+        $(document)
+            .ajaxStart(function () {
+            $loading.show();
+        })
+        .ajaxStop(function () {
+            $loading.hide();
+        });
+        
+        //updates form
+        $('form#updates_form').submit(function(e){
+           
+            e.preventDefault();
+            var updates_form = document.getElementById('updates_form');
+            var update_text = $("#update_text").val();
+            var update_image = $("#update_image").val();
+            var update_video = $("#update_video").val();
+            if (update_text == '' && update_image == '' && update_video == '') {
+                alert('Please enter some text or upload image/video.');
+                return false;
+            }
+            else {
+                var formData = new FormData(document.getElementById('updates_form'));
+                
+                $.ajax({
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (data) {
+                        if(data.status===true)
+                        {
+                            updates_form.reset();
+                            $("#add_update").trigger('click');
+                            campaign_updates_feed();
+                        }
+                        else
+                            alert(data.message);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+
+                return false;
+            }
+        });
 
         //like the campaign
         $(document.body).on('click', '#campaign_like_button' , function (e) {
@@ -893,6 +945,12 @@ window.twttr = (function(d, s, id) {
     {
         $("#donation_matrix").load(location.href+" #donation_matrix>*","");
         $("#donation_list").load(location.href+" #donation_list>*","");
+    }
+    
+    function campaign_updates_feed()
+    {
+        $("#campaign_updates_feed").load(location.href+" #campaign_updates_feed>*","");
+        $("#the_tabs").load(location.href+ " #the_tabs>*", "");
     }
 </script>
 </html>
