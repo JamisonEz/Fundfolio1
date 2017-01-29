@@ -490,7 +490,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				</div>
 			</div>
 			
-			<div class="sub_but_class"><button style="color:grey;" class="btn next_step" onclick="showseconddiv1();" id="submit_form" >Submit<i class="fa fa-arrow-right" aria-hidden="true" style="padding: 0px 0px 0px 10px;"></i></button> </div>
+			<div class="sub_but_class"><button style="color:grey;" class="btn next_step" onclick="return showseconddiv1();" id="submit_form" >Submit<i class="fa fa-arrow-right" aria-hidden="true" style="padding: 0px 0px 0px 10px;"></i></button> </div>
 			
 			</div>
 			</form>
@@ -745,33 +745,59 @@ function showseconddiv()
 
 function showseconddiv1()
 {
+	
+	
     var cmname=document.getElementById("company_team_name").value;
     var cmtg=document.getElementById("company_tag_line").value;
+
 	
-	 var fileimage = document.getElementById('fileimage').value;
-	  var filevidio = document.getElementById('filevidio').value;
+	 var goal_amount = document.getElementById("company_goal").value;
+	 var location = document.getElementById("company_location").value;
+	 var description = document.getElementById("descriptionfolio").value;
+
+	 var quote = document.getElementById("quote_input").value;
+		  
+	 var fileimage = document.getElementById("fileimage").value;
+	
+	 var filevidio = document.getElementById("filevidio").value;
 	  
-	  if(!(fileimage .length>0) && !(filevidio.length>0)){
+	 
+	  if(!(goal_amount .length > 0)){
+		   alert('Please Enter Folio Goal Amount');
+		   return false;
+	  }
+	  else if(!(location .length> 0)){
+		   alert('Please enter Folio Location');
+		   return false;
+	  }
+	
+	  else if(  !(description .length> 0) && !(quote .length> 0)){
+		   alert('Please enter Folio description or quote text');
+		   return false;
+	  }
+	  else if(!(fileimage .length>0) && !(filevidio.length>0)){
 		  alert('Please Select a Image or Video');
 		  return false;
 	  }
 	  else{
-	var checker=0;
-	if(cmname.length>1){ checker=1; }else{ checker=0; }
-	if(cmtg.length>1){ if(checker==1){ checker=1; } }else{ checker=0; }
-	if(checker==1){
-    document.getElementById("form_step_1").style.display='none';
-    document.getElementById("form_step_2").style.display='block';
-	
-	document.getElementById("company_team_name1").value = cmname;
-	document.getElementById("company_tag_line1").value = cmtg;
-        
-	document.getElementById('add_form').submit();
-	
-	
-    }else{
-    return false;
-	}
+			var checker=0;
+			if(cmname.length>1){ checker=1; }else{ checker=0; }
+			if(cmtg.length>1){ if(checker==1){ checker=1; } }else{ checker=0; }
+			if(checker==1){
+				
+				document.getElementById("form_step_1").style.display='none';
+				document.getElementById("form_step_2").style.display='block';
+				
+				document.getElementById("company_team_name1").value = cmname;
+				document.getElementById("company_tag_line1").value = cmtg;
+				
+				return true;
+				//document.getElementById('add_form').submit();
+			
+			
+			}else{
+			return false;
+			}
 	  }
 
 

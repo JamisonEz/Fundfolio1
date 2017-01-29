@@ -102,22 +102,20 @@ error_reporting(E_ERROR);
 				foreach( $campaign_list_main as $campaign ){
 					$donation_info = ($db->getDonationlist($campaign['campaignid']));
 					
-					/* print_r($donation_info) ;
-					echo '<br/>';
-					echo $campaign['amount'];
 					
-					echo "shahid"; */
 					
-					if( ($campaign['amount'] - $donation_info['total_donations'] ) > 0  ){
+					//if( ($campaign['amount'] - $donation_info['total_donations'] ) > 0  ){
 						
-						$campaign['isfunded'] = $donation_info['total_donations'];
+					if( ( $donation_info['progressbarinfo']['percentage_completed'] ) < 100  ){
+						
+						$campaign['percentage_completed'] = $donation_info['progressbarinfo']['percentage_completed'];
 						$campaign_list[] = $campaign;
 						
 					}
 					
 				}
-				$campaign_list = sortArrayKeyWise( $campaign_list , 'isfunded' );
-				//print_r( $campaign_list);
+				$campaign_list = sortArrayKeyWise( $campaign_list , 'percentage_completed' );
+			
 			}
 			else if($cat_id_le == 14){
 				foreach( $campaign_list_main as $campaign ){

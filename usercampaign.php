@@ -264,7 +264,9 @@
                     </div>
                     <div class="col-xs-1 wrap-auto no-l-padding text-center">
                         <p style="margin: 5px 5px; font-size: large">
-						<a href="homescreen.php?user_id=<?php echo $folio_info['loginid']; ?>"> <b> <?php echo $folio_info['name']; ?></a></b> <?php echo $folio_info['company_location'] ; ?></p>
+						<b> <?php echo $folio_info['name']; ?></b> <?php echo $folio_info['company_location'] ; ?>
+						</p>
+						<!--<a href="homescreen.php?user_id=<?php echo $folio_info['loginid']; ?>"> <b> <?php echo $folio_info['name']; ?></a></b> <?php echo $folio_info['company_location'] ; ?></p>-->
                     </div>
                     <div style="float: right; margin-right: -10px;" id="share_div">
                         <div class="col-xs-1 wrap-auto no-l-padding">
