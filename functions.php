@@ -412,7 +412,7 @@ class DBController {
 		
 			$where  = " 1=1 ";
 
-			if( isset( $user_id ) && ( $user_id != -1) && ( $user_id < 11) ){
+			if( isset( $user_id ) && ( $user_id != -1)){
 				$where  .="and c.loginid=".$user_id; 
 			}
 			
@@ -609,26 +609,30 @@ class DBController {
             
             $arrayTable['cols'] = array(
                 array('label' => 'Campaign Category', 'type' => 'string'),
-                array('label' => 'Percentage', 'type' => 'number')
+                array('label' => 'Percentage', 'type' => 'number'),
+                array('role' => 'tooltip', 'type' => 'string', 'p' => array('html'=> true))
             );
             
             $temp_campaign_array = $this->getCampaign(-1);
             $campaign_result = array();
             array_walk($temp_campaign_array, function($v, $k) use (&$campaign_result){ $campaign_result[$v['campaignid']] = $v; });
             
-            $total_no_of_payments = 1;
+            $total_no_of_payments = 0;
             $no_of_payments_per_category = array();
             $no_of_payments_per_folio = array();
             
             foreach($payment_result as $pr)
             {
-                if(isset($campaign_result[$pr['itemid']]) && isset($no_of_payments_per_category[$campaign_result[$pr['itemid']]['categorytype']]))
+                $cat_type_name = $campaign_result[$pr['itemid']]['categorytype'];
+                if(isset($campaign_result[$pr['itemid']]) && isset($no_of_payments_per_category[$cat_type_name]))
                 {
-                    $no_of_payments_per_category[$campaign_result[$pr['itemid']]['categorytype']] += 1;
+                    $no_of_payments_per_category[$cat_type_name]['count'] += 1;
+                    $no_of_payments_per_category[$cat_type_name]['donation'] += $pr['payment_amount'];
                 }
                 else if(isset($campaign_result[$pr['itemid']]))
                 {
-                    $no_of_payments_per_category[$campaign_result[$pr['itemid']]['categorytype']] = 1;
+                    $no_of_payments_per_category[$cat_type_name]['count'] = 1;
+                    $no_of_payments_per_category[$cat_type_name]['donation'] = $pr['payment_amount'];
                 }
                 $total_no_of_payments++;
                 
@@ -645,7 +649,10 @@ class DBController {
             foreach($all_categories as $cat_id=>$cat_val)
             {
                 if(!isset($no_of_payments_per_category[$cat_val]))
-                    $no_of_payments_per_category[$cat_val] = 0;
+                {
+                    $no_of_payments_per_category[$cat_val]['count'] = 0;
+                    $no_of_payments_per_category[$cat_val]['donation'] = 0;
+                }
             }
             
             $result_array['no_of_payments_per_folio'] = $no_of_payments_per_folio;
@@ -653,18 +660,27 @@ class DBController {
             
             $temp_table_row = array();
             
-            foreach($no_of_payments_per_category as $noppc_catname=>$noppc_count) {
+            //echo "<pre>";
+            //print_r($no_of_payments_per_category);
+            //echo $total_no_of_payments;
+            //exit;
+            
+            foreach($no_of_payments_per_category as $noppc_cattype=>$noppc_count) {
                 $temp = array();
-                $temp[] = array('v' => (string) $noppc_catname); 
-                
-                $temp[] = array('v' => (($noppc_count/$total_no_of_payments)*100)); 
+                $temp[] = array('v' => (string) $noppc_cattype); 
+                $percentage = ($noppc_count['count']/$total_no_of_payments)*100;
+                $temp[] = array('v' => $percentage);
+                $temp[] = array('v' => (string) "<p style='font-size: 15px; padding: 5px;'>".$noppc_count['donation'].'$ ('.$percentage.'% of the total donation made in <b>'.$noppc_cattype.'</b> category!)</p>'); 
                 $temp_table_row[] = array('c' => $temp);
             }
             $arrayTable['rows'] = $temp_table_row;
             
+            
+            
             //print_r($payment_result);
             //exit;
             $result_array['jsonTable'] = json_encode($arrayTable);
+            
             
             //for xyz info
         }
@@ -820,6 +836,7 @@ class DBController {
     function updateFolioMatrix($folio_id, $amount, $userid)
     {
         $folio_id = (int) $folio_id;
+        $amount = (int) $amount; //in our case amount is integer
         $sql = mysqli_query( $this->conn ,"SELECT * FROM `campaign_fund` WHERE campaignid = $folio_id");
         $temp_result = mysqli_fetch_assoc($sql);
         if(!empty($temp_result))
@@ -874,6 +891,7 @@ class DBController {
                 return "InProcess";
             }
             $matrix_json = json_encode($matrix_array);
+            
             $sql = mysqli_query( $this->conn , "UPDATE `campaign_fund` SET `matrix` = '".$matrix_json."' WHERE `campaign_fund`.`campaignid` = $folio_id;");
             if($sql)
                 return "Success";

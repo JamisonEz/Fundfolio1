@@ -15,8 +15,17 @@ if(!empty($_POST))
     $folio_name = $_POST['folio_name'];
     $folio_description = $_POST['folio_description'];
     $folio_id = $_POST['folio_id'];
+    $payment_method = $_POST['payment_method'];
+    if($payment_method=='paypal')
+    {
+        $amount = $amount;
+    }
+    else if($payment_method=='stripe') //stripe
+    {
+        $amount = $amount/100;
+    }
     
-    $check_status = $db->updateFolioMatrix($folio_id, $amount/100, 'temp_'.$user_info['user_id'].'_'.strtotime('now'));
+    $check_status = $db->updateFolioMatrix($folio_id, $amount, 'temp_'.$user_info['user_id'].'_'.strtotime('now'));
     if(strtolower($check_status)=='success')
     {
         //its good
@@ -25,7 +34,7 @@ if(!empty($_POST))
     }
     else
     {
-        echo json_encode(array('status'=>false, 'message'=>'Someone is already donating at this amount, please try after 2 minutes'));
+        echo json_encode(array('status'=>false, 'message'=>$check_status));
         exit;
     }
 }
