@@ -504,7 +504,16 @@ error_reporting(E_ERROR);
 				                     <a href="usercampaign.php?folio_id=<?php echo $ua_campaign['campaignid'];  ?>">
                         <div class="card" style="height: 450px;">
                             <!--img src="images/campaign1.png" alt="Avatar" style="width:100%"-->
+							
+							
+							
+							<?php if( $db-> UserType() == 1 ){ ?>
+							
+							<img src="https://graph.facebook.com/<?php echo $db->UserImage(); ?>/picture" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
+							
+							<?php } else { ?>
 							<img src="campaign_uploads/<?php echo $ua_campaign['campaignimage'];  ?>" alt="Avatar" onerror="this.src='campaign_uploads/imagenotfound.jpg'" style="width:100%">
+							<?php  } ?>
                             <div class="container1" style="height:auto;">
                                 <h5><b><?php  echo $ua_campaign['campaignname']; ?></b></h5>
                                 <p style="word-break: break-all; overflow-y: auto; height: 90px; color: gray;"><strong><?php  echo $ua_campaign['description']; ?></strong></p>
@@ -636,7 +645,7 @@ error_reporting(E_ERROR);
 
         </div>
 
-        <div style="margin-bottom: 100px;">
+        <div  id= "explore" style="margin-bottom: 100px;">
             <div class="row">
 
                 <!--Side Navigation Bar-->

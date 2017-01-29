@@ -106,7 +106,7 @@ class DBController {
 						'$name' ,	
 						'$location' ,							
 						'$image',
-                                                '$socialid'
+                        '$socialid'
 						)");
 						
 						
@@ -134,7 +134,7 @@ class DBController {
 		
 	}
 	
-	function registerFbUser ( $fbid , $fbfullname , $fimage ){
+	function registerFbUser ( $fbid , $femail , $fbfullname , $fimage , $location ){
 
 		//$pwdmd5 = md5($paw);
 		
@@ -162,17 +162,20 @@ class DBController {
 					$_SESSION['type'] =  1 ;
 					$_SESSION['user_id'] = $row['id'] ;
 					$_SESSION['user_name']  = $fbfullname ;
-					$_SESSION['user_email'] = "";
+					$_SESSION['user_email'] =  $femail;
 					$_SESSION['user_image'] = $fimage;
+					$_SESSION['user_location'] = $location;
 					
 			
 		}
+		else{
 				
-		$sql = mysqli_query(  $this->conn , "INSERT INTO `register`( `socialid`, `name` , `profilepic`) 
+		$sql = mysqli_query(  $this->conn , "INSERT INTO `register`( `socialid`, `name` , `profilepic` , `location` ) 
 						VALUES ( 						
 						'$fbid' ,					
 						'$fbfullname' ,						
-						'$fimage'
+						'$fimage' ,
+						'$location' 
 						)");
 						
 						
@@ -189,8 +192,9 @@ class DBController {
 					$_SESSION['type'] =  1 ;
 					$_SESSION['user_id'] = mysqli_insert_id( $this->conn) ;
 					$_SESSION['user_name']  = $fbfullname ;
-					$_SESSION['user_email'] = "";
+					$_SESSION['user_email'] =  $femail;
 					$_SESSION['user_image'] = $fimage;
+					$_SESSION['user_location'] = $location;
 					
 					
 				}
@@ -198,6 +202,7 @@ class DBController {
 
 					$responce = "0";
 				}
+		}
 				return 	$responce;	
 		
 	}

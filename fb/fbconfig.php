@@ -46,7 +46,7 @@ if ( isset( $session ) ) {
 	
 	include("../functions.php");	
 	$db = new DBController();
-	$res = $db -> registerFbUser (  $fbid , $fbfullname , $fbid );
+	$res = $db -> registerFbUser (  $fbid , $femail , $fbfullname , $fbid );
 
 		
 	
@@ -54,9 +54,10 @@ if ( isset( $session ) ) {
 	$_SESSION['GRAPH'] = $graphObject;           
 	$_SESSION['USERNAME'] = $username;           
 
-	    $_SESSION['FBID'] = $fbid;           
-        $_SESSION['FULLNAME'] = $fbfullname;
-	    $_SESSION['EMAIL'] =  $femail;
+	$_SESSION['FBID'] = $fbid;           
+	$_SESSION['FULLNAME'] = $fbfullname;
+	$_SESSION['EMAIL'] =  $femail;
+	
     /* ---- header location after session ----*/
   header("Location: ../index.php");
 } else {
