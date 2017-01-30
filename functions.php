@@ -673,7 +673,7 @@ class DBController {
             foreach($no_of_payments_per_category as $noppc_cattype=>$noppc_count) {
                 $temp = array();
                 $temp[] = array('v' => (string) $noppc_cattype); 
-                $percentage = round((($noppc_count['count']/$total_no_of_payments)*100), 1);
+                $percentage = round((($noppc_count['count']/$total_no_of_payments)*100), 2);
                 $temp[] = array('v' => $percentage);
                 $temp[] = array('v' => (string) "<p style='font-size: 15px; padding: 5px;'>".$noppc_count['donation'].'$ ('.$percentage.'% of the total donation made in <b>'.$noppc_cattype.'</b> category!)</p>'); 
                 $temp_table_row[] = array('c' => $temp);
