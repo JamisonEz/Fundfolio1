@@ -263,7 +263,7 @@ error_reporting(E_ERROR);
 							<?php  	} else { ?>
                             <div class="user-img wrap-auto">
                                 <img class="img-circle" onerror="this.src='images/userimagenotfound.png'" src="profile_uploads/<?php echo $db -> UserImage() ; ?>" alt="Profile Pic" width="50px">
-                            </div
+                            </div>
 							
 							<?php  }  ?>
 							

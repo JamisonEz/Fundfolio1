@@ -379,7 +379,7 @@
                     <p style="color: rgb(67,67,67); font-size: large; text-align: justify; overflow: hidden; word-break: break-all;">
                         <b>Links: </b><?php echo $folio_info['link'] ; ?>
                     </p>
-                </div>
+            </div>
             </div>
                         <div class="tab-pane" id="updates">
                            

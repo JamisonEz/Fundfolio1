@@ -634,6 +634,7 @@ class DBController {
             array_walk($temp_campaign_array, function($v, $k) use (&$campaign_result){ $campaign_result[$v['campaignid']] = $v; });
             
             $total_no_of_payments = 0;
+            $total_amt_of_payments = 0;
             $no_of_payments_per_category = array();
             $no_of_payments_per_folio = array();
             
@@ -651,6 +652,7 @@ class DBController {
                     $no_of_payments_per_category[$cat_type_name]['donation'] = $pr['payment_amount'];
                 }
                 $total_no_of_payments++;
+                $total_amt_of_payments+=$pr['payment_amount'];
                 
                 //project wise total
                 if(isset($campaign_result[$pr['itemid']]) && isset($no_of_payments_per_folio[$campaign_result[$pr['itemid']]['campaignname']]))
@@ -678,13 +680,13 @@ class DBController {
             
             //echo "<pre>";
             //print_r($no_of_payments_per_category);
-            //echo $total_no_of_payments;
+            //echo $total_amt_of_payments;
             //exit;
             
             foreach($no_of_payments_per_category as $noppc_cattype=>$noppc_count) {
                 $temp = array();
                 $temp[] = array('v' => (string) $noppc_cattype); 
-                $percentage = round((($noppc_count['count']/$total_no_of_payments)*100), 2);
+                $percentage = round((($noppc_count['donation']/$total_amt_of_payments)*100), 2);
                 $temp[] = array('v' => $percentage);
                 $temp[] = array('v' => (string) "<p style='font-size: 15px; padding: 5px;'>".$noppc_count['donation'].'$ ('.$percentage.'% of the total donation made in <b>'.$noppc_cattype.'</b> category!)</p>'); 
                 $temp_table_row[] = array('c' => $temp);
