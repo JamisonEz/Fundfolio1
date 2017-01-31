@@ -159,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 							$db ->UserUserID()
 							 );
 					if( $res > 0){
-						header("Location: ".$_SERVER['HOST_NAME']."/Fundfolio1-master/homescreen.php?cat_id=".$_POST['cat_id'], true);
+						header("Location: ".$_SERVER['HOST_NAME']."/Fundfolio1-master/usercampaign.php?folio_id=".$res, true);
 							die();
 						
 					}
@@ -221,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <div class="header-content-inner">
                 <h1 id="homeHeading">Let's Change the World.</h1>
                 <hr style="border-color: transparent;">
-                <p>Welcome to the beginning of your crowdfunding journey!  Fundfolio is the world’s SMARTest way crowdfund. Have fun using our Folio CubeTM  to engage family, friends, neighbors and even strangers, in your “campaign that matters.” We are so excited you are here!</p>
+                <p>Welcome to the beginning of your crowdfunding journey!  Fundfolio is the world’s SMARTest way to crowdfund. Have fun using our Folio Cube to invite family, friends, neighbors and even strangers to your project. We are so excited you are here!</p>
               <a class="downarrow page-scroll" href="#portfolio"  >Let's Start!</br><img src="img/downarrow.png" style="max-width:75px"></a>
             </div>
         </div>
@@ -412,12 +412,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 					
 					<div id="form_step_1" style="display:block;">
 					<h2>Name Of Your Folio</h2>
-					<p><strong>Work at a large company?</strong> You might want to name your slack after your division, or working group.</p>
-					<p style="margin: 10px 0px;"><strong>Company or team name</strong> (You can Change this later)</p>
-					<input type="text" onkeyup="companyheader();" class="getdatainput" id="company_team_name" name="company_team_name" value="" placeholder="Ex. Acme or Acms Marketing"/>
+					<p><strong>Post a project?</strong> You might want to name your folio and add a tag line to it.</p>
+					<p style="margin: 10px 0px;"><strong>Project name</strong> </p>
+					<input type="text" onkeyup="companyheader();" class="getdatainput" id="company_team_name" name="company_team_name" value="" placeholder="Ex. Together Hands"/>
 					<p style="margin: 25px 0 10px;"><strong>Tag Line</strong></p>
 					<input type="text" onkeyup="companytag();" class="getdatainput" id="company_tag_line" name="company_tag_line" value="" placeholder="Working together to end homelessness"/>
-					<div class="sub_but_class"><button style="color:grey;" class="btn next_step" onclick="showseconddiv();" id="next_form" >Next<i class="fa fa-arrow-right" aria-hidden="true" style="padding: 0px 0px 0px 10px;"></i></button> </div>
+					<div class="sub_but_class col-md-3"><button style="color:grey;" class="btn next_step" onclick="document.location.href='../homescreen.php/'" id="" >Back<i class="fa fa-arrow-left" aria-hidden="true" style="padding: 0px 0px 0px 10px;"></i></button> </div>
+					<div class="sub_but_class col-md-3"><button style="color:grey;" class="btn next_step" onclick="showseconddiv();" id="next_form" >Next<i class="fa fa-arrow-right" aria-hidden="true" style="padding: 0px 0px 0px 10px;"></i></button> </div>
 					</div>
 
 					
@@ -802,6 +803,7 @@ function showseconddiv1()
 
 
 }
+
 
 
 

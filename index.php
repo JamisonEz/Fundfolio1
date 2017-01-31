@@ -809,6 +809,16 @@
     <script type="text/javascript">
 	
 	
+	
+		$("#donate_amount").keyup(function(event){
+			if(event.keyCode == 13){
+				alert("Please login or register to raise money");
+				//$("#id_of_button").click();
+			}
+		});
+	
+	
+	
 		var hideDive = true;
 	
 	

@@ -141,8 +141,6 @@ class DBController {
 		
 		
 		
-		
-		
 		$query = "SELECT *
 				FROM `register` 
 				where socialid = '$fbid' 	";
@@ -150,14 +148,25 @@ class DBController {
 		$result = mysqli_query( $this->conn, $query ) or die(mysqli_error($this->conn));
 		if($result && mysqli_num_rows($result) > 0)
         {
-			//return "2";
 			
-			if(!isset($_SESSION)){ session_start(); }
+			$row = mysqli_fetch_assoc($result);
+			//return "2";
+			 $query = "UPDATE `register` SET
+			`email`='$femail',
+			`name`='$fbfullname' ,
+			`profilepic`= '$fimage' ,
+			`location`='$location' WHERE socialid = '$fbid' ";
+			
+			 mysqli_query( $this->conn, $query ) or die(mysqli_error($this->conn));
+			
+			
+			
+			if(!isset($_SESSION) ){ session_start(); }
 			
 				$_SESSION[$this->GetLoginSessionVar()] = $fbid;
 			
 					
-				$row = mysqli_fetch_assoc($result);
+				
 				
 					$_SESSION['type'] =  1 ;
 					$_SESSION['user_id'] = $row['id'] ;
@@ -206,6 +215,8 @@ class DBController {
 				return 	$responce;	
 		
 	}
+	
+	
 	
 	function login ( $email , $paw, $google_login_success=false){
 		
@@ -673,7 +684,7 @@ class DBController {
             foreach($no_of_payments_per_category as $noppc_cattype=>$noppc_count) {
                 $temp = array();
                 $temp[] = array('v' => (string) $noppc_cattype); 
-                $percentage = ($noppc_count['count']/$total_no_of_payments)*100;
+                $percentage = round((($noppc_count['count']/$total_no_of_payments)*100), 2);
                 $temp[] = array('v' => $percentage);
                 $temp[] = array('v' => (string) "<p style='font-size: 15px; padding: 5px;'>".$noppc_count['donation'].'$ ('.$percentage.'% of the total donation made in <b>'.$noppc_cattype.'</b> category!)</p>'); 
                 $temp_table_row[] = array('c' => $temp);

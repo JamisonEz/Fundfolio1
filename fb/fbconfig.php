@@ -19,6 +19,9 @@ FacebookSession::setDefaultApplication('191869641282457','f9ca96e7b7630837a7ca77
     //$helper = new FacebookRedirectLoginHelper('http://demos.krizna.com/1353/fbconfig.php' );
 	 
 $helper = new FacebookRedirectLoginHelper('http://launchafolio.com/Fundfolio1-master/fb/fbconfig.php' );
+//$helper = new FacebookRedirectLoginHelper('http://localhost/yfcreative/fundfolio-git-new/Fundfolio1/fb/fbconfig.php' );
+
+
 
 		
 
@@ -40,13 +43,14 @@ if ( isset( $session ) ) {
      	$fbid = $graphObject->getProperty('id');              // To Get Facebook ID
  	    $fbfullname = $graphObject->getProperty('name'); // To Get Facebook full name
 	    $femail = $graphObject->getProperty('email');    // To Get Facebook email ID
+		$location =$graphObject->getProperty('location');    // To Get Facebook email ID
 	/* ---- Session Variables -----*/
 	
 	
 	
 	include("../functions.php");	
 	$db = new DBController();
-	$res = $db -> registerFbUser (  $fbid , $femail , $fbfullname , $fbid );
+	$res = $db -> registerFbUser (  $fbid , $femail , $fbfullname , $fbid , $location );
 
 		
 	
@@ -57,6 +61,7 @@ if ( isset( $session ) ) {
 	$_SESSION['FBID'] = $fbid;           
 	$_SESSION['FULLNAME'] = $fbfullname;
 	$_SESSION['EMAIL'] =  $femail;
+	$_SESSION['user_location'] =  $location;
 	
     /* ---- header location after session ----*/
   header("Location: ../index.php");
